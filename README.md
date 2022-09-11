@@ -16,4 +16,4 @@ On the other hand, there is the possibility of distributing specific objects on 
 
 The purpose of the project is to explore the procedural generation of meshes, and secondly, to facilitate work in Game Jams and to speed up the process of obtaining simple resources for a game.
 
-Trabajo de fin de grado por José Daniel Rave Roballo, Daniel Illanes Morillas y Sergio José Alfonso Rojas
+Trabajo de fin de grado por José Daniel Rave Robayo, Daniel Illanes Morillas y Sergio José Alfonso Rojas
