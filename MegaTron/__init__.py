@@ -13,20 +13,21 @@
 
 bl_info = {
     "name" : "MegaTron",
-    "author" : "LasSuperNenas",
-    "description" : "",
+    "author" : "SuperNenas",
+    "description" : " ",
     "blender" : (3, 3, 0),
     "version" : (0, 0, 1),
-    "location" : "",
+    "location" : "View3D",
     "warning" : "",
-    "category" : "Distribution"
+    "category" : "Generic"
 }
 
+# from codecs import unregister
 import bpy
 
-from .functions import MT_Functions
-from.panel import MT_Panel
+from .mg_op import MegaTron_OT_Operator
+from.mg_panel import MegaTron_PT_Panel
 
-classes = (MT_Functions, MT_Panel)
+classes = (MegaTron_OT_Operator, MegaTron_PT_Panel)
 
 register, unregister = bpy.utils.register_classes_factory(classes)
