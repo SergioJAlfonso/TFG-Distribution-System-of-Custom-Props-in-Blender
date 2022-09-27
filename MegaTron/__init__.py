@@ -26,8 +26,9 @@ bl_info = {
 import bpy
 
 from .mg_op import MegaTron_OT_Operator
-from.mg_panel import MegaTron_PT_Panel
+from.mg_panel import Main_PT_Panel
+from.mg_panel import Groups_PT_Panel
 
-classes = (MegaTron_OT_Operator, MegaTron_PT_Panel)
+classes = (Main_PT_Panel,Groups_PT_Panel, MegaTron_OT_Operator )
 
 register, unregister = bpy.utils.register_classes_factory(classes)
