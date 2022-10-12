@@ -21,6 +21,11 @@ class Main_PT_Panel(bpy.types.Panel):
         col = layout.column()
         row.operator('view3d.cursor_center', text = "Distribute")
 
+        col.prop(context.scene, "threshold")
+        col.prop(context.scene, "num_assets")
+        
+        
+
         self.layout.prop_search(context.scene, "asset", context.scene, "objects", text="Asset")
 
         self.layout.prop_search(context.scene, "target", context.scene, "objects", text="Target Object")

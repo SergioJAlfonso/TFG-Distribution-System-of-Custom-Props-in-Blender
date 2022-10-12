@@ -23,12 +23,40 @@ bl_info = {
 }
 
 # from codecs import unregister
+from gc import get_threshold
 import bpy
 
 from .mg_op import MegaTron_OT_Operator
 from.mg_panel import Main_PT_Panel
 from.mg_panel import Groups_PT_Panel
+classes = ( Main_PT_Panel,Groups_PT_Panel, MegaTron_OT_Operator )
 
-classes = (Main_PT_Panel,Groups_PT_Panel, MegaTron_OT_Operator )
+# register, unregister = bpy.utils.register_classes_factory(classes)
+def get_threshold(self):
+    return self.get('threshold', 0)
 
-register, unregister = bpy.utils.register_classes_factory(classes)
+def register():
+
+    for cls in classes:
+        bpy.utils.register_class(cls)
+    
+    bpy.types.Scene.threshold = bpy.props.FloatProperty(
+        name='Threshold',
+        default=0.5,
+        min = 0.0,
+        max = 1.0,
+    )
+
+    bpy.types.Scene.num_assets = bpy.props.IntProperty(
+        name='Number of Assets',
+        default=1,
+        min = 1,
+        max = 100000
+    )
+
+def unregister():
+    for cls in classes:
+        bpy.utils.unregister_class(cls)
+    
+    del bpy.types.Scene.threshold, bpy.types.Scene.num_assets 
+    
