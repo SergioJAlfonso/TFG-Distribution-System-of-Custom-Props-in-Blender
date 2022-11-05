@@ -29,8 +29,7 @@ import bpy
 from .mg_op import MegaTron_OT_Operator
 from.mg_panel import Main_PT_Panel
 from.mg_panel import Groups_PT_Panel
-from.mg_panel import Subdivision_PT_Panel
-classes = ( Main_PT_Panel,Groups_PT_Panel, Subdivision_PT_Panel, MegaTron_OT_Operator )
+classes = ( Main_PT_Panel,Groups_PT_Panel, MegaTron_OT_Operator )
 
 # register, unregister = bpy.utils.register_classes_factory(classes)
 def get_threshold(self):
@@ -53,6 +52,12 @@ def register():
         default=1,
         min = 1,
         max = 100000
+    )
+
+    bpy.types.Scene.subdivide = bpy.props.BoolProperty(
+        name='Subdivide target',
+        description = "This checkbox makes subdivisions of the target to fit the asset in every possible position of the surface",
+        default=False
     )
 
 def unregister():
