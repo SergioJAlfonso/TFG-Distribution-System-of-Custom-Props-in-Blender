@@ -65,6 +65,14 @@ def register():
         default=False
     )
 
+    bpy.types.Scene.algorith_enum = bpy.props.EnumProperty(
+        name = "Algorithms",
+        description = "Select an option",
+        items = [('OP1', "Random", "Random Distribution"),
+                 ('OP2', "Poisson", "Poisson Distribution")
+        ]
+    )
+
 def unregister():
     for cls in classes:
         bpy.utils.unregister_class(cls)
