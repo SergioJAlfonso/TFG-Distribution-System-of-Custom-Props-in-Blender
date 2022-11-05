@@ -4,9 +4,10 @@ from .utils.addon_utils import *
 from mathutils import Vector
 
 class MegaTron_OT_Operator(bpy.types.Operator):
-    bl_idname = "view3d.cursor_center"
+    bl_idname = "addon.distribute"
     bl_label = "Simple operator"
     bl_description = "Distribute object over a surface"
+
 
 #crear diferentes grupos de vertices para cada objeto a distribuir
     # self = method defined for this class 
