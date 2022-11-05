@@ -23,7 +23,7 @@ class Main_PT_Panel(bpy.types.Panel):
 
         col.prop(context.scene, "threshold")
         col.prop(context.scene, "num_assets")
-        
+        col.prop(context.scene, "collectName")
         col.prop(context.scene, "subdivide")
 
         self.layout.prop_search(context.scene, "asset", context.scene, "objects", text="Asset")

@@ -47,6 +47,11 @@ def register():
         max = 1.0,
     )
 
+    bpy.types.Scene.collectName = bpy.props.StringProperty(
+        name='Collection Name',
+        default="Objects Distributed"
+    )
+
     bpy.types.Scene.num_assets = bpy.props.IntProperty(
         name='Number of Assets',
         default=1,
