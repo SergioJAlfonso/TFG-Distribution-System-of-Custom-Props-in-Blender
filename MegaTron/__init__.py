@@ -13,7 +13,7 @@
 
 bl_info = {
     "name" : "MegaTron",
-    "author" : "SuperNenas",
+    "author" : "Jose Daniel Rave Robayo, Daniel illanes Morillas, Sergio José Alfonso Rojas",
     "description" : " ",
     "blender" : (3, 3, 0),
     "version" : (0, 0, 1),
@@ -29,7 +29,8 @@ import bpy
 from .mg_op import MegaTron_OT_Operator
 from.mg_panel import Main_PT_Panel
 from.mg_panel import Groups_PT_Panel
-classes = ( Main_PT_Panel,Groups_PT_Panel, MegaTron_OT_Operator )
+from.mg_panel import Subdivision_PT_Panel
+classes = ( Main_PT_Panel,Groups_PT_Panel, Subdivision_PT_Panel, MegaTron_OT_Operator )
 
 # register, unregister = bpy.utils.register_classes_factory(classes)
 def get_threshold(self):

@@ -1,7 +1,9 @@
 import bpy
 
-#definimos que lo que queremo seleccionar(target de la escena) es de tipo Object
+#definimos que lo que queremos seleccionar(target de la escena) es de tipo Object
 bpy.types.Scene.target = bpy.props.PointerProperty(type=bpy.types.Object)
+
+bpy.types.Scene.subdivTarget = bpy.props.PointerProperty(type=bpy.types.Object)
 
 bpy.types.Scene.asset = bpy.props.PointerProperty(type=bpy.types.Object)
 
@@ -43,4 +45,20 @@ class Groups_PT_Panel(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
 
+#Subdivision surface panel
+class Subdivision_PT_Panel(bpy.types.Panel):
+    bl_idname = "Subdivision_PT_Panel"
+    bl_label = "Subdivide Target Surface"
+    bl_category = "MegaTron"
+    bl_description = "Subdivision"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+
+    def draw(self, context):
+        layout = self.layout
         
+        #Asset that determines the distance between subdivisions
+        layout.prop_search(context.scene, "subdivTarget", context.scene, "objects", text="Asset")
+        #Surface to subdivide
+        layout.prop_search(context.scene, "subdivTarget", context.scene, "objects", text="Target Object")
+    
