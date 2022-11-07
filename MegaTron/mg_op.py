@@ -13,7 +13,8 @@ class MegaTron_OT_Operator(bpy.types.Operator):
     # self = method defined for this class 
     def execute(self, context):
         # bpy.ops.view3d.snap_cursor_to_center()
-        target = context.scene.target
+        target = duplicateObject(context.scene.target)
+        #target = context.scene.target
         asset = context.scene.asset
 
         asset_bounding_box_local = getBoundingBox(context, asset)
@@ -40,6 +41,9 @@ class MegaTron_OT_Operator(bpy.types.Operator):
         #TODO: NORMALIZAR LA ESCALA DEL ASSET 
         #TODO: Sumar bounding box a la normal donde se está posicionando
         createObjectsInPoints(sol, asset, asset_bounding_box_local, collection)
+
+        #Delete the newly created target (Not used, the target deletes when context )
+        #deleteObject(target)
 
         return {'FINISHED'}
 

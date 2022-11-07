@@ -79,7 +79,6 @@ def makeSubdivision(target, assetBoundingBox, targetBoundingBox):
     # load the mesh
     subdividedMesh.from_mesh(tData)
     # subdivide
-
     numCuts = calculateNumCuts(assetBoundingBox, targetBoundingBox)
 
     bmesh.ops.subdivide_edges(subdividedMesh, edges=subdividedMesh.edges, cuts=numCuts, use_grid_fill=True)
@@ -103,3 +102,21 @@ def calculateNumCuts(assetBoundingBox, targetBoundingBox):
 
     #return number of cuts to make the asset fit correctly
     return int(targetSize/assetSize)
+
+def duplicateObject(obj, data=True, actions=True, collection=None):
+    obj_copy = obj.copy()
+    if data:
+        obj_copy.data = obj_copy.data.copy()
+    if actions and obj_copy.animation_data:
+        obj_copy.animation_data.action = obj_copy.animation_data.action.copy()
+    if collection != None:
+        collection.objects.link(obj_copy)
+    return obj_copy
+
+def deleteObject(obj):
+    # Deselect all
+    bpy.ops.object.select_all(action='DESELECT')
+
+    obj.select_set(True)
+
+    bpy.ops.object.delete() 
