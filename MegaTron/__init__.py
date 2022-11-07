@@ -39,7 +39,7 @@ def register():
 
     for cls in classes:
         bpy.utils.register_class(cls)
-    
+     
     bpy.types.Scene.threshold = bpy.props.FloatProperty(
         name='Threshold',
         default=0.5,
@@ -60,8 +60,8 @@ def register():
     )
 
     bpy.types.Scene.subdivide = bpy.props.BoolProperty(
-        name='Subdivide target',
-        description = "This checkbox makes subdivisions of the target to fit the asset in every possible position of the surface",
+        name='Subdivide Target',
+        description = "This checkbox makes subdivisions of the target to fit the asset in every possible position of the surface\n\nMake sure that you normalize the scale of the asset before marking this checkbox",
         default=False
     )
 

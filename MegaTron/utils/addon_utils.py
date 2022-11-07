@@ -1,4 +1,5 @@
 import bpy 
+import bmesh 
 
 def getVerticesWeight(object):
     """
@@ -70,3 +71,35 @@ def initCollection(collection, nameCollection):
     else:
         collection = bpy.data.collections.new(nameCollection)
         bpy.context.scene.collection.children.link(collection)
+
+def makeSubdivision(target, assetBoundingBox, targetBoundingBox):
+    tData = target.data
+    # New bmesh
+    subdividedMesh = bmesh.new()
+    # load the mesh
+    subdividedMesh.from_mesh(tData)
+    # subdivide
+
+    numCuts = calculateNumCuts(assetBoundingBox, targetBoundingBox)
+
+    bmesh.ops.subdivide_edges(subdividedMesh, edges=subdividedMesh.edges, cuts=numCuts, use_grid_fill=True)
+
+    #TODO: hacerlo en mesh nueva para no modificar mesh del usuario 
+    # Write back to the mesh
+    subdividedMesh.to_mesh(tData)
+    tData.update()
+
+def calculateNumCuts(assetBoundingBox, targetBoundingBox):
+    # get size of the asset and the target in x and y
+    sizeX = assetBoundingBox[6][0] - assetBoundingBox[2][0]
+    sizeY = assetBoundingBox[2][1] - assetBoundingBox[1][1]
+
+    assetSize = max(sizeX, sizeY)
+
+    sizeX = targetBoundingBox[6][0] - targetBoundingBox[2][0]
+    sizeY = targetBoundingBox[2][1] - targetBoundingBox[1][1]
+
+    targetSize = max(sizeX, sizeY)
+
+    #return number of cuts to make the asset fit correctly
+    return int(targetSize/assetSize)

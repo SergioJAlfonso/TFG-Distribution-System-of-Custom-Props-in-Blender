@@ -16,9 +16,14 @@ class MegaTron_OT_Operator(bpy.types.Operator):
         target = context.scene.target
         asset = context.scene.asset
 
+        asset_bounding_box_local = getBoundingBox(context, asset)
+        target_bounding_box_local = getBoundingBox(context, target)
+
+        #Subdivide target to fit assets in every vertex
+        if (context.scene.subdivide):
+            makeSubdivision(target, asset_bounding_box_local, target_bounding_box_local)
+
         data_bidimensional = getVerticesWeight(target)
-        
-        asset_bounding_box_local = getBoundingBox(context,context.scene.asset)
 
         #Nota : bpy.types.Scene.num_assets != context.scene.num_assets
         #Get user property data
@@ -45,7 +50,7 @@ class MegaTron_OT_Operator(bpy.types.Operator):
         obj = context.object
         return (obj is not None) and (obj.mode == "OBJECT")
 
-def createObjectsInPoints(points,object, boundingBoxObject, collection):
+def createObjectsInPoints(points, object, boundingBoxObject, collection):
     for i in range(len(points)):
         newObj = object.copy()
         newObj.location = points[i]
