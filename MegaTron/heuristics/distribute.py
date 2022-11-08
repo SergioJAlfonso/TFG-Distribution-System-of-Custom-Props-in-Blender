@@ -29,12 +29,6 @@ def distributeAsset(v_data, asset_bound, num_assets, threshold):
     tam_vData = len(v_data)
     n_instances = 0
 
-    #Para que no haya más assets que vertices
-    if tam_vData -1 < num_assets:
-        num_assets = tam_vData -1
-
-    #usar funcion minimo!!!
-
     #iterar por cada vertice -> if (ver peso > threshold && n_instances < num)
         # mayor -> metemos pos en elegibles
     for i in range(tam_vData):
@@ -49,6 +43,8 @@ def distributeAsset(v_data, asset_bound, num_assets, threshold):
     sol = []
     num_elegibles = len(elegibles)
 
+    #Para que no haya más assets que vertices
+    num_assets = min(num_assets, num_elegibles)
 
     while(num_assets > 0):
         index = random.randrange(0, num_elegibles)
