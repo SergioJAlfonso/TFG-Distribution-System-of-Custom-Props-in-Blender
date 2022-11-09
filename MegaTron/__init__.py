@@ -65,11 +65,12 @@ def register():
         default=False
     )
 
-    bpy.types.Scene.algorith_enum = bpy.props.EnumProperty(
+    bpy.types.Scene.algorithm_enum = bpy.props.EnumProperty(
         name = "Algorithms",
         description = "Select an option",
-        items = [('OP1', "Random", "Random Distribution"),
-                 ('OP2', "Poisson", "Poisson Distribution")
+        items = [('OP1', "Random", "Random Distribution", 1),
+                 ('OP2', "Poisson", "Poisson Distribution", 2),
+                 ('OP3', "Threshold", "Threshold Distribution", 3) 
         ]
     )
 
