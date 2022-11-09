@@ -60,8 +60,11 @@ def TestBoundingBox(context, boundingBox):
 
 def initCollection(collection, nameCollection):
     """ 
-    If collection with giveb name exits, would be cleaned of objects.
+    If collection with given name exits, would be cleaned of objects.
     Else,would be created from zero.
+
+    Returns:
+    Collection initialized
     """
     #Si existe, borramos sus objetos, de lo contrario, 
     #creamos una coleccion nueva
@@ -71,6 +74,8 @@ def initCollection(collection, nameCollection):
     else:
         collection = bpy.data.collections.new(nameCollection)
         bpy.context.scene.collection.children.link(collection)
+
+    return collection
 
 def makeSubdivision(target, assetBoundingBox, targetBoundingBox):
     tData = target.data
