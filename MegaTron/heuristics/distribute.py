@@ -52,5 +52,7 @@ def distributeAsset(v_data, asset_bound, num_assets, threshold):
             elegibles[index][1] = True
             sol.append(elegibles[index][0])
             num_assets -= 1
+    
+    
 
     return sol

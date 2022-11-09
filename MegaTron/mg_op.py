@@ -1,4 +1,5 @@
 import bpy 
+from .utils.draw_utils import *
 from .heuristics.distribute import *
 from .utils.addon_utils import *
 from mathutils import Vector
@@ -58,5 +59,5 @@ def createObjectsInPoints(points, object, boundingBoxObject, collection):
     for i in range(len(points)):
         newObj = object.copy()
         newObj.location = points[i]
-        newObj.location[2] += abs(boundingBoxObject[0][2])
+        newObj.location[2] += abs(boundingBoxObject[0][2]/2)
         collection.objects.link(newObj)
