@@ -74,6 +74,28 @@ class MegaTron_OT_Operator(bpy.types.Operator):
 def createObjectsInPoints( points, object, boundingBoxObject, collection):
     #TODO duplicate mesh data and asign to new objects
     
+    # collection = bpy.data.collections.get("cosa")
+
+    # if collection is not None:
+    #     for obj in collection.objects:
+    #         bpy.data.objects.remove(obj, do_unlink=True)
+    # else:
+    #     collection = bpy.data.collections.new("cosa")
+    #     bpy.context.scene.collection.children.link(collection)
+        
+    # asset = context.scene.target 
+
+    # inCollection = False
+    # for i in range(10):
+    #     bpy.ops.object.duplicate(linked=1)
+        
+    #     ob = bpy.context.object
+        
+    #     if(inCollection == False):
+    #         bpy.context.scene.collection.objects.unlink(ob)
+    #         collection.objects.link(ob)
+    #         inCollection = True
+
     inCollection =False  
     for i in range(len(points)):
         # bpy.context.view_layer.objects.active = object
