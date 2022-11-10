@@ -1,9 +1,10 @@
 import bpy 
 import bmesh 
+import random
 
 def getVerticesWeight(object):
     """
-    Returns a list of vertices and their weights
+    Returns a list of vertex and their weights (vertex, weight)
     """
 
     data_bidimensional = []
