@@ -12,7 +12,6 @@ def getVerticesWeight(object):
     # vgroup = obj.vertex_groups[0]
     # vertices = [v for v in obj.data.vertices if v.groups]
     for i, v in enumerate(object.data.vertices):
-
         # print("Vertex index: " + str(i))
         #v.groups = grupos a los que esta asignado el vertice
         for g in v.groups:
@@ -126,3 +125,11 @@ def deleteObject(obj):
     obj.select_set(True)
 
     bpy.ops.object.delete() 
+
+def scaleObject(self, obj):
+    if(obj.scale[0] != 1 or obj.scale[1] != 1 or obj.scale[2] != 1):
+        self.report({'WARNING'}, 'Asset scale will be applied!')
+        # bpy.context.active_object.select_set(False)
+        bpy.context.view_layer.objects.active = obj
+        bpy.context.active_object.select_set(True)
+        bpy.ops.object.transform_apply(location = False, rotation = False, scale=True)

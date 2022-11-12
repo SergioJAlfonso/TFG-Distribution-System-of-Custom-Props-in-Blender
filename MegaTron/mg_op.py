@@ -21,8 +21,12 @@ class MegaTron_OT_Operator(bpy.types.Operator):
             return {'FINISHED'}
 
 
-        #Obtenemos todos los datos necesarios 
-        target = duplicateObject(context.scene.target)
+        #Obtenemos todos los datos necesarios
+        if (context.scene.subdivide): 
+            target = duplicateObject(context.scene.target)
+        else:
+             target = context.scene.target
+
         asset = context.scene.asset
 
         #Nota : bpy.types.Scene.num_assets != context.scene.num_assets
@@ -34,13 +38,11 @@ class MegaTron_OT_Operator(bpy.types.Operator):
         collection = bpy.data.collections.get(nameCollection)
         collection = initCollection(collection, nameCollection)
 
+        bpy.ops.object.select_all(action='DESELECT')
         #Scale asset if necessary
-        if(asset.scale[0] != 1 or asset.scale[1] != 1 or asset.scale[2] != 1):
-            self.report({'WARNING'}, 'Asset scale will be applied!')
-            bpy.context.active_object.select_set(False)
-            bpy.context.view_layer.objects.active = asset
-            bpy.ops.object.transform_apply(location = False, rotation = False, scale=True)
+        scaleObject(self, asset)
 
+        # if(1 == 1): return {'FINISHED'}
         #Get bounding box
         asset_bounding_box_local = getBoundingBox(context, asset)
         target_bounding_box_local = getBoundingBox(context, target)
@@ -50,7 +52,8 @@ class MegaTron_OT_Operator(bpy.types.Operator):
             makeSubdivision(target, asset_bounding_box_local, target_bounding_box_local)
 
         data_bidimensional = getVerticesWeight(target)
-        bpy.data.meshes.remove(target.data)
+        if (context.scene.subdivide):
+            bpy.data.meshes.remove(target.data)
         # print('Algorithm:', context.scene.algorithm_enum)
         distribution = ThresholdRandDistribution(None)
         sol = distribution.distribute(data_bidimensional, asset_bounding_box_local, 
@@ -61,7 +64,6 @@ class MegaTron_OT_Operator(bpy.types.Operator):
 
         #Delete the newly created target (Not used, the target deletes when context )
         # deleteObject(target)
-
         return {'FINISHED'}
 
     # static method
@@ -71,7 +73,7 @@ class MegaTron_OT_Operator(bpy.types.Operator):
         obj = context.object
         return (obj is not None) and (obj.mode == "OBJECT")
 
-def createObjectsInPoints( points, object, boundingBoxObject, collection):
+def createObjectsInPoints(points, object, boundingBoxObject, collection):
     inCollection = False 
     #In case something else has been selected, we deselect everything
     bpy.ops.object.select_all(action='DESELECT')
