@@ -72,49 +72,28 @@ class MegaTron_OT_Operator(bpy.types.Operator):
         return (obj is not None) and (obj.mode == "OBJECT")
 
 def createObjectsInPoints( points, object, boundingBoxObject, collection):
-    #TODO duplicate mesh data and asign to new objects
-    
-    # collection = bpy.data.collections.get("cosa")
-
-    # if collection is not None:
-    #     for obj in collection.objects:
-    #         bpy.data.objects.remove(obj, do_unlink=True)
-    # else:
-    #     collection = bpy.data.collections.new("cosa")
-    #     bpy.context.scene.collection.children.link(collection)
-        
-    # asset = context.scene.target 
-
-    # inCollection = False
-    # for i in range(10):
-    #     bpy.ops.object.duplicate(linked=1)
-        
-    #     ob = bpy.context.object
-        
-    #     if(inCollection == False):
-    #         bpy.context.scene.collection.objects.unlink(ob)
-    #         collection.objects.link(ob)
-    #         inCollection = True
-
-    inCollection =False 
+    inCollection = False 
+    #In case something else has been selected, we deselect everything
+    bpy.ops.object.select_all(action='DESELECT')
+    #Set Active object in case it has changed
     bpy.context.view_layer.objects.active = object 
+    #Create object in points
     for i in range(len(points)):
-        
         object.select_set(True)
-        # newObj = duplicateObject(object)
         bpy.ops.object.duplicate(linked=1)
+        #We catch new object duplicated
         newObj = bpy.context.active_object
         
+        #Set location relative to size
         newObj.location = points[i]
         newObj.location[2] += abs(boundingBoxObject[0][2]/2)
         #Unlink from all collections and link in desired collection
         if(inCollection == False):
             linkedCollection = newObj.users_collection
+            #Link before unlink from everything
             collection.objects.link(newObj)
             for col in linkedCollection:
-                # colLinked = bpy.data.collections.get(col)
-                if(col is not None):
-                    col.objects.unlink(newObj)
+                if(col is not None): col.objects.unlink(newObj)
             inCollection = True
-
+        #Set Active object to new object so we can duplicate from this point
         object = bpy.context.active_object
