@@ -1,5 +1,5 @@
 #Aima Python Problem Class
-class IDistribution:
+class IDistribution():
     """The abstract class for a formal problem. You should subclass
     this and implement the methods actions and result, and possibly
     __init__, goal_test, and path_cost. Then you will create instances
@@ -13,6 +13,7 @@ class IDistribution:
         self.goal = goal
 
     def actions(self, state):
+        
         """Return the actions that can be executed in the given
         state. The result would typically be a list, but if there are
         many actions, consider yielding them one at a time in an
@@ -51,3 +52,9 @@ class IDistribution:
         """For optimization problems, each state has a value. Hill Climbing
         and related algorithms try to maximize this value."""
         raise NotImplementedError
+
+
+        actions = action(staete)
+
+        for ac in actions:
+            result(state, ac)

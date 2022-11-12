@@ -50,7 +50,7 @@ class MegaTron_OT_Operator(bpy.types.Operator):
             makeSubdivision(target, asset_bounding_box_local, target_bounding_box_local)
 
         data_bidimensional = getVerticesWeight(target)
-        
+        bpy.data.meshes.remove(target.data)
         # print('Algorithm:', context.scene.algorithm_enum)
         distribution = ThresholdRandDistribution(None)
         sol = distribution.distribute(data_bidimensional, asset_bounding_box_local, 
@@ -96,15 +96,25 @@ def createObjectsInPoints( points, object, boundingBoxObject, collection):
     #         collection.objects.link(ob)
     #         inCollection = True
 
-    inCollection =False  
+    inCollection =False 
+    bpy.context.view_layer.objects.active = object 
     for i in range(len(points)):
-        # bpy.context.view_layer.objects.active = object
-        # object.select_set(True)
-        newObj = duplicateObject(object)
-        # bpy.ops.object.duplicate(linked=1,mode='TRANSLATION')
-        # newObj = bpy.context.active_object
-
+        
+        object.select_set(True)
+        # newObj = duplicateObject(object)
+        bpy.ops.object.duplicate(linked=1)
+        newObj = bpy.context.active_object
+        
         newObj.location = points[i]
         newObj.location[2] += abs(boundingBoxObject[0][2]/2)
+        #Unlink from all collections and link in desired collection
         if(inCollection == False):
+            linkedCollection = newObj.users_collection
             collection.objects.link(newObj)
+            for col in linkedCollection:
+                # colLinked = bpy.data.collections.get(col)
+                if(col is not None):
+                    col.objects.unlink(newObj)
+            inCollection = True
+
+        object = bpy.context.active_object
