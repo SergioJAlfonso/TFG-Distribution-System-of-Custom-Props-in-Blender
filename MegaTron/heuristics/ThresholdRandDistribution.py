@@ -31,9 +31,9 @@ class ThresholdRandDistribution(IDistribution):
         sol : list
             Selected vertices. 
         """
-        #v_data ->[vertice Vector posicion, peso]
+        #v_data ->[vertice Vector posicion, peso, normal]
 
-        #[Vertice pos, usado]
+        #[Vertice pos, vertice normal, usado]
         elegibles = []
         tam_vData = len(v_data)
         n_instances = 0
@@ -43,7 +43,7 @@ class ThresholdRandDistribution(IDistribution):
         for i in range(tam_vData):
             #TODO: funcion estocastica, probabilidad > threshold 
             if(v_data[i][1] >= threshold):
-                elegibles.append([v_data[i][0], False])
+                elegibles.append([v_data[i][0],v_data[i][2], False])
                 n_instances += 1
 
         """una vez rellenado elegibles
@@ -57,9 +57,9 @@ class ThresholdRandDistribution(IDistribution):
 
         while(num_assets > 0):
             index = random.randrange(0, num_elegibles)
-            if(not elegibles[index][1]):
-                elegibles[index][1] = True
-                sol.append(elegibles[index][0])
+            if(not elegibles[index][2]):
+                elegibles[index][2] = True
+                sol.append([elegibles[index][0],elegibles[index][1]])
                 num_assets -= 1
 
         return sol

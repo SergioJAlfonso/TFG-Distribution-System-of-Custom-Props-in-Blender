@@ -2,9 +2,9 @@ import bpy
 import bmesh 
 import random
 
-def getVerticesWeight(object):
+def getVerticesData(object):
     """
-    Returns a list of vertex and their weights (vertex, weight)
+    Returns a list of vertex and their weights and normals (vertex, weight, normal)
     """
 
     data_bidimensional = []
@@ -12,16 +12,17 @@ def getVerticesWeight(object):
     # vgroup = obj.vertex_groups[0]
     # vertices = [v for v in obj.data.vertices if v.groups]
     for i, v in enumerate(object.data.vertices):
-        # print("Vertex index: " + str(i))
         #v.groups = grupos a los que esta asignado el vertice
         for g in v.groups:
             # print("Vertex group:" + target.vertex_groups[g.group].name)
             pos = object.matrix_world @ v.co
+
+            
             # print("Vertex position:" + str(pos))
             weight = g.weight
             #g = datos del vertice en ese grupo
             # print("Which weight is: " + str(weight))
-            data_bidimensional.append([pos, weight])
+            data_bidimensional.append([pos, weight, v.normal])
 
     # print("Vertices Weight: " + str(len(data_bidimensional)) +  str(data_bidimensional))
     return data_bidimensional

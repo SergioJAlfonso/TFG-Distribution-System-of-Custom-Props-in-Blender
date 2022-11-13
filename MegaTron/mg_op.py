@@ -51,12 +51,12 @@ class MegaTron_OT_Operator(bpy.types.Operator):
         if (context.scene.subdivide):
             makeSubdivision(target, asset_bounding_box_local, target_bounding_box_local)
 
-        data_bidimensional = getVerticesWeight(target)
+        data_tridimensional = getVerticesData(target)
         if (context.scene.subdivide):
             bpy.data.meshes.remove(target.data)
         # print('Algorithm:', context.scene.algorithm_enum)
         distribution = ThresholdRandDistribution(None)
-        sol = distribution.distribute(data_bidimensional, asset_bounding_box_local, 
+        sol = distribution.distribute(data_tridimensional, asset_bounding_box_local, 
                                       num_instances, threshold_weight)
         
         #TODO: Sumar bounding box a la normal donde se está posicionando
@@ -87,8 +87,8 @@ def createObjectsInPoints(points, object, boundingBoxObject, collection):
         newObj = bpy.context.active_object
         
         #Set location relative to size
-        newObj.location = points[i]
-        newObj.location[2] += abs(boundingBoxObject[0][2]/2)
+        newObj.location = points[i][0]
+        adjustPosition(newObj, boundingBoxObject, points[i][1])
         #Unlink from all collections and link in desired collection
         if(inCollection == False):
             linkedCollection = newObj.users_collection
@@ -99,3 +99,8 @@ def createObjectsInPoints(points, object, boundingBoxObject, collection):
             inCollection = True
         #Set Active object to new object so we can duplicate from this point
         object = bpy.context.active_object
+
+def adjustPosition(object, boundingBoxObject, normal):
+    # object.location[2] += abs(boundingBoxObject[0][2])
+    for i in range(3):
+        object.location[i] += abs(boundingBoxObject[0][i])* normal[i]
