@@ -123,8 +123,8 @@ def deleteObject(obj):
     # Deselect all
     bpy.ops.object.select_all(action='DESELECT')
 
+    bpy.context.view_layer.objects.active = obj 
     obj.select_set(True)
-
     bpy.ops.object.delete() 
 
 def scaleObject(self, obj):

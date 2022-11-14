@@ -17,7 +17,7 @@ class MegaTron_OT_Operator(bpy.types.Operator):
             return {'FINISHED'}
 
         if(context.scene.asset == None):
-            self.report({'WARNING'}, 'You must select a target object!')
+            self.report({'WARNING'}, 'You must select an asset object!')
             return {'FINISHED'}
 
 
@@ -52,17 +52,19 @@ class MegaTron_OT_Operator(bpy.types.Operator):
             makeSubdivision(target, asset_bounding_box_local, target_bounding_box_local)
 
         data_tridimensional = getVerticesData(target)
-        if (context.scene.subdivide):
-            bpy.data.meshes.remove(target.data)
+        
         # print('Algorithm:', context.scene.algorithm_enum)
         distribution = ThresholdRandDistribution(None)
         sol = distribution.distribute(data_tridimensional, asset_bounding_box_local, 
                                       num_instances, threshold_weight)
         
-        #TODO: Sumar bounding box a la normal donde se está posicionando
-        createObjectsInPoints(sol, asset, asset_bounding_box_local, collection)
+        # createObjectsInPoints(sol, asset, asset_bounding_box_local, collection)
+            
+        #Delete the newly created target
+        if (context.scene.subdivide):
+            target.user_clear()
+            bpy.data.meshes.remove(target.data)
 
-        #Delete the newly created target (Not used, the target deletes when context )
         # deleteObject(target)
         return {'FINISHED'}
 
@@ -86,8 +88,8 @@ def createObjectsInPoints(points, object, boundingBoxObject, collection):
         #We catch new object duplicated
         newObj = bpy.context.active_object
         
-        #Set location relative to size
         newObj.location = points[i][0]
+        #Set location relative to size
         adjustPosition(newObj, boundingBoxObject, points[i][1])
         #Unlink from all collections and link in desired collection
         if(inCollection == False):
