@@ -21,6 +21,7 @@ class Main_PT_Panel(bpy.types.Panel):
         col = layout.column()
         
         row.operator('addon.distribute', text = "Distribute")
+        row.operator('addon.clear', text = "Clear")
         col.prop(context.scene, "algorithm_enum")
 
         col.prop(context.scene, "subdivide")

@@ -20,7 +20,6 @@ class MegaTron_OT_Operator(bpy.types.Operator):
             self.report({'WARNING'}, 'You must select an asset object!')
             return {'FINISHED'}
 
-
         #Obtenemos todos los datos necesarios
         if (context.scene.subdivide): 
             target = duplicateObject(context.scene.target)
@@ -39,33 +38,28 @@ class MegaTron_OT_Operator(bpy.types.Operator):
         collection = initCollection(collection, nameCollection)
 
         bpy.ops.object.select_all(action='DESELECT')
-        #Scale asset if necessary
+        # #Scale asset if necessary
         scaleObject(self, asset)
 
-        # if(1 == 1): return {'FINISHED'}
-        #Get bounding box
+        # #Get bounding box
         asset_bounding_box_local = getBoundingBox(context, asset)
         target_bounding_box_local = getBoundingBox(context, target)
-
-        #Subdivide target to fit assets in every vertex
+        
+        # #Subdivide target to fit assets in every vertex
         if (context.scene.subdivide):
             makeSubdivision(target, asset_bounding_box_local, target_bounding_box_local)
 
         data_tridimensional = getVerticesData(target)
-        
-        # print('Algorithm:', context.scene.algorithm_enum)
+        #print('Algorithm:', context.scene.algorithm_enum)
         distribution = ThresholdRandDistribution(None)
         sol = distribution.distribute(data_tridimensional, asset_bounding_box_local, 
                                       num_instances, threshold_weight)
         
-        # createObjectsInPoints(sol, asset, asset_bounding_box_local, collection)
-            
-        #Delete the newly created target
+        createObjectsInPoints(sol, asset, asset_bounding_box_local, collection, target)
+        
         if (context.scene.subdivide):
-            target.user_clear()
             bpy.data.meshes.remove(target.data)
 
-        # deleteObject(target)
         return {'FINISHED'}
 
     # static method
@@ -75,13 +69,14 @@ class MegaTron_OT_Operator(bpy.types.Operator):
         obj = context.object
         return (obj is not None) and (obj.mode == "OBJECT")
 
-def createObjectsInPoints(points, object, boundingBoxObject, collection):
+def createObjectsInPoints(points, object, boundingBoxObject, collection, target):
     inCollection = False 
     #In case something else has been selected, we deselect everything
     bpy.ops.object.select_all(action='DESELECT')
     #Set Active object in case it has changed
     bpy.context.view_layer.objects.active = object 
     #Create object in points
+    
     for i in range(len(points)):
         object.select_set(True)
         bpy.ops.object.duplicate(linked=1)

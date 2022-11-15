@@ -59,6 +59,10 @@ def TestBoundingBox(context, boundingBox):
         )
         empty.location = co
 
+def clearCollection(collection):
+    for obj in collection.objects:
+        bpy.data.objects.remove(obj, do_unlink=True)
+
 def initCollection(collection, nameCollection):
     """ 
     If collection with given name exits, would be cleaned of objects.
@@ -70,8 +74,7 @@ def initCollection(collection, nameCollection):
     #Si existe, borramos sus objetos, de lo contrario, 
     #creamos una coleccion nueva
     if collection is not None:
-        for obj in collection.objects:
-            bpy.data.objects.remove(obj, do_unlink=True)
+        clearCollection(collection)
     else:
         collection = bpy.data.collections.new(nameCollection)
         bpy.context.scene.collection.children.link(collection)
@@ -86,7 +89,7 @@ def makeSubdivision(target, assetBoundingBox, targetBoundingBox):
     subdividedMesh.from_mesh(tData)
     # subdivide
     numCuts = calculateNumCuts(assetBoundingBox, targetBoundingBox)
-
+     
     bmesh.ops.subdivide_edges(subdividedMesh, edges=subdividedMesh.edges, cuts=numCuts, use_grid_fill=True)
 
     #TODO: hacerlo en mesh nueva para no modificar mesh del usuario 
@@ -117,6 +120,8 @@ def duplicateObject(obj, data=True, actions=True, collection=None):
         obj_copy.animation_data.action = obj_copy.animation_data.action.copy()
     if collection != None:
         collection.objects.link(obj_copy)
+
+        
     return obj_copy
 
 def deleteObject(obj):
