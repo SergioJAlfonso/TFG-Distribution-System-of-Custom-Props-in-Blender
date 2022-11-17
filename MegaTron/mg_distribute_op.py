@@ -30,6 +30,7 @@ class MegaTron_OT_Operator(bpy.types.Operator):
 
         #Nota : bpy.types.Scene.num_assets != context.scene.num_assets
         #Get user property data
+        numCutsSubdivision = context.scene.num_cuts
         nameCollection = context.scene.collectName
         threshold_weight = context.scene.threshold #valor de 0, 1
         num_instances = context.scene.num_assets
@@ -47,7 +48,7 @@ class MegaTron_OT_Operator(bpy.types.Operator):
         
         # #Subdivide target to fit assets in every vertex
         if (context.scene.subdivide):
-            makeSubdivision(target, asset_bounding_box_local, target_bounding_box_local)
+            makeSubdivision(target, asset_bounding_box_local, target_bounding_box_local, numCutsSubdivision)
 
         data_tridimensional = getVerticesData(target)
         #print('Algorithm:', context.scene.algorithm_enum)

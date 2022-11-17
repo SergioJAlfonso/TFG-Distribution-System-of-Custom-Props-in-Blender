@@ -41,6 +41,14 @@ def register():
     for cls in classes:
         bpy.utils.register_class(cls)
      
+    bpy.types.Scene.num_cuts = bpy.props.IntProperty(
+        name='Number of Cuts',
+        default=0,
+        description = "Number of Cuts. If zero (Only if one type of asset is going to be distributed), cuts are made based in the size of the asset",
+        min = 0,
+        max = 100
+    )
+
     bpy.types.Scene.threshold = bpy.props.FloatProperty(
         name='Threshold',
         default=0.5,

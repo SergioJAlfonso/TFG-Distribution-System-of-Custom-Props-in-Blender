@@ -19,12 +19,18 @@ class Main_PT_Panel(bpy.types.Panel):
 
         row = layout.row()
         col = layout.column()
+        box = layout.box()
         
         row.operator('addon.distribute', text = "Distribute")
         row.operator('addon.clear', text = "Clear")
         col.prop(context.scene, "algorithm_enum")
 
-        col.prop(context.scene, "subdivide")
+
+        box.label(text="Subdivision")
+
+        box.row().prop(context.scene, "subdivide")
+        box.row().prop(context.scene, "num_cuts")
+
         col.prop(context.scene, "threshold")
         col.prop(context.scene, "num_assets")
         col.prop(context.scene, "collectName")

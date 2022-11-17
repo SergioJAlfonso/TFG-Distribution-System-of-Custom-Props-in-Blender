@@ -81,14 +81,17 @@ def initCollection(collection, nameCollection):
 
     return collection
 
-def makeSubdivision(target, assetBoundingBox, targetBoundingBox):
+def makeSubdivision(target, assetBoundingBox, targetBoundingBox, num_cuts):
     tData = target.data
     # New bmesh
     subdividedMesh = bmesh.new()
     # load the mesh
     subdividedMesh.from_mesh(tData)
     # subdivide
-    numCuts = calculateNumCuts(assetBoundingBox, targetBoundingBox)
+    if num_cuts == 0:
+        numCuts = calculateNumCuts(assetBoundingBox, targetBoundingBox)
+    else:
+        numCuts = num_cuts
      
     bmesh.ops.subdivide_edges(subdividedMesh, edges=subdividedMesh.edges, cuts=numCuts, use_grid_fill=True)
 
