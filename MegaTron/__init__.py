@@ -32,11 +32,21 @@ from.mg_panel import Main_PT_Panel
 from.mg_panel import Groups_PT_Panel
 classes = ( Main_PT_Panel,Groups_PT_Panel, MegaTron_OT_Operator, Clear_OT_Operator )
 
+import sys, os, site
+
+def verify_user_sitepackages():
+    usersitepackagespath = site.getsitepackages()
+
+    if os.path.exists(usersitepackagespath) and usersitepackagespath not in sys.path:
+        sys.path.append(usersitepackagespath)
+
 # register, unregister = bpy.utils.register_classes_factory(classes)
 def get_threshold(self):
     return self.get('threshold', 0)
 
 def register():
+    print("Registering usersitepackagespath")
+    # verify_user_sitepackages()
 
     for cls in classes:
         bpy.utils.register_class(cls)

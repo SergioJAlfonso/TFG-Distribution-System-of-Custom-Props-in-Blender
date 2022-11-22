@@ -17,3 +17,25 @@ On the other hand, there is the possibility of distributing specific objects on 
 The purpose of the project is to explore the procedural generation of meshes, and secondly, to facilitate work in Game Jams and to speed up the process of obtaining simple resources for a game.
 
 Trabajo de fin de grado por José Daniel Rave Robayo, Daniel Illanes Morillas y Sergio José Alfonso Rojas
+
+Notas Instalación
+~~~ 
+pip install aima3
+~~~
+Se deberá añadir una carpeta al directorio site-packages llamada aima3, el cual se encuentra en la carpeta fuente de Python.
+(Ejecutando where python mostrara la localización del ejecutable python).
+Por ej, debería estar en:
+~~~
+"C:\Users\user_name\AppData\Local\Programs\Python\Python310\Lib\site-packages"
+~~~
+Copiar la  carpeta aima3 a la carpeta de python que usa Blender para ejecutar el código. Si es la misma entonces ya no hay que hacer nada más.
+De lo contrario se deberia encontrar en Blender-X.X/python/lib/site-packages.
+Para saber exactamente la ruta, abrir la pestaña Scripting de Blender y ejecutar el siguiente codigo.
+~~~
+import site
+
+usersitepackagespath = site.getsitepackages()
+
+print("Path: ", usersitepackagespath)
+~~~
+Abrir Toggle System Console desde la pestaña Window arriba a la izquierda para ver el texto impreso.
