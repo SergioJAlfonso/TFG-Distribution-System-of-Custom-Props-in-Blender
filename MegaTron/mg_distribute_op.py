@@ -1,7 +1,14 @@
 import bpy 
-from .utils.draw_utils import *
-from .heuristics.ThresholdRandDistribution import *
-from .utils.addon_utils import *
+from .utilsMT.draw_utils import *
+from .heuristicsMT.ThresholdRandDistribution import *
+from .utilsMT.addon_utils import *
+
+from aima3.search import astar_search as aimaAStar
+
+class ALG(Enum):
+    A_STAR = 1
+    BACKTRACKING = 2
+    BEST_FIST_SEARCH = 3
 
 class MegaTron_OT_Operator(bpy.types.Operator):
     bl_idname = "addon.distribute"
@@ -52,7 +59,8 @@ class MegaTron_OT_Operator(bpy.types.Operator):
 
         data_tridimensional = getVerticesData(target)
         #print('Algorithm:', context.scene.algorithm_enum)
-        distribution = ThresholdRandDistribution(None)
+        distribution = ThresholdRandDistribution(ALG.A_STAR)
+        sol = aimaAStar(distribution)
         sol = distribution.distribute(data_tridimensional, asset_bounding_box_local, 
                                       num_instances, threshold_weight)
         

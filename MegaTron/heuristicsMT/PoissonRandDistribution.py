@@ -1,9 +1,11 @@
-from .. heuristics.IDistribution import *
-from ..utils.random_queue import *
+from ..utilsMT.random_queue import *
 import random
 import math
 
-class PoissonRandDistribution(IDistribution):
+from aima3 import search
+from aima3.search import Problem
+
+class PoissonRandDistribution(Problem):
     grid = []
     processList = []
     samplePoints = []

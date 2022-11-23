@@ -1,7 +1,8 @@
-from .. heuristics.IDistribution import *
 import random
 
-from aima3 import search
+from enum import Enum
+
+from aima3.search import Problem as aimaProblem
 
 """
 Realmente qué acciones tendremos? Solo distribuir no? Igual todos los posibles algoritmos?
@@ -10,7 +11,11 @@ Como se importan modulos desde la carpeta actual?
 Parametros de distancia entre objetos aunque no se toquen...
 """
 
-class ThresholdRandDistribution(search.Problem):
+
+
+class ThresholdRandDistribution(aimaProblem):
+    algorithm = None
+
     def __init__(self, initial, goal=None):
         self.initial = initial
         self.goal = goal
