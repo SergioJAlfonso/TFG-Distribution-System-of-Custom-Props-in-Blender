@@ -5,8 +5,11 @@ from .ItemClasses.DefaultAttributes.FurnitureAttribs import *
 from .utilsMT.draw_utils import *
 from .utilsMT.addon_utils import *
 from .heuristicsMT.ThresholdRandDistribution import *
+from .utilsMT.addon_utils import *
+from .utilsMT.StateGrid import *
 
 from aima3.search import astar_search as aimaAStar
+from aima3.search import breadth_first_tree_search as aimaBFTS
 
 class ALG(Enum):
     A_STAR = 1
@@ -69,15 +72,29 @@ class MegaTron_OT_Operator(bpy.types.Operator):
 
         data_tridimensional = getVerticesData(target)
         #print('Algorithm:', context.scene.algorithm_enum)
-        distribution = ThresholdRandDistribution(ALG.A_STAR)
-        sol = aimaAStar(distribution)
-        sol = distribution.distribute(data_tridimensional, asset_bounding_box_local, 
-                                      num_instances, threshold_weight)
+
+        vertices = filterVerticesByWeightThreshold(data_tridimensional, threshold_weight)
+        #Initial state as all possible vertices to place an asset
         
-        createObjectsInPoints(sol, asset, asset_bounding_box_local, collection, target)
+        initialState = StateGrid(vertices, 0)
+        #Potential final state 
+        goalState = StateGrid(None, num_instances)
+        initialState.objectsPlaced_
+        distribution = ThresholdRandDistribution(initialState, goalState)
         
-        if (context.scene.subdivide):
-            bpy.data.meshes.remove(target.data)
+        sol = aimaBFTS(distribution).solution()
+
+
+        m = 0 + 3
+
+        print(m)
+        # sol = distribution.distribute(data_tridimensional, asset_bounding_box_local, 
+        #                               num_instances, threshold_weight)
+        
+        # createObjectsInPoints(sol, asset, asset_bounding_box_local, collection, target)
+        
+        # if (context.scene.subdivide):
+        #     bpy.data.meshes.remove(target.data)
 
         return {'FINISHED'}
 

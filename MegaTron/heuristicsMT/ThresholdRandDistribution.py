@@ -1,5 +1,5 @@
 import random
-
+import copy
 from enum import Enum
 
 from aima3.search import Problem as aimaProblem
@@ -8,6 +8,7 @@ from aima3.search import Problem as aimaProblem
 Parametros de distancia entre objetos aunque no se toquen...
 """
 
+
 class ThresholdRandDistribution(aimaProblem):
     algorithm = None
 
@@ -15,64 +16,59 @@ class ThresholdRandDistribution(aimaProblem):
     def __init__(self, initial, goal=None):
         super().__init__(initial, goal)
     
-    """
-    FLUJO:
-    Estado inicial.
-    lista de acciones = Llamada a actions().
-    por cada accion de la lista, se llama a result(?) -> que por cada result, hay un nuevo estado
-    ese nuevo estado, implica nuevas acciones
-
-    Esto es backtracking?
-    """
-
-
     def actions(self, state):
         #Duelve una lista de accion posibles en el estado dado -> podemos poner en un sitio, pero que tipo de poner hay?
-        """Actual
-        La lista de acciones seria {poner en v1, poner en v2, poner en v3, ..., poner en vN} ?
         """
+        Defines possible vertices in current state.
 
-        #Algo tal que así?
-        #iterar por cada vertice -> if (ver peso > threshold && n_instances < num)
-        # mayor -> metemos pos en elegibles
-        for i in range(tam_vData):
-            #TODO: funcion estocastica, probabilidad > threshold 
-            if(v_data[i][1] >= threshold): 
-                #TODO si se cumple el if, añadir a la lista de acciones ->(poner asset en este vertice)
-                elegibles.append([v_data[i][0],v_data[i][2], False])
-                n_instances += 1
+        Returns an array of indices, indicating which indices you can place an object on. 
+        """
+        possibleActions = [] 
+        #Pasos 
 
+        sizeV = len(state.vertices_)
 
-        return None
+        #Iterar por cada vertice del estado comprobando si en dicho vertice ya tiene un objcto posicionado, de lo contrario
+        #se considerara como una accion posible, es decir, que se puede poner un objeto (objectPlaced = True) en dicho indice del array de vertices
+        for i in range(sizeV):
+            if(state.vertices_[i][2] == False):
+                possibleActions.append(i)
+
+        return possibleActions
 
     def result(self, state, action):
-        #Devuelve un nuevo estado al cual se le ha aplicado la accion.
-        return None
-        # return super().result(state, action)
+        """
+        Returns a new state in which an action has been applied.
+        """
+        newState = copy.deepcopy(state)
+        newState.vertices_[action][2] = True
+        newState.objectsPlaced_ += 1
+        return newState
 
     def goal_test(self, state):
-        # TODO: goal puede ser una funcion que dado un estado calcule si esta bien no?
-        # como tal nosotros no tenemos un estado final, no?
+        """
+        Returns if the number of placed objects so far is equal to number of objects defined as goal.
+        """
         #numero de objetos pedidos, separacion de objetos, tal.
-        return state == self.goal
+        return state.objectsPlaced_ == self.goal.objectsPlaced_
+        # return True
 
-    def path_cost(self, c, state1, action, state2):
+    # def path_cost(self, c, state1, action, state2):
         
-        # return super().path_cost(c, state1, action, state2)
-        return c + 1
+    #     # return super().path_cost(c, state1, action, state2)
+    #     return c + 1
     
-    def value(self, state):
-        """For optimization problems, each state has a value. Hill Climbing
-        and related algorithms try to maximize this value."""
-        raise NotImplementedError
+    # def value(self, state):
+    #     """For optimization problems, each state has a value. Hill Climbing
+    #     and related algorithms try to maximize this value."""
+    #     raise NotImplementedError
 
     def h(self, node):
-        #TODO: Entendemos que esto define que tan bien vamos, no?
-        # Pero eso no es como imposible?
-
-        """ Return the heuristic value for a given state. Default heuristic function used is 
-        h(n) = number of misplaced tiles """
-        return 3 + 5
+        """ 
+        Return the heuristic value for a given state. Default heuristic function used is 
+        h(n) = difference between number of objects placed and number of objects to place.  
+        """
+        return self.goal.objectsPlaced_ - node.state.objectsPlaced_
 
     def distribute(self, v_data, asset_bound, num_assets, threshold):
         """

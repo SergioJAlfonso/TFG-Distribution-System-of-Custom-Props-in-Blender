@@ -4,7 +4,7 @@ import random
 
 def getVerticesData(object):
     """
-    Returns a list of vertex and their weights and normals (vertex, weight, normal)
+    Returns a list of vertex, their weights and normals (vertex, weight, normal)
     """
 
     data_bidimensional = []
@@ -62,6 +62,26 @@ def TestBoundingBox(context, boundingBox):
 def clearCollection(collection):
     for obj in collection.objects:
         bpy.data.objects.remove(obj, do_unlink=True)
+
+def filterVerticesByWeightThreshold(vertices, weightThreshold):
+    """Filters vertices array by weight threshold, so each vertex weight greater or
+    equal than threshold, would stay, otherwise would be removed. 
+    
+    Returns an array of a 3rd dimensional vector: [position(vector), normal(vector), vertexUsed(boolean)]
+    """
+    elegibles = []
+    tam_vData = len(vertices)
+    n_instances = 0
+
+    #iterar por cada vertice -> if (ver peso > threshold && n_instances < num)
+        # mayor -> metemos pos en elegibles
+    for i in range(tam_vData):
+        #TODO: funcion estocastica, probabilidad > threshold 
+        if(vertices[i][1] >= weightThreshold):
+            elegibles.append([vertices[i][0],vertices[i][2], False])
+            n_instances += 1
+
+    return elegibles
 
 def initCollection(collection, nameCollection):
     """ 
