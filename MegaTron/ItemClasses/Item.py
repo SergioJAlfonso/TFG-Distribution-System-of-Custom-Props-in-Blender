@@ -4,10 +4,7 @@
 import ItemAttributes
 
 class Item:
-    def __init__(self, name, obj, attr, type = "none"):
+    def __init__(self, name, obj, attr):
         self.name = name
-        self.type = type
         self.blender_obj = obj
         self.attributes = attr
-
-    

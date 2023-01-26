@@ -1,7 +1,10 @@
 import bpy 
+from .ItemClasses.Item import *
+from .ItemClasses.SolutionItem import *
+from .ItemClasses.DefaultAttributes.FurnitureAttribs import *
 from .utilsMT.draw_utils import *
-from .heuristicsMT.ThresholdRandDistribution import *
 from .utilsMT.addon_utils import *
+from .heuristicsMT.ThresholdRandDistribution import *
 
 from aima3.search import astar_search as aimaAStar
 
@@ -56,6 +59,13 @@ class MegaTron_OT_Operator(bpy.types.Operator):
         # #Subdivide target to fit assets in every vertex
         if (context.scene.subdivide):
             makeSubdivision(target, asset_bounding_box_local, target_bounding_box_local, numCutsSubdivision)
+
+        # Establishes rules for the assets in order to place them correctly
+        # TODO: Seleccionable desde panel
+        # TODO: Generico para cualquier attrib + dependiente de num assets
+        attribs = FurnitureAttribs()
+
+        item = Item("sample", asset, attribs)
 
         data_tridimensional = getVerticesData(target)
         #print('Algorithm:', context.scene.algorithm_enum)
