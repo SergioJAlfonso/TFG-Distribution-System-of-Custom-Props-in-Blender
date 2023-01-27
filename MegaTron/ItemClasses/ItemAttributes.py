@@ -9,6 +9,9 @@ class ItemAttributes:
         # Range of rotations
         # x (n ~ m), y (n ~ m), z (n ~ m)
 
+        # Rotation steps
+        self.rotation_steps = [0.,0.,0.]
+
         # Distance offset
         self.distance_offset = 0 
 
@@ -17,7 +20,4 @@ class ItemAttributes:
 
         # Number of appearences for an item in the scene
         # -1 for any
-        self.max_repetitions = -1
-
-        pass
-        
+        # self.max_repetitions = -1

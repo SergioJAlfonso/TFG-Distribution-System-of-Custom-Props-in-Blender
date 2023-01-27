@@ -19,25 +19,57 @@ class Main_PT_Panel(bpy.types.Panel):
 
         row = layout.row()
         col = layout.column()
-        box = layout.box()
+
+        col.prop_search(context.scene, "asset", context.scene, "objects", text="Asset")
+        col.prop_search(context.scene, "target", context.scene, "objects", text="Target Object")
         
         row.operator('addon.distribute', text = "Distribute")
         row.operator('addon.clear', text = "Clear")
-        col.prop(context.scene, "algorithm_enum")
 
+
+        box3 = layout.box()
+
+        box3.label(text="Distribution Parameters")
+
+        box3.column().prop(context.scene, "algorithm_enum")
+        box3.column().prop(context.scene, "threshold")
+        box3.column().prop(context.scene, "num_assets")
+        box3.column().prop(context.scene, "collectName")
+
+
+        box2 = layout.box()
+
+        box2.label(text="Item Attributes")
+
+        rotationBox = box2.box()
+
+        rotation_row = rotationBox.row()
+
+        rotation_row.alignment = "CENTER"
+
+        rotation_row.label(text="Allow Rotation:")
+        rotation_row.prop(context.scene, "rotate_x")
+        rotation_row.prop(context.scene, "rotate_y")
+        rotation_row.prop(context.scene, "rotate_z")
+
+        rotation_step_row = rotationBox.row()
+
+        rotation_step_row.alignment = "CENTER"
+
+        rotation_step_row.label(text="Steps:")
+        rotation_step_row.prop(context.scene, "rot_steps_x")
+        rotation_step_row.prop(context.scene, "rot_steps_y")
+        rotation_step_row.prop(context.scene, "rot_steps_z")
+
+        box2.row().prop(context.scene, "item_distance")
+
+        box = layout.box()
 
         box.label(text="Subdivision")
 
         box.row().prop(context.scene, "subdivide")
         box.row().prop(context.scene, "num_cuts")
-
-        col.prop(context.scene, "threshold")
-        col.prop(context.scene, "num_assets")
-        col.prop(context.scene, "collectName")
-
-
-        self.layout.prop_search(context.scene, "asset", context.scene, "objects", text="Asset")
-        self.layout.prop_search(context.scene, "target", context.scene, "objects", text="Target Object")
+       
         # placeholder = context.scene.placeholder
         # col.prop(placeholder, "inc_dec_int", text="Asset Instances")
 

@@ -44,7 +44,7 @@ class MegaTron_OT_Operator(bpy.types.Operator):
 
         asset = context.scene.asset
 
-        #Nota : bpy.types.Scene.num_assets != context.scene.num_assets
+        #Note : bpy.types.Scene.num_assets != context.scene.num_assets
         #Get user property data
         numCutsSubdivision = context.scene.num_cuts
         nameCollection = context.scene.collectName
@@ -67,11 +67,7 @@ class MegaTron_OT_Operator(bpy.types.Operator):
             makeSubdivision(target, asset_bounding_box_local, target_bounding_box_local, numCutsSubdivision)
 
         # Establishes rules for the assets in order to place them correctly
-        # TODO: Seleccionable desde panel
-        # TODO: Generico para cualquier attrib + dependiente de num assets
-        attribs = FurnitureAttribs()
-
-        item = Item("sample", asset, attribs)
+        item = defineItem(context, asset)
 
         data_tridimensional = getVerticesData(target)
         #print('Algorithm:', context.scene.algorithm_enum)
@@ -96,7 +92,7 @@ class MegaTron_OT_Operator(bpy.types.Operator):
             objectsData.append([vertices[indexVertex][0], vertices[indexVertex][1]])
 
         # sol = distribution.distribute(data_tridimensional, asset_bounding_box_local, 
-        #                               num_instances, threshold_weight)
+        #                               num_instances, threshold_weight, )
         
         createObjectsInPoints(objectsData, asset, asset_bounding_box_local, collection, target)
         
@@ -144,3 +140,23 @@ def adjustPosition(object, boundingBoxObject, normal):
     # object.location[2] += abs(boundingBoxObject[0][2])
     for i in range(3):
         object.location[i] += abs(boundingBoxObject[0][i])* normal[i]
+
+def defineItem(context, asset):
+    #Item attributes
+    rotation_x = context.scene.rotate_x
+    rotation_y = context.scene.rotate_y
+    rotation_z = context.scene.rotate_z
+
+    rotation_steps_x = context.scene.rot_steps_x
+    rotation_steps_y = context.scene.rot_steps_y
+    rotation_steps_z = context.scene.rot_steps_z
+
+    item_distance = context.scene.item_distance
+
+    attribs = ItemAttributes()
+
+    attribs.rotations = {rotation_x, rotation_y, rotation_z}
+    attribs.rotation_steps = {rotation_steps_x, rotation_steps_y, rotation_steps_z}
+    attribs.distance_offset = item_distance
+
+    return Item("sample", asset, attribs)

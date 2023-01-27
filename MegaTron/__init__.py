@@ -84,6 +84,59 @@ def register():
         default=False
     )
 
+    # Item rotation constraints
+    bpy.types.Scene.rotate_x = bpy.props.BoolProperty(
+        name='X',
+        description = "This checkbox allows the rotation of the object in the X axis",
+        default=False
+    )
+
+    bpy.types.Scene.rotate_y = bpy.props.BoolProperty(
+        name='Y',
+        description = "This checkbox allows the rotation of the object in the Y axis",
+        default=False
+    )
+
+    bpy.types.Scene.rotate_z = bpy.props.BoolProperty(
+        name='Z',
+        description = "This checkbox allows the rotation of the object in the Z axis",
+        default=False
+    )
+
+    # Item rotation steps
+    bpy.types.Scene.rot_steps_x = bpy.props.FloatProperty(
+        name='X',
+        description = "Sets rotation steps in the X axis",
+        default=0,
+        min = 0.0,
+        max = 360.0,
+    )
+    
+    bpy.types.Scene.rot_steps_y = bpy.props.FloatProperty(
+        name='Y',
+        description = "Sets rotation steps in the Y axis",
+        default=0,
+        min = 0.0,
+        max = 360.0,
+    )
+
+    bpy.types.Scene.rot_steps_z = bpy.props.FloatProperty(
+        name='Z',
+        description = "Sets rotation steps in the Z axis",
+        default=0,
+        min = 0.0,
+        max = 360.0,
+    )
+
+    # Item distance to other objects
+    bpy.types.Scene.item_distance = bpy.props.FloatProperty(
+        name='Item Distance',
+        description = "Sets minumum distance of the asset to any other object in the scene while placing it",
+        default=0,
+        min = 0.0,
+        max = 100.0,
+    )
+
     bpy.types.Scene.algorithm_enum = bpy.props.EnumProperty(
         name = "Algorithms",
         description = "Select an option",
