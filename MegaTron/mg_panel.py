@@ -32,7 +32,10 @@ class Main_PT_Panel(bpy.types.Panel):
         box3.label(text="Distribution Parameters")
 
         box3.column().prop(context.scene, "algorithm_enum")
-        box3.column().prop(context.scene, "threshold")
+        
+        if (context.scene.algorithm_enum == "OP1"):
+            box3.column().prop(context.scene, "threshold")
+            
         box3.column().prop(context.scene, "num_assets")
         box3.column().prop(context.scene, "collectName")
 

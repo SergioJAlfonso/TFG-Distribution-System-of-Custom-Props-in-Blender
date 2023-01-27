@@ -70,7 +70,7 @@ class MegaTron_OT_Operator(bpy.types.Operator):
         item = defineItem(context, asset)
 
         data_tridimensional = getVerticesData(target)
-        #print('Algorithm:', context.scene.algorithm_enum)
+        print('Algorithm:', context.scene.algorithm_enum)
 
         vertices = filterVerticesByWeightThreshold(data_tridimensional, threshold_weight)
         #Initial state as all possible vertices to place an asset
