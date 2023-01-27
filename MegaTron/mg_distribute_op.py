@@ -1,7 +1,10 @@
 import bpy 
+
+from .ItemClasses.ItemAttributes import *
 from .ItemClasses.Item import *
 from .ItemClasses.SolutionItem import *
 from .ItemClasses.DefaultAttributes.FurnitureAttribs import *
+
 from .utilsMT.draw_utils import *
 from .utilsMT.addon_utils import *
 from .heuristicsMT.ThresholdRandDistribution import *

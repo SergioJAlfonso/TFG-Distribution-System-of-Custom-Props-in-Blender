@@ -1,5 +1,4 @@
-from ItemAttributes import *
-
+from ..ItemAttributes import *
 class FurnitureAttribs(ItemAttributes):
     def __init__(self):
         self.rotations = [0,0,1]
