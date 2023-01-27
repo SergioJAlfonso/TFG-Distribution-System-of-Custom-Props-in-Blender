@@ -35,7 +35,7 @@ class Main_PT_Panel(bpy.types.Panel):
         
         if (context.scene.algorithm_enum == "OP1"):
             box3.column().prop(context.scene, "threshold")
-            
+
         box3.column().prop(context.scene, "num_assets")
         box3.column().prop(context.scene, "collectName")
 
@@ -56,13 +56,20 @@ class Main_PT_Panel(bpy.types.Panel):
         rotation_row.prop(context.scene, "rotate_z")
 
         rotation_step_row = rotationBox.row()
-
         rotation_step_row.alignment = "CENTER"
 
-        rotation_step_row.label(text="Steps:")
-        rotation_step_row.prop(context.scene, "rot_steps_x")
-        rotation_step_row.prop(context.scene, "rot_steps_y")
-        rotation_step_row.prop(context.scene, "rot_steps_z")
+
+        if(context.scene.rotate_x or context.scene.rotate_y or context.scene.rotate_z):
+            rotation_step_row.label(text="Steps:")
+
+        if(context.scene.rotate_x):
+         rotation_step_row.prop(context.scene, "rot_steps_x")
+
+        if(context.scene.rotate_y):
+            rotation_step_row.prop(context.scene, "rot_steps_y")
+        
+        if(context.scene.rotate_z):
+            rotation_step_row.prop(context.scene, "rot_steps_z")
 
         box2.row().prop(context.scene, "item_distance")
 
@@ -71,7 +78,9 @@ class Main_PT_Panel(bpy.types.Panel):
         box.label(text="Subdivision")
 
         box.row().prop(context.scene, "subdivide")
-        box.row().prop(context.scene, "num_cuts")
+
+        if(context.scene.subdivide):
+            box.row().prop(context.scene, "num_cuts")
        
         # placeholder = context.scene.placeholder
         # col.prop(placeholder, "inc_dec_int", text="Asset Instances")
