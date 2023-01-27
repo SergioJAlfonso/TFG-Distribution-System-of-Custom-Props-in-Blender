@@ -87,17 +87,17 @@ class MegaTron_OT_Operator(bpy.types.Operator):
         
         sol = aimaBFTS(distribution).solution()
 
+        objectsData = []
+        for i in range(len(sol)):
+            objectsData.append([vertices[i][0], vertices[i][1]])
 
-        m = 0 + 3
-
-        print(m)
         # sol = distribution.distribute(data_tridimensional, asset_bounding_box_local, 
         #                               num_instances, threshold_weight)
         
-        # createObjectsInPoints(sol, asset, asset_bounding_box_local, collection, target)
+        createObjectsInPoints(objectsData, asset, asset_bounding_box_local, collection, target)
         
-        # if (context.scene.subdivide):
-        #     bpy.data.meshes.remove(target.data)
+        if (context.scene.subdivide):
+            bpy.data.meshes.remove(target.data)
 
         return {'FINISHED'}
 
