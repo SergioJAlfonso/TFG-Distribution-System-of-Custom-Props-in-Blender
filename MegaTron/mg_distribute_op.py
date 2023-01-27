@@ -81,7 +81,10 @@ class MegaTron_OT_Operator(bpy.types.Operator):
         
         initialState = StateGrid(vertices, 0)
         #Potential final state 
-        goalState = StateGrid(None, num_instances)
+
+        num_assets = min(num_instances, len(vertices))
+
+        goalState = StateGrid(None, num_assets)
         initialState.objectsPlaced_
         distribution = ThresholdRandDistribution(initialState, goalState)
         
@@ -89,7 +92,8 @@ class MegaTron_OT_Operator(bpy.types.Operator):
 
         objectsData = []
         for i in range(len(sol)):
-            objectsData.append([vertices[i][0], vertices[i][1]])
+            indexVertex = sol[i]
+            objectsData.append([vertices[indexVertex][0], vertices[indexVertex][1]])
 
         # sol = distribution.distribute(data_tridimensional, asset_bounding_box_local, 
         #                               num_instances, threshold_weight)
