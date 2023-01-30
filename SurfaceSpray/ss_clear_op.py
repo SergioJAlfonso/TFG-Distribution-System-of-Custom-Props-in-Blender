@@ -1,5 +1,5 @@
 import bpy 
-from .utilsMT.addon_utils import *
+from .utilsSS.addon_utils import *
 
 class Clear_OT_Operator(bpy.types.Operator):
     bl_idname = "addon.clear"

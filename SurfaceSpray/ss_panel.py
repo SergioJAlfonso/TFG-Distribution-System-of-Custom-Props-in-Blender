@@ -8,7 +8,7 @@ bpy.types.Scene.asset = bpy.props.PointerProperty(type=bpy.types.Object)
 class Main_PT_Panel(bpy.types.Panel):
     bl_idname = "Main_PT_Panel"
     bl_label = "Object To Distribute"
-    bl_category = "MegaTron"
+    bl_category = "SurfaceSpray"
     bl_description = "Entry Data Objects"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
@@ -88,7 +88,7 @@ class Main_PT_Panel(bpy.types.Panel):
 class Groups_PT_Panel(bpy.types.Panel):
     bl_idname = "Groups_PT_Panel"
     bl_label = "Object Distribution"
-    bl_category = "MegaTron"
+    bl_category = "SurfaceSpray"
     bl_description = "Groups"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"

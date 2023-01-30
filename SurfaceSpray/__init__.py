@@ -12,7 +12,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 bl_info = {
-    "name" : "MegaTron",
+    "name" : "SurfaceSpray",
     "author" : "Jose Daniel Rave Robayo, Daniel illanes Morillas, Sergio José Alfonso Rojas",
     "description" : " ",
     "blender" : (3, 3, 0),
@@ -26,11 +26,11 @@ bl_info = {
 from gc import get_threshold
 import bpy
 
-from .mg_clear_op import Clear_OT_Operator
-from .mg_distribute_op import MegaTron_OT_Operator
-from.mg_panel import Main_PT_Panel
-from.mg_panel import Groups_PT_Panel
-classes = ( Main_PT_Panel,Groups_PT_Panel, MegaTron_OT_Operator, Clear_OT_Operator )
+from .ss_clear_op import Clear_OT_Operator
+from .ss_distribute_op import SurfaceSpray_OT_Operator
+from.ss_panel import Main_PT_Panel
+from.ss_panel import Groups_PT_Panel
+classes = ( Main_PT_Panel,Groups_PT_Panel, SurfaceSpray_OT_Operator, Clear_OT_Operator )
 
 import sys, os, site
 

@@ -5,11 +5,11 @@ from .ItemClasses.Item import *
 from .ItemClasses.SolutionItem import *
 from .ItemClasses.DefaultAttributes.FurnitureAttribs import *
 
-from .utilsMT.draw_utils import *
-from .utilsMT.addon_utils import *
-from .heuristicsMT.ThresholdRandDistribution import *
-from .utilsMT.addon_utils import *
-from .utilsMT.StateGrid import *
+from .utilsSS.draw_utils import *
+from .utilsSS.addon_utils import *
+from .heuristicsSS.ThresholdRandDistribution import *
+from .utilsSS.addon_utils import *
+from .utilsSS.StateGrid import *
 
 from aima3.search import astar_search as aimaAStar
 from aima3.search import breadth_first_tree_search as aimaBFTS
@@ -19,9 +19,9 @@ class ALG(Enum):
     BACKTRACKING = 2
     BEST_FIST_SEARCH = 3
 
-class MegaTron_OT_Operator(bpy.types.Operator):
+class SurfaceSpray_OT_Operator(bpy.types.Operator):
     bl_idname = "addon.distribute"
-    bl_label = "Simple operator"
+    bl_label = "Distribute Operator"
     bl_description = "Distribute object over a surface"
 
     #crear diferentes grupos de vertices para cada objeto a distribuir
