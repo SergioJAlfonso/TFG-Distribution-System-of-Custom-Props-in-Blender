@@ -17,27 +17,32 @@ class ThresholdRandDistribution(aimaProblem):
         super().__init__(initial, goal)
     
     def actions(self, state):
-        #Duelve una lista de accion posibles en el estado dado -> podemos poner en un sitio, pero que tipo de poner hay?
         """
         Defines possible vertices in current state.
 
         Returns an array of indices, indicating which indices you can place an object on. 
         """
         possibleActions = [] 
-        #Pasos 
 
         sizeV = len(state.vertices_)
 
-        #Iterar por cada vertice del estado comprobando si en dicho vertice ya tiene un objcto posicionado, de lo contrario
-        #se considerara como una accion posible, es decir, que se puede poner un objeto (objectPlaced = True) en dicho indice del array de vertices
+        #Iterate over each state vertex checking if this vertex has a object on it, otherwise 
+        # it'll be considered as an action. (An object can be placed on it) 
+        # remaining = self.goal.objectsPlaced_ - state.objectsPlaced_
+        remaining = 1
         
-        #Iterate over each state vertex checking if this vertex has a object on it, otherwise it'll be considered as an action. (An object can be placed on it) 
-        for i in range(sizeV):
-            if(state.vertices_[i][2] == False):
+        while(remaining > 0):
+            i = random.randrange(0, sizeV)
+            if(state.vertices_[i][2] == False and (i in possibleActions) == False ):
+                remaining -= 1
                 possibleActions.append(i)
+        
+        # for i in range(sizeV):
+        #     if(state.vertices_[i][2] == False):
+        #         possibleActions.append(i)
 
         #Randomize so the solution is not always the same
-        random.shuffle(possibleActions)
+        # random.shuffle(possibleActions)
         return possibleActions
 
     def result(self, state, action):
