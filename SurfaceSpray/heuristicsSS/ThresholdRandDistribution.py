@@ -2,6 +2,7 @@ import random
 import copy
 from enum import Enum
 
+from ..utilsSS.Actions import *
 from aima3.search import Problem as aimaProblem
 
 """
@@ -10,7 +11,6 @@ Parametros de distancia entre objetos aunque no se toquen...
 
 
 class ThresholdRandDistribution(aimaProblem):
-    algorithm = None
 
     # TODO: calcular goal 
     def __init__(self, initial, goal=None):
@@ -33,9 +33,16 @@ class ThresholdRandDistribution(aimaProblem):
         
         while(remaining > 0):
             i = random.randrange(0, sizeV)
-            if(state.vertices_[i][2] == False and (i in possibleActions) == False ):
-                remaining -= 1
-                possibleActions.append(i)
+            if(state.vertices_[i][2] == False):
+                j = 0
+                print("indexing")
+                while ( j < len(possibleActions) and (possibleActions[j].indexVertex != i)):
+                    j+= 1
+
+                if(j < len(possibleActions) or len(possibleActions) == 0 ):
+                    remaining -= 1
+                    action = Actions(i, -1)
+                    possibleActions.append(action)
         
         # for i in range(sizeV):
         #     if(state.vertices_[i][2] == False):
@@ -50,7 +57,7 @@ class ThresholdRandDistribution(aimaProblem):
         Returns a new state in which an action has been applied.
         """
         newState = copy.deepcopy(state)
-        newState.vertices_[action][2] = True
+        newState.vertices_[action.indexVertex][2] = True
         newState.objectsPlaced_ += 1
         return newState
 
