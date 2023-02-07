@@ -33,6 +33,8 @@ class ThresholdRandDistribution(aimaProblem):
         pCandidate = state.vertices_[indexVertex][0]
         i = 0
         satisfiesMinDistance = True
+        #Como saber que no se puede satifacer dicha restriccion en ningun caso? Hay que notificarlo
+        #Posibilidad de medir vertices? Taria chulo
         while (i < len(state.actionsApplied_) and satisfiesMinDistance == True):
             #Access vertices that has an object on it. 
             indexVertex = state.actionsApplied_[i].indexVertex
@@ -40,7 +42,7 @@ class ThresholdRandDistribution(aimaProblem):
             #Calculates distance between 2 tridimensional points.
             distance = math.sqrt((vertexInUse[0]-pCandidate[0])**2 + (vertexInUse[1]-pCandidate[1])**2 + (vertexInUse[2]-pCandidate[2])**2)
             #Compares if distance is lesser or equals to minimum distance.
-            satisfiesMinDistance = distance <= self.rules.distance_between_items
+            satisfiesMinDistance = distance >= self.rules.distance_between_items
 
             i+= 1
 

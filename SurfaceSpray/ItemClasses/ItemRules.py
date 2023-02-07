@@ -26,4 +26,4 @@ class ItemRules:
         
     
     def set_ItemDistance(self, distance):
-        self.distance_offset = distance
+        self.distance_between_items = distance
