@@ -1,4 +1,4 @@
-from ..utilsMT.random_queue import *
+from utilsSS.random_queue import *
 import random
 import math
 
