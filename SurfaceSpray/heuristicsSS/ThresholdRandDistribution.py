@@ -1,5 +1,7 @@
 import random
 import copy
+import math
+
 from enum import Enum
 
 from ..utilsSS.Actions import *
@@ -18,15 +20,38 @@ class ThresholdRandDistribution(aimaProblem):
         self.rules = rules_
 
     def checkRestrictions(self, state, indexVertex):
-        availableVertex = state.vertices_[indexVertex][2] == False
+        """
+        Checks all restrictions by rules.
 
-        return availableVertex
+        state.vertices : array (1, 3) -> [position(vector), normal(vector), vertexUsed(boolean)] 
+
+        Returns if all have passed. 
+        """
+        availableVertex = (state.vertices_[indexVertex][2] == False)
+
+        #Vertex we potentially want to place an object on it.
+        pCandidate = state.vertices_[indexVertex][0]
+        i = 0
+        satisfiesMinDistance = True
+        while (i < len(state.actionsApplied_) and satisfiesMinDistance == True):
+            #Access vertices that has an object on it. 
+            indexVertex = state.actionsApplied_[i].indexVertex
+            vertexInUse = state.vertices_[indexVertex][0]
+            #Calculates distance between 2 tridimensional points.
+            distance = math.sqrt((vertexInUse[0]-pCandidate[0])**2 + (vertexInUse[1]-pCandidate[1])**2 + (vertexInUse[2]-pCandidate[2])**2)
+            #Compares if distance is lesser or equals to minimum distance.
+            satisfiesMinDistance = distance <= self.rules.distance_between_items
+
+            i+= 1
+
+        return availableVertex and satisfiesMinDistance
     
     def actions(self, state):
         """
         Defines possible vertices in current state.
 
         state.vertices : array (1, 3) -> [position(vector), normal(vector), vertexUsed(boolean)] 
+
         Returns an array of indices, indicating which indices you can place an object on. 
         """
         possibleActions = [] 
@@ -51,12 +76,6 @@ class ThresholdRandDistribution(aimaProblem):
                     action = Actions(i, -1)
                     possibleActions.append(action)
         
-        # for i in range(sizeV):
-        #     if(state.vertices_[i][2] == False):
-        #         possibleActions.append(i)
-
-        #Randomize so the solution is not always the same
-        # random.shuffle(possibleActions)
         return possibleActions
 
     def result(self, state, action):
@@ -66,6 +85,7 @@ class ThresholdRandDistribution(aimaProblem):
         newState = copy.deepcopy(state)
         newState.vertices_[action.indexVertex][2] = True
         newState.objectsPlaced_ += 1
+        newState.actionsApplied_.append(action)
         return newState
 
     def goal_test(self, state):
