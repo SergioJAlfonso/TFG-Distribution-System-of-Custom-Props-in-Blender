@@ -85,8 +85,8 @@ def filterVerticesByWeightThreshold(vertices, weightThreshold):
 
 def initCollection(collection, nameCollection):
     """ 
-    If collection with given name exits, would be cleaned of objects.
-    Else,would be created from zero.
+    If collection with given name exists, it's cleaned of objects.
+    Else, it's created from zero.
 
     Returns:
     Collection initialized
