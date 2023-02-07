@@ -82,7 +82,12 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
 
         goalState = StateGrid(None, num_assets)
         # initialState.objectsPlaced_
-        distribution = ThresholdRandDistribution(initialState, goalState)
+
+        rules = ItemRules()
+
+        rules.set_ItemDistance(context.scene.item_distance)
+
+        distribution = ThresholdRandDistribution(rules, initialState, goalState)
         
         actionsSol = aimaBFTS(distribution).solution()
 

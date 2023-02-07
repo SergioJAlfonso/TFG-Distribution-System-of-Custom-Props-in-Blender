@@ -24,3 +24,6 @@ class ItemRules:
         # Number of appearences for an item in the scene
         # -1 for any
         # self.max_repetitions = -1
+    
+    def set_ItemDistance(self, distance):
+        self.distance_offset = distance

@@ -13,13 +13,20 @@ Parametros de distancia entre objetos aunque no se toquen...
 class ThresholdRandDistribution(aimaProblem):
 
     # TODO: calcular goal 
-    def __init__(self, initial, goal=None):
+    def __init__(self, rules_, initial, goal=None, ):
         super().__init__(initial, goal)
+        self.rules = rules_
+
+    def checkRestrictions(self, state, indexVertex):
+        availableVertex = state.vertices_[indexVertex][2] == False
+
+        return availableVertex
     
     def actions(self, state):
         """
         Defines possible vertices in current state.
 
+        state.vertices : array (1, 3) -> [position(vector), normal(vector), vertexUsed(boolean)] 
         Returns an array of indices, indicating which indices you can place an object on. 
         """
         possibleActions = [] 
@@ -33,9 +40,9 @@ class ThresholdRandDistribution(aimaProblem):
         
         while(remaining > 0):
             i = random.randrange(0, sizeV)
-            if(state.vertices_[i][2] == False):
+            # distanciaValida = 
+            if(self.checkRestrictions(state, i) == True):
                 j = 0
-                print("indexing")
                 while ( j < len(possibleActions) and (possibleActions[j].indexVertex != i)):
                     j+= 1
 
