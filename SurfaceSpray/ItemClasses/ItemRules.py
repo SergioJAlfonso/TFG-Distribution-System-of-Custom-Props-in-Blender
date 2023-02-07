@@ -6,8 +6,9 @@ class ItemRules:
         # Whether an item can rotate or not in a give axis
         self.rotations = [1,1,1]
 
-        # Range of rotations
+        # Rotation Range
         # x (n ~ m), y (n ~ m), z (n ~ m)
+        self.rotation_range = [180.0, 180.0, 180.0]
 
         # Rotation steps
         self.rotation_steps = [0.,0.,0.]
@@ -15,12 +16,11 @@ class ItemRules:
         # Distance offset
         self.distance_between_items = 0 
 
-        # Item can overlap with another item
-        self.overlap = False
-
         # Close offset
         #self.object_offset = 0
 
-        # Number of appearences for an item in the scene
-        # -1 for any
-        # self.max_repetitions = -1
+        # Item can overlap with another item
+        self.overlap = False
+
+        # TODO: Distance percentage to the center of the target
+        
