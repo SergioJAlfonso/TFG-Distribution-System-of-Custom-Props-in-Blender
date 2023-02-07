@@ -24,3 +24,6 @@ class ItemRules:
 
         # TODO: Distance percentage to the center of the target
         
+    
+    def set_ItemDistance(self, distance):
+        self.distance_offset = distance
