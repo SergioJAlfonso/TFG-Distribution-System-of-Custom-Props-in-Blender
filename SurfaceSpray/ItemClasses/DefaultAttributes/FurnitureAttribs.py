@@ -1,5 +1,5 @@
-from ..ItemAttributes import *
-class FurnitureAttribs(ItemAttributes):
+from ..ItemRules import *
+class FurnitureAttribs(ItemRules):
     def __init__(self):
         self.rotations = [0,0,1]
         self.distance_offset = 0

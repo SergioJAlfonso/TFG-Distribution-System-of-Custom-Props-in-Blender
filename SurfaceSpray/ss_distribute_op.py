@@ -1,6 +1,6 @@
 import bpy 
 
-from .ItemClasses.ItemAttributes import *
+from .ItemClasses.ItemRules import *
 from .ItemClasses.Item import *
 from .ItemClasses.SolutionItem import *
 from .ItemClasses.DefaultAttributes.FurnitureAttribs import *
@@ -153,7 +153,7 @@ def defineItem(context, asset):
 
     item_distance = context.scene.item_distance
 
-    attribs = ItemAttributes()
+    attribs = ItemRules()
 
     attribs.rotations = {rotation_x, rotation_y, rotation_z}
     attribs.rotation_steps = {rotation_steps_x, rotation_steps_y, rotation_steps_z}

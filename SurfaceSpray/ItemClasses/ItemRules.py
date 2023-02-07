@@ -1,6 +1,6 @@
 # Simple class that defines the characteristics and restrictions of an Item
 
-class ItemAttributes:
+class ItemRules:
     def __init__(self):
         # Rotation axis 
         # Whether an item can rotate or not in a give axis
