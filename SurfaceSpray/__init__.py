@@ -130,11 +130,17 @@ def register():
 
     # Item distance to other objects
     bpy.types.Scene.item_distance = bpy.props.FloatProperty(
-        name='Item Distance',
+        name='Min Distance Between Assets',
         description = "Sets minumum distance of the asset to any other object in the scene while placing it",
         default=0,
         min = 0.0,
         max = 100.0,
+    )
+
+    bpy.types.Scene.overlap_bool = bpy.props.BoolProperty(
+        name='Allow Overlap',
+        description = "This checkbox allows the assets to overlap with each other",
+        default=False
     )
 
     bpy.types.Scene.algorithm_enum = bpy.props.EnumProperty(

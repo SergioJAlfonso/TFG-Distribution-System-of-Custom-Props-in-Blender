@@ -13,7 +13,10 @@ class ItemRules:
         self.rotation_steps = [0.,0.,0.]
 
         # Distance offset
-        self.distance_offset = 0 
+        self.distance_between_items = 0 
+
+        # Item can overlap with another item
+        self.overlap = False
 
         # Close offset
         #self.object_offset = 0

@@ -20,13 +20,15 @@ class MAIN_PT_Panel(bpy.types.Panel):
         row = layout.row()
         col = layout.column()
 
+        # Target and asset prop search
         col.prop_search(context.scene, "asset", context.scene, "objects", text="Asset")
         col.prop_search(context.scene, "target", context.scene, "objects", text="Target Object")
         
+        # Add-on distribute buttons
         row.operator('addon.distribute', text = "Distribute")
         row.operator('addon.clear', text = "Clear")
 
-
+        # Distribution Parameters box
         box3 = layout.box()
 
         box3.label(text="Distribution Parameters")
@@ -39,10 +41,10 @@ class MAIN_PT_Panel(bpy.types.Panel):
         box3.column().prop(context.scene, "num_assets")
         box3.column().prop(context.scene, "collectName")
 
-
+        # Item Rules box
         box2 = layout.box()
 
-        box2.label(text="Item Attributes")
+        box2.label(text="Item Rules")
 
         rotationBox = box2.box()
 
@@ -50,6 +52,7 @@ class MAIN_PT_Panel(bpy.types.Panel):
 
         rotation_row.alignment = "CENTER"
 
+        # Rotation
         rotation_row.label(text="Allow Rotation:")
         rotation_row.prop(context.scene, "rotate_x")
         rotation_row.prop(context.scene, "rotate_y")
@@ -71,8 +74,13 @@ class MAIN_PT_Panel(bpy.types.Panel):
         if(context.scene.rotate_z):
             rotation_step_row.prop(context.scene, "rot_steps_z")
 
+        # Distance
         box2.row().prop(context.scene, "item_distance")
 
+        # Overlap
+        box2.row().prop(context.scene, "overlap_bool")
+
+        # Subdivision box
         box = layout.box()
 
         box.label(text="Subdivision")
