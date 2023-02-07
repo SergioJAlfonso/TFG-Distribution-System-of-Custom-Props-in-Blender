@@ -28,9 +28,9 @@ import bpy
 
 from .ss_clear_op import Clear_OT_Operator
 from .ss_distribute_op import SurfaceSpray_OT_Operator
-from.ss_panel import Main_PT_Panel
-from.ss_panel import Groups_PT_Panel
-classes = ( Main_PT_Panel,Groups_PT_Panel, SurfaceSpray_OT_Operator, Clear_OT_Operator )
+from.ss_panel import MAIN_PT_Panel
+from.ss_panel import GROUPS_PT_Panel
+classes = ( MAIN_PT_Panel,GROUPS_PT_Panel, SurfaceSpray_OT_Operator, Clear_OT_Operator )
 
 import sys, os, site
 

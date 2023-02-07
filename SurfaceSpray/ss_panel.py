@@ -5,7 +5,7 @@ bpy.types.Scene.target = bpy.props.PointerProperty(type=bpy.types.Object)
 bpy.types.Scene.asset = bpy.props.PointerProperty(type=bpy.types.Object)
 
         #_PT_Panel ->Convention
-class Main_PT_Panel(bpy.types.Panel):
+class MAIN_PT_Panel(bpy.types.Panel):
     bl_idname = "Main_PT_Panel"
     bl_label = "Object To Distribute"
     bl_category = "SurfaceSpray"
@@ -85,7 +85,7 @@ class Main_PT_Panel(bpy.types.Panel):
         # placeholder = context.scene.placeholder
         # col.prop(placeholder, "inc_dec_int", text="Asset Instances")
 
-class Groups_PT_Panel(bpy.types.Panel):
+class GROUPS_PT_Panel(bpy.types.Panel):
     bl_idname = "Groups_PT_Panel"
     bl_label = "Object Distribution"
     bl_category = "SurfaceSpray"

@@ -81,14 +81,14 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         num_assets = min(num_instances, len(vertices))
 
         goalState = StateGrid(None, num_assets)
-        initialState.objectsPlaced_
+        # initialState.objectsPlaced_
         distribution = ThresholdRandDistribution(initialState, goalState)
         
-        sol = aimaBFTS(distribution).solution()
+        actionsSol = aimaBFTS(distribution).solution()
 
         objectsData = []
-        for i in range(len(sol)):
-            indexVertex = sol[i]
+        for i in range(len(actionsSol)):
+            indexVertex = actionsSol[i].indexVertex
             objectsData.append([vertices[indexVertex][0], vertices[indexVertex][1]])
 
         # sol = distribution.distribute(data_tridimensional, asset_bounding_box_local, 
