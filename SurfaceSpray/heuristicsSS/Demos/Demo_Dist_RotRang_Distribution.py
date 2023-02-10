@@ -98,9 +98,16 @@ class Demo_Over_Dist_RotRang_Distribution(aimaProblem):
         step_y = (int) (self.rules.rotation_steps[1] * precision)
         step_z = (int) (self.rules.rotation_steps[2] * precision)
 
-        rot_x = random.randrange(0, rang_x, step_x)
-        rot_y = random.randrange(0, rang_y, step_y)
-        rot_z = random.randrange(0, rang_z, step_z)
+        rot_x = 0
+        rot_y = 0
+        rot_z = 0
+
+        if(step_x != 0):
+            rot_x = random.randrange(0, rang_x, step_x)
+        if(step_y != 0):
+            rot_y = random.randrange(0, rang_y, step_y)
+        if(step_z != 0):
+            rot_z = random.randrange(0, rang_z, step_z)
 
         return (rot_x/precision, rot_y/precision, rot_z/precision)
 
