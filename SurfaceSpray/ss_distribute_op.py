@@ -16,6 +16,7 @@ from .utilsSS.StateGrid import *
 
 from aima3.search import astar_search as aimaAStar
 from aima3.search import breadth_first_tree_search as aimaBFTS
+from aima3.search import depth_first_tree_search as aimaDFTS
 
 class ALG(Enum):
     A_STAR = 1
