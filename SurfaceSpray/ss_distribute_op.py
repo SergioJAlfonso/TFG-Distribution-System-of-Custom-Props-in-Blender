@@ -10,6 +10,7 @@ from .ItemClasses.DefaultAttributes.FurnitureAttribs import *
 from .utilsSS.draw_utils import *
 from .utilsSS.addon_utils import *
 from .heuristicsSS.ThresholdRandDistribution import *
+from .heuristicsSS.Demos.Demo_Dist_RotRang_Distribution import *
 from .utilsSS.addon_utils import *
 from .utilsSS.StateGrid import *
 
@@ -85,14 +86,15 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         # Establishes rules for the assets in order to place them correctly
         rules = setPanelItemRules(context)
 
-        distribution = ThresholdRandDistribution(rules, initialState, goalState)
+        distribution = Demo_Over_Dist_RotRang_Distribution(rules, initialState, goalState)
         
         actionsSol = aimaBFTS(distribution).solution()
 
         objectsData = []
         for i in range(len(actionsSol)):
             indexVertex = actionsSol[i].indexVertex
-            objectsData.append([vertices[indexVertex][0], vertices[indexVertex][1]])
+            objRotation = actionsSol[i].rotation
+            objectsData.append([vertices[indexVertex][0], vertices[indexVertex][1], objRotation])
 
         # sol = distribution.distribute(data_tridimensional, asset_bounding_box_local, 
         #                               num_instances, threshold_weight, )
@@ -129,7 +131,7 @@ def createObjectsInPoints(points, object, boundingBoxObject, collection, target)
         #Set location relative to size
         adjustPosition(newObj, boundingBoxObject, points[i][1])
 
-        newObj.rotation_euler = Euler(points[i], 'XYZ')
+        newObj.rotation_euler = Euler(points[i][2], 'XYZ')
 
         #Unlink from all collections and link in desired collection
         if(inCollection == False):
@@ -154,7 +156,7 @@ def setPanelItemRules(context):
     rotation_y = context.scene.rotate_y
     rotation_z = context.scene.rotate_z
 
-    rotation_range_x = context.scene.rot_srange_x
+    rotation_range_x = context.scene.rot_range_x
     rotation_range_y = context.scene.rot_range_y
     rotation_range_z = context.scene.rot_range_z
 
@@ -169,9 +171,9 @@ def setPanelItemRules(context):
     #Set Item rules
     rules = ItemRules()
 
-    rules.rotations = {rotation_x, rotation_y, rotation_z}
-    rules.rotation_range = {rotation_range_x, rotation_range_y, rotation_range_z}
-    rules.rotation_steps = {rotation_steps_x, rotation_steps_y, rotation_steps_z}
+    rules.rotations = [rotation_x, rotation_y, rotation_z]
+    rules.rotation_range = [rotation_range_x, rotation_range_y, rotation_range_z]
+    rules.rotation_steps = [rotation_steps_x, rotation_steps_y, rotation_steps_z]
     rules.overlap = can_overlap
     rules.distance_between_items = item_distance
 
