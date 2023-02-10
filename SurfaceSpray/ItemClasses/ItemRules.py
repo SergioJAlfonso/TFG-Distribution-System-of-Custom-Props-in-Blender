@@ -4,7 +4,7 @@ class ItemRules:
     def __init__(self):
         # Rotation axis 
         # Whether an item can rotate or not in a give axis
-        self.rotations = [1,1,1]
+        self.rotations = [0,0,0]
 
         # Rotation Range
         # x (n ~ m), y (n ~ m), z (n ~ m)
@@ -24,6 +24,3 @@ class ItemRules:
 
         # TODO: Distance percentage to the center of the target
         
-    
-    def set_ItemDistance(self, distance):
-        self.distance_between_items = distance

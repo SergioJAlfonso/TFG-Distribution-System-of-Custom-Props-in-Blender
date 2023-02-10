@@ -107,25 +107,25 @@ def register():
     bpy.types.Scene.rot_range_x = bpy.props.FloatProperty(
         name='X',
         description = "Sets rotation range in the X axis",
-        default=0,
+        default=180.0,
         min = 0.0,
-        max = 360.0,
+        max = 180.0,
     )
     
     bpy.types.Scene.rot_range_y = bpy.props.FloatProperty(
         name='Y',
         description = "Sets rotation range in the Y axis",
-        default=0,
+        default=180.0,
         min = 0.0,
-        max = 360.0,
+        max = 180.0,
     )
 
     bpy.types.Scene.rot_range_z = bpy.props.FloatProperty(
         name='Z',
         description = "Sets rotation range in the Z axis",
-        default=0,
+        default=180.0,
         min = 0.0,
-        max = 360.0,
+        max = 180.0,
     )
 
     # Item rotation steps

@@ -66,9 +66,6 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         if (context.scene.subdivide):
             makeSubdivision(target, asset_bounding_box_local, target_bounding_box_local, numCutsSubdivision)
 
-        # Establishes rules for the assets in order to place them correctly
-        item = defineItem(context, asset)
-
         data_tridimensional = getVerticesData(target)
         print('Algorithm:', context.scene.algorithm_enum)
 
@@ -83,9 +80,8 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         goalState = StateGrid(None, num_assets)
         # initialState.objectsPlaced_
 
-        rules = ItemRules()
-
-        rules.set_ItemDistance(context.scene.item_distance)
+        # Establishes rules for the assets in order to place them correctly
+        rules = setPanelItemRules(context)
 
         distribution = ThresholdRandDistribution(rules, initialState, goalState)
         
@@ -146,22 +142,32 @@ def adjustPosition(object, boundingBoxObject, normal):
     for i in range(3):
         object.location[i] += abs(boundingBoxObject[0][i])* normal[i]
 
-def defineItem(context, asset):
-    #Item attributes
+def setPanelItemRules(context):
+    
+    # get item rules from panel
     rotation_x = context.scene.rotate_x
     rotation_y = context.scene.rotate_y
     rotation_z = context.scene.rotate_z
+
+    rotation_range_x = context.scene.rot_srange_x
+    rotation_range_y = context.scene.rot_range_y
+    rotation_range_z = context.scene.rot_range_z
 
     rotation_steps_x = context.scene.rot_steps_x
     rotation_steps_y = context.scene.rot_steps_y
     rotation_steps_z = context.scene.rot_steps_z
 
+    can_overlap = context.scene.overlap_bool
+
     item_distance = context.scene.item_distance
 
-    attribs = ItemRules()
+    #Set Item rules
+    rules = ItemRules()
 
-    attribs.rotations = {rotation_x, rotation_y, rotation_z}
-    attribs.rotation_steps = {rotation_steps_x, rotation_steps_y, rotation_steps_z}
-    attribs.distance_offset = item_distance
+    rules.rotations = {rotation_x, rotation_y, rotation_z}
+    rules.rotation_range = {rotation_range_x, rotation_range_y, rotation_range_z}
+    rules.rotation_steps = {rotation_steps_x, rotation_steps_y, rotation_steps_z}
+    rules.overlap = can_overlap
+    rules.distance_between_items = item_distance
 
-    return Item("sample", asset, attribs)
+    return rules
