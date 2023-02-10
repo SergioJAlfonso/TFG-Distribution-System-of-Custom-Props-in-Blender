@@ -102,12 +102,12 @@ class Demo_Over_Dist_RotRang_Distribution(aimaProblem):
         rot_y = 0
         rot_z = 0
 
-        if(step_x != 0):
-            rot_x = random.randrange(0, rang_x, step_x)
-        if(step_y != 0):
-            rot_y = random.randrange(0, rang_y, step_y)
-        if(step_z != 0):
-            rot_z = random.randrange(0, rang_z, step_z)
+        if(self.rules.rotations[0] != 0):
+            rot_x = random.randrange(-rang_x, rang_x, step_x)
+        if(self.rules.rotations[1] != 0):
+            rot_y = random.randrange(-rang_y, rang_y, step_y)
+        if(self.rules.rotations[2] != 0):
+            rot_z = random.randrange(-rang_z, rang_z, step_z)
 
         return (rot_x/precision, rot_y/precision, rot_z/precision)
 
