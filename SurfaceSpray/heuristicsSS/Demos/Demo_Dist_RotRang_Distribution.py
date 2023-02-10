@@ -75,7 +75,7 @@ class Demo_Over_Dist_RotRang_Distribution(aimaProblem):
 
                 if(j < len(possibleActions) or len(possibleActions) == 0 ):
                     remaining -= 1
-                    action = Actions(i, self.random_rotation())
+                    action = Actions(i, self.random_step_rotation())
                     possibleActions.append(action)
         
         return possibleActions
@@ -101,7 +101,7 @@ class Demo_Over_Dist_RotRang_Distribution(aimaProblem):
         rot_x = random.randrange(0, rang_x, step_x)
         rot_y = random.randrange(0, rang_y, step_y)
         rot_z = random.randrange(0, rang_z, step_z)
-        
+
         return (rot_x/precision, rot_y/precision, rot_z/precision)
 
     def result(self, state, action):
