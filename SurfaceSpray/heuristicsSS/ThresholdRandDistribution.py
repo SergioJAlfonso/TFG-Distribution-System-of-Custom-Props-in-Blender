@@ -1,6 +1,8 @@
 import random
 import copy
 import math
+import numpy as np
+
 
 from enum import Enum
 
@@ -14,10 +16,12 @@ Parametros de distancia entre objetos aunque no se toquen...
 
 class ThresholdRandDistribution(aimaProblem):
 
+
     # TODO: calcular goal 
     def __init__(self, rules_, initial, goal=None, ):
         super().__init__(initial, goal)
         self.rules = rules_
+        # self.noActionsLeft = False
 
     def checkRestrictions(self, state, indexVertex):
         """
@@ -64,12 +68,14 @@ class ThresholdRandDistribution(aimaProblem):
         # it'll be considered as an action. (An object can be placed on it) 
         # remaining = self.goal.objectsPlaced_ - state.objectsPlaced_
         remaining = 1
-        
-        while(remaining > 0):
-            i = random.randrange(0, sizeV)
-            # distanciaValida = 
+
+        randomIndices = random.sample(range(sizeV), sizeV)
+        j = 0
+        while(remaining > 0 and j < sizeV):
+            i = randomIndices[j]
             if(self.checkRestrictions(state, i) == True):
                 j = 0
+                #Check that is not a vertex that is already used 
                 while ( j < len(possibleActions) and (possibleActions[j].indexVertex != i)):
                     j+= 1
 
@@ -77,7 +83,12 @@ class ThresholdRandDistribution(aimaProblem):
                     remaining -= 1
                     action = Actions(i, -1)
                     possibleActions.append(action)
-        
+
+            j += 1
+
+        if len(possibleActions) == 0:
+            print('Could not find any vertex that satifies all rules.')
+
         return possibleActions
 
     def result(self, state, action):
