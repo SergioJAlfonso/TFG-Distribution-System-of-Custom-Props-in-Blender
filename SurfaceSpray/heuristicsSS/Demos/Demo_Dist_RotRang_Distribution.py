@@ -75,10 +75,17 @@ class Demo_Over_Dist_RotRang_Distribution(aimaProblem):
 
                 if(j < len(possibleActions) or len(possibleActions) == 0 ):
                     remaining -= 1
-                    action = Actions(i, -1)
+                    action = Actions(i, self.random_rotation())
                     possibleActions.append(action)
         
         return possibleActions
+
+
+    def random_rotation(self):
+        rot_x = random.randrange(0, self.rules.rotation_range[0])
+        rot_y = random.randrange(0, self.rules.rotation_range[1])
+        rot_z = random.randrange(0, self.rules.rotation_range[2])
+        return (rot_x, rot_y, rot_z)
 
     def result(self, state, action):
         """
