@@ -88,7 +88,15 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
 
         distribution = Demo_Over_Dist_RotRang_Distribution(rules, initialState, goalState)
         
-        actionsSol = aimaBFTS(distribution).solution()
+        nodeSol = aimaBFTS(distribution)
+
+        actionsSol = None
+        if nodeSol is not None:
+            actionsSol = nodeSol.solution()
+        else:
+            # bpy.context.window_manager.popup("Couldn't distribute objects!", title="Error", icon='ERROR')
+            self.report({'ERROR'}, "Couldn't distribute objects!")
+            return {'FINISHED'}
 
         objectsData = []
         for i in range(len(actionsSol)):
