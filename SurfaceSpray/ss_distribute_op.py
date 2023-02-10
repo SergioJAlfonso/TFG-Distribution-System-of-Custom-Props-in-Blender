@@ -1,8 +1,10 @@
 import bpy 
 
+from mathutils import Euler
+
 from .ItemClasses.ItemRules import *
 from .ItemClasses.Item import *
-from .ItemClasses.SolutionItem import *
+#from .ItemClasses.SolutionItem import *
 from .ItemClasses.DefaultAttributes.FurnitureAttribs import *
 
 from .utilsSS.draw_utils import *
@@ -126,6 +128,9 @@ def createObjectsInPoints(points, object, boundingBoxObject, collection, target)
         newObj.location = points[i][0]
         #Set location relative to size
         adjustPosition(newObj, boundingBoxObject, points[i][1])
+
+        newObj.rotation_euler = Euler(points[i], 'XYZ')
+
         #Unlink from all collections and link in desired collection
         if(inCollection == False):
             linkedCollection = newObj.users_collection
