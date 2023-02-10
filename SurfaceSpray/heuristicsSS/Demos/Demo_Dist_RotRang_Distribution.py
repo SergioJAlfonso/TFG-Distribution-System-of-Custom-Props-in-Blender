@@ -87,6 +87,23 @@ class Demo_Over_Dist_RotRang_Distribution(aimaProblem):
         rot_z = random.uniform(0, self.rules.rotation_range[2])
         return (rot_x, rot_y, rot_z)
 
+    def random_step_rotation(self):
+        precision = 100.0
+
+        rang_x = (int) (self.rules.rotation_range[0] * precision)
+        rang_y = (int) (self.rules.rotation_range[1] * precision)
+        rang_z = (int) (self.rules.rotation_range[2] * precision)
+
+        step_x = (int) (self.rules.rotation_steps[0] * precision)
+        step_y = (int) (self.rules.rotation_steps[1] * precision)
+        step_z = (int) (self.rules.rotation_steps[2] * precision)
+
+        rot_x = random.randrange(0, rang_x, step_x)
+        rot_y = random.randrange(0, rang_y, step_y)
+        rot_z = random.randrange(0, rang_z, step_z)
+        
+        return (rot_x/precision, rot_y/precision, rot_z/precision)
+
     def result(self, state, action):
         """
         Returns a new state in which an action has been applied.
