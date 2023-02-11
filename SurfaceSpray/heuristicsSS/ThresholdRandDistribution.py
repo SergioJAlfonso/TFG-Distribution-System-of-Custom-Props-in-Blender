@@ -18,10 +18,32 @@ class ThresholdRandDistribution(aimaProblem):
 
 
     # TODO: calcular goal 
-    def __init__(self, rules_, initial, goal=None, ):
+    def __init__(self, rules_, bbox, initial, goal=None, ):
         super().__init__(initial, goal)
         self.rules = rules_
         # self.noActionsLeft = False
+        self.bounding_box = bbox
+        #Bounding box magnitudes
+        self.half_bounding_size_x = (bbox[4][0] - bbox[0][0])/2.0
+        self.half_bounding_size_y = (bbox[2][1] - bbox[0][1])/2.0
+        self.half_bounding_size_z = (bbox[1][2] - bbox[0][2])/2.0
+
+    def boundingBoxOverlapping(self, verA, verB):
+        #Vertex B limits
+        max_B_X = verB[0] + self.half_bounding_size_x
+        min_B_X = verB[0] - self.half_bounding_size_x
+        max_B_Y = verB[1] + self.half_bounding_size_y
+        min_B_Y = verB[1] - self.half_bounding_size_y
+        max_B_Z = verB[2] + self.half_bounding_size_z
+        min_B_Z = verB[2] - self.half_bounding_size_z
+
+        #Overlap Condition
+        if(verA[0] >= min_B_X and verA[1] <= max_B_X and
+           verA[2] >= min_B_Y and verA[3] <= max_B_Y and
+           verA[4] >= min_B_Z and verA[5] <= max_B_Z):
+            return True
+        
+        return False
 
     def checkRestrictions(self, state, indexVertex):
         """
@@ -31,26 +53,44 @@ class ThresholdRandDistribution(aimaProblem):
 
         Returns if all have passed. 
         """
-        availableVertex = (state.vertices_[indexVertex][2] == False)
+        #If vertex already in use
+        if(state.vertices_[indexVertex][2]):
+            return False
 
         #Vertex we potentially want to place an object on it.
         pCandidate = state.vertices_[indexVertex][0]
+   
+        if(not self.rules.overlap):
+            #Vertex A limits
+            max_X = pCandidate[0] + self.half_bounding_size_x
+            min_X = pCandidate[0] - self.half_bounding_size_x
+            max_Y = pCandidate[1] + self.half_bounding_size_y
+            min_Y = pCandidate[1] - self.half_bounding_size_y
+            max_Z = pCandidate[2] + self.half_bounding_size_z
+            min_Z = pCandidate[2] - self.half_bounding_size_z
+
+            vertex_bbox_limits = (max_X, min_X, max_Y, min_Y, max_Z, min_Z)
+
         i = 0
-        satisfiesMinDistance = True
-        #Como saber que no se puede satifacer dicha restriccion en ningun caso? Hay que notificarlo
-        #Posibilidad de medir vertices? Taria chulo
-        while (i < len(state.actionsApplied_) and satisfiesMinDistance == True):
+        satisfiesRestrictions = True
+
+        while (i < len(state.actionsApplied_) and satisfiesRestrictions == True):
             #Access vertices that has an object on it. 
             indexVertex = state.actionsApplied_[i].indexVertex
             vertexInUse = state.vertices_[indexVertex][0]
+
+            #Check bounding box overlap if needed
+            if(not self.rules.overlap):
+                satisfiesRestrictions = not self.boundingBoxOverlapping(vertex_bbox_limits, vertexInUse)
+
             #Calculates distance between 2 tridimensional points.
             distance = math.sqrt((vertexInUse[0]-pCandidate[0])**2 + (vertexInUse[1]-pCandidate[1])**2 + (vertexInUse[2]-pCandidate[2])**2)
             #Compares if distance is lesser or equals to minimum distance.
-            satisfiesMinDistance = distance >= self.rules.distance_between_items
+            satisfiesRestrictions = satisfiesRestrictions and distance >= self.rules.distance_between_items
 
             i+= 1
 
-        return availableVertex and satisfiesMinDistance
+        return satisfiesRestrictions
     
     def actions(self, state):
         """
@@ -81,7 +121,7 @@ class ThresholdRandDistribution(aimaProblem):
 
                 if(j < len(possibleActions) or len(possibleActions) == 0 ):
                     remaining -= 1
-                    action = Actions(i, -1)
+                    action = Actions(i, (0,0,0))
                     possibleActions.append(action)
 
             j += 1

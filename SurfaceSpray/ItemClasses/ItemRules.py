@@ -11,7 +11,7 @@ class ItemRules:
         self.rotation_range = [180.0, 180.0, 180.0]
 
         # Rotation steps
-        self.rotation_steps = [0.,0.,0.]
+        self.rotation_steps = [1.,1.,1.]
 
         # Distance offset
         self.distance_between_items = 0 

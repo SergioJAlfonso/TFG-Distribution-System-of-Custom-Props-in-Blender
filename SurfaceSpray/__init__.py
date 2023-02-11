@@ -132,24 +132,24 @@ def register():
     bpy.types.Scene.rot_steps_x = bpy.props.FloatProperty(
         name='X',
         description = "Sets rotation steps in the X axis",
-        default=0,
-        min = 0.0,
+        default=1.0,
+        min = 0.02,
         max = 360.0,
     )
     
     bpy.types.Scene.rot_steps_y = bpy.props.FloatProperty(
         name='Y',
         description = "Sets rotation steps in the Y axis",
-        default=0,
-        min = 0.0,
+        default=1.0,
+        min = 0.02,
         max = 360.0,
     )
 
     bpy.types.Scene.rot_steps_z = bpy.props.FloatProperty(
         name='Z',
         description = "Sets rotation steps in the Z axis",
-        default=0,
-        min = 0.0,
+        default=1.0,
+        min = 0.02,
         max = 360.0,
     )
 

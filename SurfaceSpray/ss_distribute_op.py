@@ -4,13 +4,13 @@ from mathutils import Euler
 
 from .ItemClasses.ItemRules import *
 from .ItemClasses.Item import *
-#from .ItemClasses.SolutionItem import *
 from .ItemClasses.DefaultAttributes.FurnitureAttribs import *
 
 from .utilsSS.draw_utils import *
 from .utilsSS.addon_utils import *
 from .heuristicsSS.ThresholdRandDistribution import *
 from .heuristicsSS.Demos.Demo_Dist_RotRang_Distribution import *
+from .heuristicsSS.Demos.Demo_Dist_Overlap_Distribution import *
 from .utilsSS.addon_utils import *
 from .utilsSS.StateGrid import *
 
@@ -65,6 +65,10 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         # #Get bounding box
         asset_bounding_box_local = getBoundingBox(context, asset)
         target_bounding_box_local = getBoundingBox(context, target)
+
+        # Bounding info
+        # for i in range(len(asset_bounding_box_local)):
+        #     print('Vértice ', i,'(x, y, z): ', asset_bounding_box_local[i])
         
         # #Subdivide target to fit assets in every vertex
         if (context.scene.subdivide):
@@ -87,7 +91,9 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         # Establishes rules for the assets in order to place them correctly
         rules = setPanelItemRules(context)
 
-        distribution = Demo_Over_Dist_RotRang_Distribution(rules, initialState, goalState)
+        distribution = ThresholdRandDistribution(rules, asset_bounding_box_local, initialState, goalState)    
+        #distribution = Demo_Over_Dist_RotRang_Distribution(rules, initialState, goalState)
+        #DEPRECATED: distribution = Demo_Dist_Overlap_Distribution(rules, asset_bounding_box_local, initialState, goalState)
         
         nodeSol = aimaBFTS(distribution)
 
