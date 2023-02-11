@@ -81,7 +81,7 @@ class ThresholdRandDistribution(aimaProblem):
 
                 if(j < len(possibleActions) or len(possibleActions) == 0 ):
                     remaining -= 1
-                    action = Actions(i, -1)
+                    action = Actions(i, (0,0,0))
                     possibleActions.append(action)
 
             j += 1
