@@ -91,9 +91,9 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         # Establishes rules for the assets in order to place them correctly
         rules = setPanelItemRules(context)
 
-        #distribution = ThresholdRandDistribution(rules, initialState, goalState)    
+        distribution = ThresholdRandDistribution(rules, asset_bounding_box_local, initialState, goalState)    
         #distribution = Demo_Over_Dist_RotRang_Distribution(rules, initialState, goalState)
-        distribution = Demo_Dist_Overlap_Distribution(rules, asset_bounding_box_local, initialState, goalState)
+        #DEPRECATED: distribution = Demo_Dist_Overlap_Distribution(rules, asset_bounding_box_local, initialState, goalState)
         
         nodeSol = aimaBFTS(distribution)
 
