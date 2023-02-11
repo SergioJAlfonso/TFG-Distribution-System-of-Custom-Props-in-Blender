@@ -41,6 +41,16 @@ class MAIN_PT_Panel(bpy.types.Panel):
         box3.column().prop(context.scene, "num_assets")
         box3.column().prop(context.scene, "collectName")
 
+        # Subdivision box
+        box = layout.box()
+
+        box.label(text="Subdivision")
+
+        box.row().prop(context.scene, "subdivide")
+
+        if(context.scene.subdivide):
+            box.row().prop(context.scene, "num_cuts")
+
         # Item Rules box
         box2 = layout.box()
 
@@ -88,17 +98,7 @@ class MAIN_PT_Panel(bpy.types.Panel):
 
         # Overlap
         box2.row().prop(context.scene, "overlap_bool")
-
-        # Subdivision box
-        box = layout.box()
-
-        box.label(text="Subdivision")
-
-        box.row().prop(context.scene, "subdivide")
-
-        if(context.scene.subdivide):
-            box.row().prop(context.scene, "num_cuts")
-       
+        
         # placeholder = context.scene.placeholder
         # col.prop(placeholder, "inc_dec_int", text="Asset Instances")
 
