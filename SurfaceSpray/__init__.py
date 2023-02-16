@@ -28,9 +28,10 @@ import bpy
 
 from .ss_clear_op import Clear_OT_Operator
 from .ss_distribute_op import SurfaceSpray_OT_Operator
+from .ss_demo_distribute_op import SurfaceSpray_OT_Operator_DEMO_SELECTION
 from.ss_panel import MAIN_PT_Panel
 from.ss_panel import GROUPS_PT_Panel
-classes = ( MAIN_PT_Panel,GROUPS_PT_Panel, SurfaceSpray_OT_Operator, Clear_OT_Operator )
+classes = ( MAIN_PT_Panel,GROUPS_PT_Panel, SurfaceSpray_OT_Operator_DEMO_SELECTION, Clear_OT_Operator )
 
 import sys, os, site
 
@@ -44,13 +45,19 @@ def verify_user_sitepackages():
 def get_threshold(self):
     return self.get('threshold', 0)
 
+def update_max_searches(self, context):
+    self["actual_search"] = 1
+    
+
 def register():
     print("Registering usersitepackagespath")
     # verify_user_sitepackages()
 
     for cls in classes:
         bpy.utils.register_class(cls)
-     
+    
+    bpy.types.Scene.solution_nodes = []
+
     bpy.types.Scene.num_cuts = bpy.props.IntProperty(
         name='Number of Cuts',
         default=0,
@@ -76,6 +83,21 @@ def register():
         default=1,
         min = 1,
         max = 100000
+    )
+
+    bpy.types.Scene.num_searches = bpy.props.IntProperty(
+        name='Number of searches',
+        default=1,
+        min = 1,
+        max = 20,
+        update=update_max_searches
+    )
+
+    bpy.types.Scene.actual_search = bpy.props.IntProperty(
+        name='Number of the actual selected search',
+        default=1,
+        min = 1,
+        max = 20
     )
 
     bpy.types.Scene.subdivide = bpy.props.BoolProperty(

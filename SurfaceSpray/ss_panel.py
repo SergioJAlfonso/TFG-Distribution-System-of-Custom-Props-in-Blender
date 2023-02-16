@@ -99,6 +99,8 @@ class MAIN_PT_Panel(bpy.types.Panel):
         # Overlap
         box2.row().prop(context.scene, "overlap_bool")
         
+        box2.row().prop(context.scene, "num_searches")
+        box2.row().prop(context.scene, "actual_search")
         # placeholder = context.scene.placeholder
         # col.prop(placeholder, "inc_dec_int", text="Asset Instances")
 
