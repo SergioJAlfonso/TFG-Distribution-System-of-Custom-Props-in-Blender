@@ -29,9 +29,10 @@ import bpy
 from .ss_clear_op import Clear_OT_Operator
 from .ss_distribute_op import SurfaceSpray_OT_Operator
 from .ss_demo_distribute_op import SurfaceSpray_OT_Operator_DEMO_SELECTION
+from .ss_redistribute_op import Redistribute_OT_Operator
 from.ss_panel import MAIN_PT_Panel
 from.ss_panel import GROUPS_PT_Panel
-classes = ( MAIN_PT_Panel,GROUPS_PT_Panel, SurfaceSpray_OT_Operator_DEMO_SELECTION, Clear_OT_Operator )
+classes = ( MAIN_PT_Panel,GROUPS_PT_Panel, SurfaceSpray_OT_Operator, SurfaceSpray_OT_Operator_DEMO_SELECTION, Redistribute_OT_Operator, Clear_OT_Operator )
 
 import sys, os, site
 
@@ -47,6 +48,9 @@ def get_threshold(self):
 
 def update_max_searches(self, context):
     self["actual_search"] = 1
+
+def update_actual_search(self, context):
+    self["actual_search"] = min(self["actual_search"], self["num_searches"])
     
 
 def register():
@@ -97,7 +101,8 @@ def register():
         name='Number of the actual selected search',
         default=1,
         min = 1,
-        max = 20
+        max = 20,
+        update=update_actual_search
     )
 
     bpy.types.Scene.subdivide = bpy.props.BoolProperty(
