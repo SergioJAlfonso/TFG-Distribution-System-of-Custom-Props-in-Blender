@@ -2,6 +2,7 @@ import bpy
 import bmesh 
 import random
 from mathutils import Euler
+from ..ItemClasses.ItemRules import *
 
 def getVerticesData(object):
     """
@@ -164,7 +165,7 @@ def scaleObject(self, obj):
         bpy.context.active_object.select_set(True)
         bpy.ops.object.transform_apply(location = False, rotation = False, scale=True)
 
-def createObjectsInPoints(points, object, boundingBoxObject, collection, target):
+def createObjectsInPoints(points, object, boundingBoxObject, collection):
     inCollection = False 
     #In case something else has been selected, we deselect everything
     bpy.ops.object.select_all(action='DESELECT')

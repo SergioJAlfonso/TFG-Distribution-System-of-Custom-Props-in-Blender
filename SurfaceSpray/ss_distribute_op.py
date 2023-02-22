@@ -112,7 +112,7 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         # sol = distribution.distribute(data_tridimensional, asset_bounding_box_local, 
         #                               num_instances, threshold_weight, )
         
-        createObjectsInPoints(objectsData, asset, asset_bounding_box_local, collection, target)
+        createObjectsInPoints(objectsData, asset, asset_bounding_box_local, collection)
         
         if (context.scene.subdivide):
             bpy.data.meshes.remove(target.data)
