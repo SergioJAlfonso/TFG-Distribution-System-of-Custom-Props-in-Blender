@@ -42,6 +42,27 @@ class MAIN_PT_Panel(bpy.types.Panel):
         box3.column().prop(context.scene, "num_assets")
         box3.column().prop(context.scene, "collectName")
 
+        
+        # # Show list of vertex groups
+        # boxVGroup = layout.box()
+        # boxVGroup.label(text="Vertex Groups")
+
+        # obj = context.scene.target
+        # row = boxVGroup.row()
+        # row.template_list("MESH_UL_vgroups", "", obj, "vertex_groups", obj.vertex_groups, "active_index")
+        
+        # # Add new vertex group button
+        # col = boxVGroup.column()
+        # col.operator("object.vertex_group_add", icon='ADD', text="New Vertex Group")
+
+        # # Remove vertex group button
+        # if obj.vertex_groups:
+        #     col.operator("object.vertex_group_remove", icon='REMOVE', text="Remove Vertex Group")
+        
+        # # Rename vertex group
+        # row = boxVGroup.row()
+        # row.prop(context.object.vertex_groups.active, "name")
+
         # Subdivision box
         box = layout.box()
 
