@@ -1,7 +1,5 @@
 import bpy 
 
-from mathutils import Euler
-
 from .ItemClasses.ItemRules import *
 from .ItemClasses.Item import *
 from .ItemClasses.DefaultAttributes.FurnitureAttribs import *
@@ -114,7 +112,7 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         # sol = distribution.distribute(data_tridimensional, asset_bounding_box_local, 
         #                               num_instances, threshold_weight, )
         
-        createObjectsInPoints(objectsData, asset, asset_bounding_box_local, collection, target)
+        createObjectsInPoints(objectsData, asset, asset_bounding_box_local, collection)
         
         if (context.scene.subdivide):
             bpy.data.meshes.remove(target.data)
@@ -127,69 +125,3 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         # active object
         obj = context.object
         return (obj is not None) and (obj.mode == "OBJECT")
-
-def createObjectsInPoints(points, object, boundingBoxObject, collection, target):
-    inCollection = False 
-    #In case something else has been selected, we deselect everything
-    bpy.ops.object.select_all(action='DESELECT')
-    #Set Active object in case it has changed
-    bpy.context.view_layer.objects.active = object 
-    #Create object in points
-    
-    for i in range(len(points)):
-        object.select_set(True)
-        bpy.ops.object.duplicate(linked=1)
-        #We catch new object duplicated
-        newObj = bpy.context.active_object
-        
-        newObj.location = points[i][0]
-        #Set location relative to size
-        adjustPosition(newObj, boundingBoxObject, points[i][1])
-
-        newObj.rotation_euler = Euler(points[i][2], 'XYZ')
-
-        #Unlink from all collections and link in desired collection
-        if(inCollection == False):
-            linkedCollection = newObj.users_collection
-            #Link before unlink from everything
-            collection.objects.link(newObj)
-            for col in linkedCollection:
-                if(col is not None): col.objects.unlink(newObj)
-            inCollection = True
-        #Set Active object to new object so we can duplicate from this point
-        object = bpy.context.active_object
-
-def adjustPosition(object, boundingBoxObject, normal):
-    # object.location[2] += abs(boundingBoxObject[0][2])
-    for i in range(3):
-        object.location[i] += abs(boundingBoxObject[0][i])* normal[i]
-
-def setPanelItemRules(context):
-    
-    # get item rules from panel
-    rotation_x = context.scene.rotate_x
-    rotation_y = context.scene.rotate_y
-    rotation_z = context.scene.rotate_z
-
-    rotation_range_x = context.scene.rot_range_x
-    rotation_range_y = context.scene.rot_range_y
-    rotation_range_z = context.scene.rot_range_z
-
-    rotation_steps_x = context.scene.rot_steps_x
-    rotation_steps_y = context.scene.rot_steps_y
-    rotation_steps_z = context.scene.rot_steps_z
-
-    can_overlap = context.scene.overlap_bool
-
-    item_distance = context.scene.item_distance
-
-    #Set Item rules
-    rules = ItemRules()
-
-    rules.rotations = [rotation_x, rotation_y, rotation_z]
-    rules.rotation_range = [rotation_range_x, rotation_range_y, rotation_range_z]
-    rules.rotation_steps = [rotation_steps_x, rotation_steps_y, rotation_steps_z]
-    rules.overlap = can_overlap
-    rules.distance_between_items = item_distance
-
-    return rules
