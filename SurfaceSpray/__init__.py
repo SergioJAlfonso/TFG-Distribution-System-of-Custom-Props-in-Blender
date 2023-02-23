@@ -67,7 +67,8 @@ def register():
     bpy.types.Scene.num_cuts = bpy.props.IntProperty(
         name='Number of Cuts',
         default=0,
-        description = "Number of Cuts. If zero (Only if one type of asset is going to be distributed), cuts are made based in the size of the asset",
+        description = "Number of Cuts. If zero (Only if one type of asset is going to "+
+        "be distributed), cuts are made based in the size of the asset",
         min = 0,
         max = 100
     )
@@ -109,7 +110,9 @@ def register():
 
     bpy.types.Scene.subdivide = bpy.props.BoolProperty(
         name='Subdivide Target',
-        description = "This checkbox makes subdivisions of the target to fit the asset in every possible position of the surface\n\nMake sure that you normalize the scale of the asset before marking this checkbox",
+        description = "This checkbox makes subdivisions of the target to fit "+
+        "the asset in every possible position of the surface\n\nMake sure that"+
+        " you normalize the scale of the asset before marking this checkbox",
         default=False
     )
 
@@ -185,7 +188,8 @@ def register():
     # Item distance to other objects
     bpy.types.Scene.item_distance = bpy.props.FloatProperty(
         name='Min Distance Between Assets',
-        description = "Sets minumum distance of the asset to any other object in the scene while placing it",
+        description = "Sets minumum distance of the asset to any other object "+
+        "in the scene while placing it",
         default=0,
         min = 0.0,
         max = 100.0,
@@ -198,8 +202,11 @@ def register():
     )
 
     bpy.types.Scene.bbox_bool = bpy.props.BoolProperty(
-        name='Use box',
-        description = "This checkbox determines that the overlap between assets is going to be\nchecked using a bounding box.\nLeaving it unchecked makes use of a bounding sphere (More reliable)",
+        name='Use Box',
+        description = "This checkbox determines that the overlap between assets is"+
+        " going to be\nchecked using a bounding box.\n\nLeaving it unchecked makes"+
+        " use of a bounding sphere (More reliable\nbut not very accurate with oblong"+
+        " objects)",
         default=False
     )
 

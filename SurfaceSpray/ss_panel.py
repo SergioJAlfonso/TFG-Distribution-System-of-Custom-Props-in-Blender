@@ -130,10 +130,12 @@ class RULES_PT_Panel(bpy.types.Panel):
         box.row().prop(context.scene, "item_distance")
 
         # Overlap
-        box.row().prop(context.scene, "overlap_bool")
+        row = box.row()
+
+        row.prop(context.scene, "overlap_bool")
 
         if(context.scene.overlap_bool):
-            box.row().prop(context.scene, "bbox_bool")
+            row.prop(context.scene, "bbox_bool")
     
 class SUBDIVIDE_PT_Panel(bpy.types.Panel):
     bl_idname = "Subdivide_PT_Panel"
