@@ -31,8 +31,9 @@ from .ss_distribute_op import SurfaceSpray_OT_Operator
 from .ss_demo_distribute_op import SurfaceSpray_OT_Operator_DEMO_SELECTION
 from .ss_redistribute_op import Redistribute_OT_Operator
 from.ss_panel import MAIN_PT_Panel
-from.ss_panel import GROUPS_PT_Panel
-classes = ( MAIN_PT_Panel,GROUPS_PT_Panel, SurfaceSpray_OT_Operator, SurfaceSpray_OT_Operator_DEMO_SELECTION, Redistribute_OT_Operator, Clear_OT_Operator )
+from.ss_panel import RULES_PT_Panel
+from.ss_panel import SUBDIVIDE_PT_Panel
+classes = ( MAIN_PT_Panel,RULES_PT_Panel, SUBDIVIDE_PT_Panel, SurfaceSpray_OT_Operator, SurfaceSpray_OT_Operator_DEMO_SELECTION, Redistribute_OT_Operator, Clear_OT_Operator )
 
 import sys, os, site
 
@@ -193,6 +194,12 @@ def register():
     bpy.types.Scene.overlap_bool = bpy.props.BoolProperty(
         name='Allow Overlap',
         description = "This checkbox allows the assets to overlap with each other",
+        default=False
+    )
+
+    bpy.types.Scene.bbox_bool = bpy.props.BoolProperty(
+        name='Use box',
+        description = "This checkbox determines that the overlap between assets is going to be\nchecked using a bounding box.\nLeaving it unchecked makes use of a bounding sphere (More reliable)",
         default=False
     )
 

@@ -62,23 +62,34 @@ class MAIN_PT_Panel(bpy.types.Panel):
         # # Rename vertex group
         # row = boxVGroup.row()
         # row.prop(context.object.vertex_groups.active, "name")
-
-        # Subdivision box
-        box = layout.box()
-
-        box.label(text="Subdivision")
-
-        box.row().prop(context.scene, "subdivide")
-
-        if(context.scene.subdivide):
-            box.row().prop(context.scene, "num_cuts")
-
-        # Item Rules box
+        
         box2 = layout.box()
 
-        box2.label(text="Asset Rules")
+        box2.label(text="Distribute Demo")
 
-        rotationBox = box2.box()
+        box2.row().prop(context.scene, "num_searches")
+        box2.row().prop(context.scene, "actual_search")
+        # box2.row().operator('addon.redistribute', text = "Change search")
+        # placeholder = context.scene.placeholder
+        # col.prop(placeholder, "inc_dec_int", text="Asset Instances")
+
+class RULES_PT_Panel(bpy.types.Panel):
+    bl_idname = "Rules_PT_Panel"
+    bl_label = "Asset Rules"
+    bl_category = "SurfaceSpray"
+    bl_description = "Rules that specify how the asset is placed"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+
+    def draw(self, context):
+        layout = self.layout
+
+        # Item Rules box
+        box = layout.box()
+
+        box.label(text="Asset Rules")
+
+        rotationBox = box.box()
 
         rotation_row = rotationBox.row()
 
@@ -116,25 +127,42 @@ class MAIN_PT_Panel(bpy.types.Panel):
             
 
         # Distance
-        box2.row().prop(context.scene, "item_distance")
+        box.row().prop(context.scene, "item_distance")
 
         # Overlap
-        box2.row().prop(context.scene, "overlap_bool")
-        
-        box2.row().prop(context.scene, "num_searches")
-        box2.row().prop(context.scene, "actual_search")
-        # box2.row().operator('addon.redistribute', text = "Change search")
-        # placeholder = context.scene.placeholder
-        # col.prop(placeholder, "inc_dec_int", text="Asset Instances")
+        box.row().prop(context.scene, "overlap_bool")
 
-class GROUPS_PT_Panel(bpy.types.Panel):
-    bl_idname = "Groups_PT_Panel"
-    bl_label = "Object Distribution"
+        if(context.scene.overlap_bool):
+            box.row().prop(context.scene, "bbox_bool")
+    
+class SUBDIVIDE_PT_Panel(bpy.types.Panel):
+    bl_idname = "Subdivide_PT_Panel"
+    bl_label = "Subdivide Target"
     bl_category = "SurfaceSpray"
-    bl_description = "Groups"
+    bl_description = "Subdivide Target"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
 
     def draw(self, context):
         layout = self.layout
-    
+
+        # Subdivision box
+        box = layout.box()
+
+        box.label(text="Subdivision")
+
+        box.row().prop(context.scene, "subdivide")
+
+        if(context.scene.subdivide):
+            box.row().prop(context.scene, "num_cuts")
+
+# class VGRUP_PT_Panel(bpy.types.Panel):
+#     bl_idname = "VGoup_PT_Panel"
+#     bl_label = "Vertex weight groups"
+#     bl_category = "SurfaceSpray"
+#     bl_description = "Vertex weight groups"
+#     bl_space_type = "VIEW_3D"
+#     bl_region_type = "UI"
+
+#     def draw(self, context):
+#         layout = self.layout
