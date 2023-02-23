@@ -102,7 +102,7 @@ class MAIN_PT_Panel(bpy.types.Panel):
         
         box2.row().prop(context.scene, "num_searches")
         box2.row().prop(context.scene, "actual_search")
-        box2.row().operator('addon.redistribute', text = "Change search")
+        # box2.row().operator('addon.redistribute', text = "Change search")
         # placeholder = context.scene.placeholder
         # col.prop(placeholder, "inc_dec_int", text="Asset Instances")
 

@@ -51,6 +51,7 @@ def update_max_searches(self, context):
 
 def update_actual_search(self, context):
     self["actual_search"] = min(self["actual_search"], self["num_searches"])
+    bpy.ops.addon.redistribute()
     
 
 def register():

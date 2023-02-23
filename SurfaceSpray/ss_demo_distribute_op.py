@@ -41,7 +41,7 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
             return {'FINISHED'}
 
         context.scene.solution_nodes.clear()
-        context.scene.actual_search = 0
+        context.scene.actual_search = 1
 
         #Obtenemos todos los datos necesarios
         if (context.scene.subdivide): 
