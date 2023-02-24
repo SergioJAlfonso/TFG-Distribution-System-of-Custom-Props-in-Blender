@@ -9,8 +9,6 @@ from enum import Enum
 from ..utilsSS.Actions import *
 from aima3.search import Problem as aimaProblem
 
-
-
 class ThresholdRandDistribution(aimaProblem):
 
     def __init__(self, rules_, bbox, initial, goal=None, ):
@@ -23,14 +21,27 @@ class ThresholdRandDistribution(aimaProblem):
         self.half_bounding_size_y = (bbox[2][1] - bbox[0][1])/2.0
         self.half_bounding_size_z = (bbox[1][2] - bbox[0][2])/2.0
 
+    def getVertexBBoxLimits(self, vertex):
+        """
+        Returns the limits of the bounding box
+        """
+        max_X = vertex[0] + self.half_bounding_size_x
+        min_X = vertex[0] - self.half_bounding_size_x
+        max_Y = vertex[1] + self.half_bounding_size_y
+        min_Y = vertex[1] - self.half_bounding_size_y
+        max_Z = vertex[2] + self.half_bounding_size_z
+        min_Z = vertex[2] - self.half_bounding_size_z
+
+        return max_X, min_X, max_Y, min_Y, max_Z, min_Z
+
     def boundingBoxOverlapping(self, verA, verB):
+        """
+        Checks is the bounding box of Vertex A and Vertex B are overlapping
+
+        Returns True or False
+        """
         #Vertex B limits
-        max_B_X = verB[0] + self.half_bounding_size_x
-        min_B_X = verB[0] - self.half_bounding_size_x
-        max_B_Y = verB[1] + self.half_bounding_size_y
-        min_B_Y = verB[1] - self.half_bounding_size_y
-        max_B_Z = verB[2] + self.half_bounding_size_z
-        min_B_Z = verB[2] - self.half_bounding_size_z
+        max_B_X, min_B_X, max_B_Y, min_B_Y, max_B_Z, min_B_Z = self.getVertexBBoxLimits(verB)
 
         #Overlap Condition
         if(verA[0] >= min_B_X and verA[1] <= max_B_X and
@@ -57,12 +68,7 @@ class ThresholdRandDistribution(aimaProblem):
    
         if(not self.rules.overlap):
             #Vertex A limits
-            max_X = pCandidate[0] + self.half_bounding_size_x
-            min_X = pCandidate[0] - self.half_bounding_size_x
-            max_Y = pCandidate[1] + self.half_bounding_size_y
-            min_Y = pCandidate[1] - self.half_bounding_size_y
-            max_Z = pCandidate[2] + self.half_bounding_size_z
-            min_Z = pCandidate[2] - self.half_bounding_size_z
+            max_X, min_X, max_Y, min_Y, max_Z, min_Z = self.getVertexBBoxLimits(pCandidate)
 
             vertex_bbox_limits = (max_X, min_X, max_Y, min_Y, max_Z, min_Z)
 

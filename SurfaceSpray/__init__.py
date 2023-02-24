@@ -204,9 +204,9 @@ def register():
     bpy.types.Scene.bbox_bool = bpy.props.BoolProperty(
         name='Use Box',
         description = "This checkbox determines that the overlap between assets is"+
-        " going to be\nchecked using a bounding box.\n\nLeaving it unchecked makes"+
-        " use of a bounding sphere (More reliable\nbut not very accurate with oblong"+
-        " objects)",
+        " going to be\nchecked using a bounding box (Recomended if the asset is not going to be rotated)."+
+        "\n\nLeaving it unchecked makes use of a bounding sphere (More reliable\n if the asset allows "+
+        "rotation but not very accurate with oblong objects)",
         default=False
     )
 
