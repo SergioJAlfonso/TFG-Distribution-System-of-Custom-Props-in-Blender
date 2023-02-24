@@ -26,6 +26,17 @@ bl_info = {
 from gc import get_threshold
 import bpy
 
+from bpy.props import (IntProperty,
+                       BoolProperty,
+                       StringProperty,
+                       CollectionProperty,
+                       PointerProperty)
+
+from bpy.types import (Operator,
+                       Panel,
+                       PropertyGroup,
+                       UIList)
+
 from .ss_clear_op import Clear_OT_Operator
 from .ss_distribute_op import SurfaceSpray_OT_Operator
 from .ss_demo_distribute_op import SurfaceSpray_OT_Operator_DEMO_SELECTION
@@ -33,7 +44,26 @@ from .ss_redistribute_op import Redistribute_OT_Operator
 from.ss_panel import MAIN_PT_Panel
 from.ss_panel import RULES_PT_Panel
 from.ss_panel import SUBDIVIDE_PT_Panel
-classes = ( MAIN_PT_Panel,RULES_PT_Panel, SUBDIVIDE_PT_Panel, SurfaceSpray_OT_Operator, SurfaceSpray_OT_Operator_DEMO_SELECTION, Redistribute_OT_Operator, Clear_OT_Operator )
+
+from.ss_panel import CUSTOM_PG_objectCollection
+from.ss_panel import CUSTOM_OT_actions
+from.ss_panel import CUSTOM_OT_addViewportSelection
+from.ss_panel import CUSTOM_OT_printItems
+from.ss_panel import CUSTOM_OT_clearList
+from.ss_panel import CUSTOM_OT_removeDuplicates
+from.ss_panel import CUSTOM_OT_selectItems
+from.ss_panel import CUSTOM_OT_deleteObject
+from.ss_panel import CUSTOM_UL_items
+from.ss_panel import SOLUTION_OBJECTS_PT_Panel
+
+# from.ss_panel import MY_OT_AddItem
+
+classes = ( MAIN_PT_Panel,RULES_PT_Panel, SUBDIVIDE_PT_Panel, SurfaceSpray_OT_Operator, 
+           SurfaceSpray_OT_Operator_DEMO_SELECTION, 
+           Redistribute_OT_Operator, Clear_OT_Operator,
+           CUSTOM_PG_objectCollection,CUSTOM_OT_actions,CUSTOM_OT_addViewportSelection,
+           CUSTOM_OT_printItems,CUSTOM_OT_clearList,CUSTOM_OT_removeDuplicates,CUSTOM_OT_selectItems,
+           CUSTOM_OT_deleteObject,CUSTOM_UL_items,SOLUTION_OBJECTS_PT_Panel)
 
 import sys, os, site
 
@@ -54,6 +84,7 @@ def update_actual_search(self, context):
     self["actual_search"] = min(self["actual_search"], self["num_searches"])
     bpy.ops.addon.redistribute()
     
+addon_keymaps = []
 
 def register():
     print("Registering usersitepackagespath")
@@ -63,6 +94,9 @@ def register():
         bpy.utils.register_class(cls)
     
     bpy.types.Scene.solution_nodes = []
+
+    bpy.types.Scene.custom = CollectionProperty(type=CUSTOM_PG_objectCollection)
+    bpy.types.Scene.custom_index = IntProperty()
 
     bpy.types.Scene.num_cuts = bpy.props.IntProperty(
         name='Number of Cuts',
@@ -219,9 +253,19 @@ def register():
         ]
     )
 
+    wm = bpy.context.window_manager
+    km = wm.keyconfigs.addon.keymaps.new(name='Window', space_type='EMPTY')
+    kmi = km.keymap_items.new('wm.call_menu', 'A', 'PRESS', ctrl=True, shift=True)
+    kmi.properties.name = "MY_MT_Menu"
+
+    addon_keymaps.append((km, kmi))
+
 def unregister():
     for cls in classes:
         bpy.utils.unregister_class(cls)
     
     del bpy.types.Scene.threshold, bpy.types.Scene.num_assets 
+
+    del bpy.types.Scene.custom
+    del bpy.types.Scene.custom_index
     
