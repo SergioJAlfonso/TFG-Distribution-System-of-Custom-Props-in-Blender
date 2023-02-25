@@ -27,34 +27,28 @@ from gc import get_threshold
 import bpy
 
 from bpy.props import (IntProperty,
-                       BoolProperty,
-                       StringProperty,
-                       CollectionProperty,
-                       PointerProperty)
+                       CollectionProperty)
 
-from bpy.types import (Operator,
-                       Panel,
-                       PropertyGroup,
-                       UIList)
+from .Panels.distribute.ss_clear_op import Clear_OT_Operator
+from .Panels.distribute.ss_distribute_op import SurfaceSpray_OT_Operator
+from .Panels.distribute.ss_demo_distribute_op import SurfaceSpray_OT_Operator_DEMO_SELECTION
+from .Panels.distribute.ss_redistribute_op import Redistribute_OT_Operator
 
-from .ss_clear_op import Clear_OT_Operator
-from .ss_distribute_op import SurfaceSpray_OT_Operator
-from .ss_demo_distribute_op import SurfaceSpray_OT_Operator_DEMO_SELECTION
-from .ss_redistribute_op import Redistribute_OT_Operator
-from.ss_panel import MAIN_PT_Panel
-from.ss_panel import RULES_PT_Panel
-from.ss_panel import SUBDIVIDE_PT_Panel
+from .Panels.distribute.distribute_panel import MAIN_PT_Panel
 
-from.ss_panel import CUSTOM_PG_objectCollection
-from.ss_panel import CUSTOM_OT_actions
-from.ss_panel import CUSTOM_OT_addViewportSelection
-from.ss_panel import CUSTOM_OT_printItems
-from.ss_panel import CUSTOM_OT_clearList
-from.ss_panel import CUSTOM_OT_removeDuplicates
-from.ss_panel import CUSTOM_OT_selectItems
-from.ss_panel import CUSTOM_OT_deleteObject
-from.ss_panel import CUSTOM_UL_items
-from.ss_panel import SOLUTION_OBJECTS_PT_Panel
+from .Panels.partialSol.partialSol_ops import (CUSTOM_OT_actions,
+                                               CUSTOM_OT_addViewportSelection ,
+                                               CUSTOM_OT_printItems,
+                                               CUSTOM_OT_clearList,
+                                               CUSTOM_OT_removeDuplicates,
+                                               CUSTOM_OT_selectItems,
+                                               CUSTOM_OT_deleteObject)
+from .Panels.partialSol.partialSol_panel import CUSTOM_PG_objectCollection
+from .Panels.partialSol.partialSol_panel import CUSTOM_UL_items
+from .Panels.partialSol.partialSol_panel import PARTIAL_SOL_PT_Panel
+
+from .Panels.rules_panel  import RULES_PT_Panel
+from .Panels.subdivide_panel import SUBDIVIDE_PT_Panel
 
 # from.ss_panel import MY_OT_AddItem
 
@@ -63,7 +57,7 @@ classes = ( MAIN_PT_Panel,RULES_PT_Panel, SUBDIVIDE_PT_Panel, SurfaceSpray_OT_Op
            Redistribute_OT_Operator, Clear_OT_Operator,
            CUSTOM_PG_objectCollection,CUSTOM_OT_actions,CUSTOM_OT_addViewportSelection,
            CUSTOM_OT_printItems,CUSTOM_OT_clearList,CUSTOM_OT_removeDuplicates,CUSTOM_OT_selectItems,
-           CUSTOM_OT_deleteObject,CUSTOM_UL_items,SOLUTION_OBJECTS_PT_Panel)
+           CUSTOM_OT_deleteObject,CUSTOM_UL_items,PARTIAL_SOL_PT_Panel)
 
 import sys, os, site
 
