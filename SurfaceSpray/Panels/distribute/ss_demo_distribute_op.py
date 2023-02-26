@@ -69,6 +69,14 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
         asset_bounding_box_local = getBoundingBox(context, asset)
         target_bounding_box_local = getBoundingBox(context, target)
 
+
+        #Get objects from list.
+        partialSol = []
+
+        for i in range(len(context.scene.custom)):
+            obj = context.scene.custom[i]
+            partialSol.append(obj)
+
         # Bounding info
         # for i in range(len(asset_bounding_box_local)):
         #     print('Vértice ', i,'(x, y, z): ', asset_bounding_box_local[i])
@@ -83,6 +91,8 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
         vertices = filterVerticesByWeightThreshold(data_tridimensional, threshold_weight)
         #Initial state as all possible vertices to place an asset
         
+
+
         if context.scene.solution_nodes == []:
             self.report({'INFO'}, "Solution nodes empty, rellenating")
 

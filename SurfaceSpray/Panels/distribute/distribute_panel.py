@@ -116,11 +116,14 @@ class MAIN_PT_Panel(bpy.types.Panel):
             update= update_actual_search
         )
 
+        bpy.types.Scene.solution_nodes = []
+
     def unregister():
         del (bpy.types.Scene.threshold, bpy.types.Scene.num_assets, 
              bpy.types.Scene.target, bpy.types.Scene.asset,
              bpy.types.Scene.algorithm_enum, bpy.types.Scene.collectName,
-             bpy.types.Scene.num_searches, bpy.types.Scene.actual_search)
+             bpy.types.Scene.num_searches, bpy.types.Scene.actual_search,
+             bpy.types.Scene.solution_nodes)
 
 def update_max_searches(self, context):
     self["actual_search"] = 1

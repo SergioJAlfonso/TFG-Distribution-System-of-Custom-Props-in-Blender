@@ -18,7 +18,8 @@ class CUSTOM_UL_items(UIList):
         obj = item.obj
         custom_icon = "OUTLINER_OB_%s" % obj.type
         split = layout.split(factor=0.3)
-        split.label(text="Index: %d" % (index))
+        # split.label(text="Index: %d" % (index))
+        split.label(text="")
         split.prop(obj, "name", text="", emboss=False, translate=False, icon=custom_icon)
             
     def invoke(self, context, event):
@@ -26,7 +27,7 @@ class CUSTOM_UL_items(UIList):
 
 class PARTIAL_SOL_PT_Panel(bpy.types.Panel):
     bl_idname = "PARTIAL_SOL_PT_Panel"
-    bl_label = "Objects part of the solution"
+    bl_label = "Objects Part Of The Solution"
     bl_category = "SurfaceSpray"
     bl_description = "Collection of objects in the solution."
     bl_space_type = "VIEW_3D"
