@@ -36,16 +36,15 @@ from .Panels.distribute.ss_redistribute_op import Redistribute_OT_Operator
 
 from .Panels.distribute.distribute_panel import MAIN_PT_Panel
 
-from .Panels.partialSol.partialSol_ops import (CUSTOM_OT_actions,
-                                               CUSTOM_OT_addViewportSelection ,
-                                               CUSTOM_OT_printItems,
-                                               CUSTOM_OT_clearList,
-                                               CUSTOM_OT_removeDuplicates,
-                                               CUSTOM_OT_selectItems,
-                                               CUSTOM_OT_deleteObject)
+from .Panels.partialSol.partialSol_ops import (PARTIAL_SOL_OT_actions,
+                                               PARTIAL_SOL_OT_addViewportSelection,
+                                               PARTIAL_SOL_OT_clearList,
+                                               PARTIAL_SOL_OT_removeDuplicates,
+                                               PARTIAL_SOL_OT_selectItems,
+                                               PARTIAL_SOL_OT_update_list)
 
-from .Panels.partialSol.partialSol_panel import (CUSTOM_PG_objectCollection,
-                                                 CUSTOM_UL_items,
+from .Panels.partialSol.partialSol_panel import (PARTIAL_SOL_PG_objectCollection,
+                                                 PARTIAL_SOL_UL_items,
                                                  PARTIAL_SOL_PT_Panel)
 
 from .Panels.rules_panel  import RULES_PT_Panel
@@ -53,9 +52,9 @@ from .Panels.subdivide_panel import SUBDIVIDE_PT_Panel
 
 # from.ss_panel import MY_OT_AddItem
 
-classes = ( MAIN_PT_Panel, CUSTOM_PG_objectCollection,CUSTOM_OT_actions,CUSTOM_OT_addViewportSelection,
-           CUSTOM_OT_printItems,CUSTOM_OT_clearList,CUSTOM_OT_removeDuplicates,CUSTOM_OT_selectItems,
-           CUSTOM_OT_deleteObject,CUSTOM_UL_items,PARTIAL_SOL_PT_Panel,
+classes = ( MAIN_PT_Panel, PARTIAL_SOL_PG_objectCollection,PARTIAL_SOL_OT_actions,PARTIAL_SOL_OT_addViewportSelection,
+           PARTIAL_SOL_OT_clearList,PARTIAL_SOL_OT_removeDuplicates,PARTIAL_SOL_OT_selectItems,
+           PARTIAL_SOL_UL_items,PARTIAL_SOL_OT_update_list,PARTIAL_SOL_PT_Panel,
            SUBDIVIDE_PT_Panel ,RULES_PT_Panel, SurfaceSpray_OT_Operator, 
            SurfaceSpray_OT_Operator_DEMO_SELECTION, 
            Redistribute_OT_Operator, Clear_OT_Operator)

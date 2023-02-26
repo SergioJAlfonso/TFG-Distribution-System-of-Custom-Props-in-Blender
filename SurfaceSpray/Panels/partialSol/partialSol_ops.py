@@ -4,9 +4,9 @@ from bpy.props import (BoolProperty)
 
 from bpy.types import (Operator)
 
-class CUSTOM_OT_actions(Operator):
+class PARTIAL_SOL_OT_actions(Operator):
     """Move items up and down, add and remove"""
-    bl_idname = "custom.list_action"
+    bl_idname = "partialsol.list_action"
     bl_label = "List Actions"
     bl_description = "Move items up and down, add and remove"
     bl_options = {'REGISTER'}
@@ -20,39 +20,39 @@ class CUSTOM_OT_actions(Operator):
 
     def invoke(self, context, event):
         scn = context.scene
-        idx = scn.custom_index
+        idx = scn.partialsol_index
 
         try:
-            item = scn.custom[idx]
+            item = scn.partialsol[idx]
         except IndexError:
             pass
         else:
-            if self.action == 'DOWN' and idx < len(scn.custom) - 1:
-                item_next = scn.custom[idx+1].name
-                scn.custom.move(idx, idx+1)
-                scn.custom_index += 1
-                info = 'Item "%s" moved to position %d' % (item.name, scn.custom_index + 1)
+            if self.action == 'DOWN' and idx < len(scn.partialsol) - 1:
+                item_next = scn.partialsol[idx+1].name
+                scn.partialsol.move(idx, idx+1)
+                scn.partialsol_index += 1
+                info = 'Item "%s" moved to position %d' % (item.name, scn.partialsol_index + 1)
                 self.report({'INFO'}, info)
 
             elif self.action == 'UP' and idx >= 1:
-                item_prev = scn.custom[idx-1].name
-                scn.custom.move(idx, idx-1)
-                scn.custom_index -= 1
-                info = 'Item "%s" moved to position %d' % (item.name, scn.custom_index + 1)
+                item_prev = scn.partialsol[idx-1].name
+                scn.partialsol.move(idx, idx-1)
+                scn.partialsol_index -= 1
+                info = 'Item "%s" moved to position %d' % (item.name, scn.partialsol_index + 1)
                 self.report({'INFO'}, info)
 
             elif self.action == 'REMOVE':
-                info = 'Item "%s" removed from list' % (scn.custom[idx].name)
-                scn.custom_index -= 1
-                scn.custom.remove(idx)
+                info = 'Item "%s" removed from list' % (scn.partialsol[idx].name)
+                scn.partialsol_index -= 1
+                scn.partialsol.remove(idx)
                 self.report({'INFO'}, info)
                 
         if self.action == 'ADD':
             if context.object:
-                item = scn.custom.add()
+                item = scn.partialsol.add()
                 item.name = context.object.name
                 item.obj = context.object
-                scn.custom_index = len(scn.custom)-1
+                scn.partialsol_index = len(scn.partialsol)-1
                 info = '"%s" added to list' % (item.name)
                 self.report({'INFO'}, info)
             else:
@@ -60,10 +60,10 @@ class CUSTOM_OT_actions(Operator):
         return {"FINISHED"}
     
 
-class CUSTOM_OT_addViewportSelection(Operator):
+class PARTIAL_SOL_OT_addViewportSelection(Operator):
     """Add all items currently selected in the viewport"""
-    bl_idname = "custom.add_viewport_selection"
-    bl_label = "Add Viewport Selection to List"
+    bl_idname = "partialsol.add_viewport_selection"
+    bl_label = "Add Selected Objects"
     bl_description = "Add all items currently selected in the viewport"
     bl_options = {'REGISTER', 'UNDO'}
     
@@ -73,7 +73,7 @@ class CUSTOM_OT_addViewportSelection(Operator):
         if selected_objs:
             new_objs = []
             for i in selected_objs:
-                item = scn.custom.add()
+                item = scn.partialsol.add()
                 item.name = i.name
                 item.obj = i
                 new_objs.append(item.name)
@@ -82,62 +82,33 @@ class CUSTOM_OT_addViewportSelection(Operator):
         else:
             self.report({'INFO'}, "Nothing selected in the Viewport")
         return{'FINISHED'}
-    
-    
-class CUSTOM_OT_printItems(Operator):
-    """Print all items and their properties to the console"""
-    bl_idname = "custom.print_items"
-    bl_label = "Print Items to Console"
-    bl_description = "Print all items and their properties to the console"
-    bl_options = {'REGISTER', 'UNDO'}
-    
-    reverse_order: BoolProperty(
-        default=False,
-        name="Reverse Order")
-    
-    @classmethod
-    def poll(cls, context):
-        return bool(context.scene.custom)
-    
-    def execute(self, context):
-        scn = context.scene
-        if self.reverse_order:
-            for i in range(scn.custom_index, -1, -1):        
-                ob = scn.custom[i].obj
-                print ("Object:", ob,"-",ob.name, ob.type)
-        else:
-            for item in scn.custom:
-                ob = item.obj
-                print ("Object:", ob,"-",ob.name, ob.type)
-        return{'FINISHED'}
 
-
-class CUSTOM_OT_clearList(Operator):
+class PARTIAL_SOL_OT_clearList(Operator):
     """Clear all items of the list"""
-    bl_idname = "custom.clear_list"
+    bl_idname = "partialsol.clear_list"
     bl_label = "Clear List"
     bl_description = "Clear all items of the list"
     bl_options = {'INTERNAL'}
 
     @classmethod
     def poll(cls, context):
-        return bool(context.scene.custom)
+        return bool(context.scene.partialsol)
 
     def invoke(self, context, event):
         return context.window_manager.invoke_confirm(self, event)
         
     def execute(self, context):
-        if bool(context.scene.custom):
-            context.scene.custom.clear()
+        if bool(context.scene.partialsol):
+            context.scene.partialsol.clear()
             self.report({'INFO'}, "All items removed")
         else:
             self.report({'INFO'}, "Nothing to remove")
         return{'FINISHED'}
     
     
-class CUSTOM_OT_removeDuplicates(Operator):
+class PARTIAL_SOL_OT_removeDuplicates(Operator):
     """Remove all duplicates"""
-    bl_idname = "custom.remove_duplicates"
+    bl_idname = "partialsol.remove_duplicates"
     bl_label = "Remove Duplicates"
     bl_description = "Remove all duplicates"
     bl_options = {'INTERNAL'}
@@ -145,7 +116,7 @@ class CUSTOM_OT_removeDuplicates(Operator):
     def find_duplicates(self, context):
         """find all duplicates by name"""
         name_lookup = {}
-        for c, i in enumerate(context.scene.custom):
+        for c, i in enumerate(context.scene.partialsol):
             name_lookup.setdefault(i.obj.name, []).append(c)
         duplicates = set()
         for name, indices in name_lookup.items():
@@ -155,17 +126,18 @@ class CUSTOM_OT_removeDuplicates(Operator):
         
     @classmethod
     def poll(cls, context):
-        return bool(context.scene.custom)
+        return bool(context.scene.partialsol)
         
     def execute(self, context):
         scn = context.scene
         removed_items = []
+
         # Reverse the list before removing the items
         for i in self.find_duplicates(context)[::-1]:
-            scn.custom.remove(i)
+            scn.partialsol.remove(i)
             removed_items.append(i)
         if removed_items:
-            scn.custom_index = len(scn.custom)-1
+            scn.partialsol_index = len(scn.partialsol)-1
             info = ', '.join(map(str, removed_items))
             self.report({'INFO'}, "Removed indices: %s" % (info))
         else:
@@ -176,28 +148,28 @@ class CUSTOM_OT_removeDuplicates(Operator):
         return context.window_manager.invoke_confirm(self, event)
     
     
-class CUSTOM_OT_selectItems(Operator):
+class PARTIAL_SOL_OT_selectItems(Operator):
     """Select Items in the Viewport"""
-    bl_idname = "custom.select_items"
-    bl_label = "Select Item(s) in Viewport"
+    bl_idname = "partialsol.select_items"
+    bl_label = "Select Item"
     bl_description = "Select Items in the Viewport"
     bl_options = {'REGISTER', 'UNDO'}
 
-    select_all = BoolProperty(
+    select_all : BoolProperty(
         default=False,
         name="Select all Items of List",
         options={'SKIP_SAVE'})
         
     @classmethod
     def poll(cls, context):
-        return bool(context.scene.custom)
+        return bool(context.scene.partialsol)
     
     def execute(self, context):
         scn = context.scene
-        idx = scn.custom_index
+        idx = scn.partialsol_index
         
         try:
-            item = scn.custom[idx]
+            item = scn.partialsol[idx]
         except IndexError:
             self.report({'INFO'}, "Nothing selected in the list")
             return{'CANCELLED'}
@@ -205,7 +177,7 @@ class CUSTOM_OT_selectItems(Operator):
         obj_error = False
         bpy.ops.object.select_all(action='DESELECT')
         if not self.select_all:
-            name = scn.custom[idx].obj.name
+            name = scn.partialsol[idx].obj.name
             obj = scn.objects.get(name, None)
             if not obj: 
                 obj_error = True
@@ -214,7 +186,7 @@ class CUSTOM_OT_selectItems(Operator):
                 info = '"%s" selected in Vieport' % (obj.name)
         else:
             selected_items = []
-            unique_objs = set([i.obj.name for i in scn.custom])
+            unique_objs = set([i.obj.name for i in scn.partialsol])
             for i in unique_objs:
                 obj = scn.objects.get(i, None)
                 if obj:
@@ -235,42 +207,40 @@ class CUSTOM_OT_selectItems(Operator):
             info = "Nothing to select, object removed from scene"
         self.report({'INFO'}, info)    
         return{'FINISHED'}
+    
+    def setSelectAll(self, selected_items):
+        print("funciona")
 
-
-class CUSTOM_OT_deleteObject(Operator):
-    """Delete object from scene"""
-    bl_idname = "custom.delete_object"
-    bl_label = "Remove Object from Scene"
-    bl_description = "Remove object from scene"
+class PARTIAL_SOL_OT_update_list(Operator):
+    """Update list of objects"""
+    bl_idname = "partialsol.update_list"
+    bl_label = "Updates list of objects"
+    bl_description = "Updates list of objects"
     bl_options = {'REGISTER', 'UNDO'}
-
+    
+    reverse_order: BoolProperty(
+        default=False,
+        name="Reverse Order")
+    
     @classmethod
     def poll(cls, context):
-        return bool(context.scene.custom)
-
-    def invoke(self, context, event):
-        return context.window_manager.invoke_confirm(self, event)
-        
+        return bool(context.scene.partialsol)
+    
     def execute(self, context):
         scn = context.scene
-        selected_objs = context.selected_objects
-        idx = scn.custom_index
-        try:
-            item = scn.custom[idx]
-        except IndexError:
-            pass
-        else:        
-            ob = scn.objects.get(item.obj.name)
-            if not ob:
-                self.report({'INFO'}, "No object of that name found in scene")
-                return {"CANCELLED"}
-            else:
-                bpy.ops.object.select_all(action='DESELECT')
-                ob.select_set(True)
-                bpy.ops.object.delete()
-                
-            info = ' Item "%s" removed from Scene' % (len(selected_objs))
-            scn.custom_index -= 1
-            scn.custom.remove(idx)
-            self.report({'INFO'}, info)
+
+        index_toRemove = []
+        for index, item in enumerate(context.scene.partialsol):
+            if (item.obj is None):
+                index_toRemove.append(index)
+                continue
+
+            obj_ = scn.objects.get(item.name, None)
+            if (obj_ is None):
+                index_toRemove.append(index)
+
+        for i in index_toRemove[::-1]:
+            scn.partialsol.remove(i)
+ 
+        scn.partialsol_index = max(0, len(scn.partialsol) - 1) 
         return{'FINISHED'}

@@ -70,6 +70,9 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
         target_bounding_box_local = getBoundingBox(context, target)
 
 
+        #Make sure there are no duplicates
+        bpy.ops.partialsol.remove_duplicates()
+
         #Get objects from list.
         partialSol = []
 
