@@ -1,10 +1,17 @@
 import bpy
 
-from bpy.props import (PointerProperty)
+from bpy.props import (PointerProperty,IntProperty, CollectionProperty)
 
 from bpy.types import (PropertyGroup,
                        UIList)
     
+class CUSTOM_PG_objectCollection(PropertyGroup):
+    #name: StringProperty() -> Instantiated by default
+    obj: PointerProperty(
+        name="Object",
+        type=bpy.types.Object)
+    
+
 class CUSTOM_UL_items(UIList):
     
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
@@ -17,14 +24,8 @@ class CUSTOM_UL_items(UIList):
     def invoke(self, context, event):
         pass   
 
-class CUSTOM_PG_objectCollection(PropertyGroup):
-    #name: StringProperty() -> Instantiated by default
-    obj: PointerProperty(
-        name="Object",
-        type=bpy.types.Object)
-
 class PARTIAL_SOL_PT_Panel(bpy.types.Panel):
-    bl_idname = "SolutionObject_PT_Panel"
+    bl_idname = "PARTIAL_SOL_PT_Panel"
     bl_label = "Objects part of the solution"
     bl_category = "SurfaceSpray"
     bl_description = "Collection of objects in the solution."
@@ -64,3 +65,13 @@ class PARTIAL_SOL_PT_Panel(bpy.types.Panel):
         row.operator("custom.select_items", icon="GROUP", text="Select All Items in 3D View")
         row = col.row(align=True)
         row.operator("custom.delete_object", icon="X") 
+
+    def register():
+        bpy.types.Scene.custom_index = IntProperty()
+        bpy.types.Scene.custom = CollectionProperty(type=CUSTOM_PG_objectCollection)
+
+    def unregister():
+        del bpy.types.Scene.custom
+        del bpy.types.Scene.custom_index
+
+        

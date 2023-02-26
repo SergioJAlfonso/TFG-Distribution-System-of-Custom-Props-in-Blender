@@ -1,13 +1,7 @@
 import bpy
 
-
-#definimos que lo que queremos seleccionar(target de la escena) es de tipo Object
-bpy.types.Scene.target = bpy.props.PointerProperty(type=bpy.types.Object)
-bpy.types.Scene.asset = bpy.props.PointerProperty(type=bpy.types.Object)
-
-
 class MAIN_PT_Panel(bpy.types.Panel):
-    bl_idname = "Main_PT_Panel"
+    bl_idname = "MAIN_PT_Panel"
     bl_label = "Object To Distribute"
     bl_category = "SurfaceSpray"
     bl_description = "Entry Data Objects"
@@ -73,7 +67,75 @@ class MAIN_PT_Panel(bpy.types.Panel):
         # row = boxVGroup.row()
         # row.prop(context.object.vertex_groups.active, "name")
 
-    
+    def register():
+        bpy.types.Scene.threshold = bpy.props.FloatProperty(
+        name='Threshold',
+        default=0.5,
+        min = 0.0,
+        max = 1.0,
+        )
+
+        bpy.types.Scene.num_assets = bpy.props.IntProperty(
+        name='Number of Assets',
+        default=1,
+        min = 1,
+        max = 100000
+        )    
+
+        bpy.types.Scene.target = bpy.props.PointerProperty(type=bpy.types.Object)
+
+        bpy.types.Scene.asset = bpy.props.PointerProperty(type=bpy.types.Object)
+
+        bpy.types.Scene.algorithm_enum = bpy.props.EnumProperty(
+                name = "Algorithms",
+                description = "Select an option",
+                items = [('OP1', "Random", "Random Distribution", 1),
+                        ('OP2', "Poisson", "Poisson Distribution", 2),
+                        ('OP3', "Threshold", "Threshold Distribution", 3) 
+                ]
+            )
+
+        bpy.types.Scene.collectName = bpy.props.StringProperty(
+            name='Collection Name',
+            default="Objects Distributed"
+        )
+
+        bpy.types.Scene.num_searches = bpy.props.IntProperty(
+        name='Number of searches',
+        default=1,
+        min = 1,
+        max = 20,
+        update= update_max_searches
+        )
+
+        bpy.types.Scene.actual_search = bpy.props.IntProperty(
+            name='Number of the actual selected search',
+            default=1,
+            min = 1,
+            max = 20,
+            update= update_actual_search
+        )
+
+    def unregister():
+        del (bpy.types.Scene.threshold, bpy.types.Scene.num_assets, 
+             bpy.types.Scene.target, bpy.types.Scene.asset,
+             bpy.types.Scene.algorithm_enum, bpy.types.Scene.collectName,
+             bpy.types.Scene.num_searches, bpy.types.Scene.actual_search)
+
+def update_max_searches(self, context):
+    self["actual_search"] = 1
+
+def update_actual_search(self, context):
+    self["actual_search"] = min(self["actual_search"], self["num_searches"])
+    bpy.ops.addon.redistribute()
+
+
+
+
+
+
+
+
 
 
 # class VGRUP_PT_Panel(bpy.types.Panel):
