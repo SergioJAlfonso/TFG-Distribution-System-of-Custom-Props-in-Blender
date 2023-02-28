@@ -76,8 +76,8 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
         #Get objects from list.
         partialSol = []
 
-        for i in range(len(context.scene.custom)):
-            obj = context.scene.custom[i]
+        for i in range(len(context.scene.partialsol)):
+            obj = context.scene.partialsol[i]
             # EXTRACT INFO FROM OBJ
 
             partialSol.append(obj) # INJECT INFO FOR 

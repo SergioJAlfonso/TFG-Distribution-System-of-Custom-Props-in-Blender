@@ -16,6 +16,9 @@ from aima3.search import astar_search as aimaAStar
 from aima3.search import breadth_first_tree_search as aimaBFTS
 from aima3.search import depth_first_tree_search as aimaDFTS
 
+from aima3.search import Node
+from collections import deque
+
 class ALG(Enum):
     A_STAR = 1
     BACKTRACKING = 2
@@ -93,7 +96,7 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         #distribution = Demo_Over_Dist_RotRang_Distribution(rules, initialState, goalState)
         #DEPRECATED: distribution = Demo_Dist_Overlap_Distribution(rules, asset_bounding_box_local, initialState, goalState)
         
-        nodeSol = aimaBFTS(distribution)
+        nodeSol = breadth_first_tree_search(distribution,1)
 
         actionsSol = None
         if nodeSol is not None:
@@ -125,3 +128,28 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         # active object
         obj = context.object
         return (obj is not None) and (obj.mode == "OBJECT")
+    
+def breadth_first_tree_search(problem, limit = 5):
+    """
+    [Figure 3.7]
+    Search the shallowest nodes in the search tree first.
+    Search through the successors of a problem to find a goal.
+    The argument frontier should be an empty queue.
+    Repeats infinitely in case of loops.
+    """
+
+    frontier = deque([Node(problem.initial)])  # FIFO queue
+    
+    sols = []
+    found = 0
+    while frontier and found < limit :
+        node = frontier.popleft()
+        if problem.goal_test(node.state):
+            sols.append(node)
+            found += 1
+        frontier.extend(node.expand(problem))
+    
+    if len(sols) < 1:
+        return None
+    else: return None
+        

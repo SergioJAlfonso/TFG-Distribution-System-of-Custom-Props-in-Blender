@@ -126,7 +126,8 @@ class PARTIAL_SOL_OT_removeDuplicates(Operator):
         
     @classmethod
     def poll(cls, context):
-        return bool(context.scene.partialsol)
+        # return bool(context.scene.partialsol)
+        return True
         
     def execute(self, context):
         scn = context.scene

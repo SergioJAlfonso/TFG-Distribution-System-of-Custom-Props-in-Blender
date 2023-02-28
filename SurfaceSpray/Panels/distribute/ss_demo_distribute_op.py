@@ -18,6 +18,12 @@ from aima3.search import astar_search as aimaAStar
 from aima3.search import breadth_first_tree_search as aimaBFTS
 from aima3.search import depth_first_tree_search as aimaDFTS
 
+from ..partialSol.partialSol_ops import *
+
+
+from aima3.search import Node
+from collections import deque
+
 class ALG(Enum):
     A_STAR = 1
     BACKTRACKING = 2
@@ -58,6 +64,9 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
         threshold_weight = context.scene.threshold #valor de 0, 1
         num_instances = context.scene.num_assets
         
+        #Make sure there are no duplicates
+        bpy.ops.partialsol.remove_duplicates()
+
         collection = bpy.data.collections.get(nameCollection)
         collection = initCollection(collection, nameCollection)
 
@@ -68,6 +77,14 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
         # #Get bounding box
         asset_bounding_box_local = getBoundingBox(context, asset)
         target_bounding_box_local = getBoundingBox(context, target)
+
+
+        #Get objects from list.
+        partialSol = []
+
+        for i in range(len(context.scene.partialsol)):
+            obj = context.scene.partialsol[i]
+            partialSol.append(obj)
 
         # Bounding info
         # for i in range(len(asset_bounding_box_local)):
@@ -104,7 +121,7 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
             #DEPRECATED: distribution = Demo_Dist_Overlap_Distribution(rules, asset_bounding_box_local, initialState, goalState)
             for i in range(context.scene.num_searches):
                 print("Solution: ", i)
-                context.scene.solution_nodes.append(aimaBFTS(distribution))
+                context.scene.solution_nodes.append(breadth_first_tree_search(distribution, 1))
 
         return self.change_search(context, context.scene.solution_nodes[context.scene.actual_search-1], vertices, asset, asset_bounding_box_local, collection, target)
             
@@ -140,3 +157,26 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
         # active object
         obj = context.object
         return (obj is not None) and (obj.mode == "OBJECT")
+    
+
+def breadth_first_tree_search(problem, limit = 5):
+    """
+    [Figure 3.7]
+    Search the shallowest nodes in the search tree first.
+    Search through the successors of a problem to find a goal.
+    The argument frontier should be an empty queue.
+    Repeats infinitely in case of loops.
+    """
+
+    frontier = deque([Node(problem.initial)])  # FIFO queue
+    
+    sols = []
+    found = 0
+    while frontier and found < limit :
+        node = frontier.popleft()
+        if problem.goal_test(node.state):
+            sols.append(node)
+            found += 1
+        frontier.extend(node.expand(problem))
+    return None
+
