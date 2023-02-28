@@ -103,9 +103,9 @@ class SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION(bpy.types.Operator):
 
 
         if context.scene.solution_nodes == []:
-            self.report({'INFO'}, "Solution nodes empty, rellenating")
+            self.report({'INFO'}, "Solution nodes empty, refilling")
 
-            initialState = StateGrid(vertices, 0)
+            initialState = StateGrid(vertices, len(context.scene.partialsol))
             #Potential final state 
 
             num_assets = min(num_instances, len(vertices))
