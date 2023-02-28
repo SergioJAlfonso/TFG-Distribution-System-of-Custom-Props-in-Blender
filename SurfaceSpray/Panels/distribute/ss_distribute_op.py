@@ -96,7 +96,7 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         #distribution = Demo_Over_Dist_RotRang_Distribution(rules, initialState, goalState)
         #DEPRECATED: distribution = Demo_Dist_Overlap_Distribution(rules, asset_bounding_box_local, initialState, goalState)
         
-        nodeSol = breadth_first_tree_search(distribution,1)
+        nodeSol = aimaBFTS(distribution)
 
         actionsSol = None
         if nodeSol is not None:

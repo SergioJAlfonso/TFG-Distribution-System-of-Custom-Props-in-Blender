@@ -23,8 +23,8 @@ class ALG(Enum):
     BACKTRACKING = 2
     BEST_FIST_SEARCH = 3
 
-class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
-    bl_idname = "addon.distributedemo"
+class SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION(bpy.types.Operator):
+    bl_idname = "addon.distribute_partialdemo"
     bl_label = "Distribute Operator"
     bl_description = "Distribute object over a surface"
 
@@ -59,7 +59,8 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
         num_instances = context.scene.num_assets
         
         collection = bpy.data.collections.get(nameCollection)
-        collection = initCollection(collection, nameCollection)
+        
+        collection = initCollection(collection, nameCollection, True)
 
         bpy.ops.object.select_all(action='DESELECT')
         # #Scale asset if necessary
@@ -73,14 +74,17 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
         #Make sure there are no duplicates
         bpy.ops.partialsol.remove_duplicates()
 
+
         #Get objects from list.
         partialSol = []
 
         for i in range(len(context.scene.partialsol)):
             obj = context.scene.partialsol[i]
             # EXTRACT INFO FROM OBJ
+            bbox = getBoundingBox(context, obj.obj)
+            itemSol = Item(obj.name, obj.obj, obj.obj.location, bbox)
+            partialSol.append(itemSol) # INJECT INFO FOR
 
-            partialSol.append(obj) # INJECT INFO FOR 
 
         # Bounding info
         # for i in range(len(asset_bounding_box_local)):

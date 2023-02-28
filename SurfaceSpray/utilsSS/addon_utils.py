@@ -61,9 +61,17 @@ def TestBoundingBox(context, boundingBox):
         )
         empty.location = co
 
-def clearCollection(collection):
+def clearCollection(collection, checkPartialSol = False):
+    partialSol = bpy.context.scene.partialsol
+    
     for obj in collection.objects:
-        bpy.data.objects.remove(obj, do_unlink=True)
+        #Search if object is a partial sol. If it is, dont remove it.
+        j = 0
+        while(j < len(partialSol) and  obj.name != partialSol[j].name):
+            j+=1
+
+        if(j >= len(partialSol)):    
+            bpy.data.objects.remove(obj, do_unlink=True)
 
 def filterVerticesByWeightThreshold(vertices, weightThreshold):
     """Filters vertices array by weight threshold, so each vertex weight greater or
@@ -85,7 +93,7 @@ def filterVerticesByWeightThreshold(vertices, weightThreshold):
 
     return elegibles
 
-def initCollection(collection, nameCollection):
+def initCollection(collection, nameCollection, checkPartialSol = False):
     """ 
     If collection with given name exists, it's cleaned of objects.
     Else, it's created from zero.
@@ -96,7 +104,7 @@ def initCollection(collection, nameCollection):
     #Si existe, borramos sus objetos, de lo contrario, 
     #creamos una coleccion nueva
     if collection is not None:
-        clearCollection(collection)
+        clearCollection(collection, checkPartialSol)
     else:
         collection = bpy.data.collections.new(nameCollection)
         bpy.context.scene.collection.children.link(collection)

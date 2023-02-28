@@ -2,7 +2,8 @@
 # 1 is created for every asset that is selected. 
 
 class Item:
-    def __init__(self, name, obj, attr):
+    def __init__(self, name, obj, bbox, pos):
         self.name = name
         self.blender_obj = obj
-        self.attributes = attr
+        self.bounding_box = bbox
+        self.position = pos
