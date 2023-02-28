@@ -21,7 +21,7 @@ class MAIN_PT_Panel(bpy.types.Panel):
         
         # Add-on distribute buttons
         row.operator('addon.distribute', text = "Distribute")
-        row.operator('addon.distributedemo', text = "DistributeDemo")
+        row.operator('addon.distributepartialdemo', text = "DistributeDemo")
         row.operator('addon.clear', text = "Clear")
 
         # Distribution Parameters box

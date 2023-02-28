@@ -32,6 +32,7 @@ from bpy.props import (PointerProperty,IntProperty, CollectionProperty)
 from .Panels.distribute.ss_clear_op import Clear_OT_Operator
 from .Panels.distribute.ss_distribute_op import SurfaceSpray_OT_Operator
 from .Panels.distribute.ss_demo_distribute_op import SurfaceSpray_OT_Operator_DEMO_SELECTION
+from .Panels.distribute.ss_demo_partial_distribute_op import SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION
 from .Panels.distribute.ss_redistribute_op import Redistribute_OT_Operator
 
 from .Panels.distribute.distribute_panel import MAIN_PT_Panel
@@ -55,8 +56,9 @@ from .Panels.subdivide_panel import SUBDIVIDE_PT_Panel
 classes = ( MAIN_PT_Panel, PARTIAL_SOL_PG_objectCollection,PARTIAL_SOL_OT_actions,PARTIAL_SOL_OT_addViewportSelection,
            PARTIAL_SOL_OT_clearList,PARTIAL_SOL_OT_removeDuplicates,PARTIAL_SOL_OT_selectItems,
            PARTIAL_SOL_UL_items,PARTIAL_SOL_OT_update_list,PARTIAL_SOL_PT_Panel,
-           SUBDIVIDE_PT_Panel ,RULES_PT_Panel, SurfaceSpray_OT_Operator, 
-           SurfaceSpray_OT_Operator_DEMO_SELECTION, 
+           SUBDIVIDE_PT_Panel ,RULES_PT_Panel, 
+           SurfaceSpray_OT_Operator, 
+           SurfaceSpray_OT_Operator_DEMO_SELECTION, SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION,
            Redistribute_OT_Operator, Clear_OT_Operator)
 
 def verify_user_sitepackages():
