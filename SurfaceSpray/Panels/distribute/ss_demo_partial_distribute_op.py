@@ -69,6 +69,19 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
         asset_bounding_box_local = getBoundingBox(context, asset)
         target_bounding_box_local = getBoundingBox(context, target)
 
+
+        #Make sure there are no duplicates
+        bpy.ops.partialsol.remove_duplicates()
+
+        #Get objects from list.
+        partialSol = []
+
+        for i in range(len(context.scene.custom)):
+            obj = context.scene.custom[i]
+            # EXTRACT INFO FROM OBJ
+
+            partialSol.append(obj) # INJECT INFO FOR 
+
         # Bounding info
         # for i in range(len(asset_bounding_box_local)):
         #     print('Vértice ', i,'(x, y, z): ', asset_bounding_box_local[i])
