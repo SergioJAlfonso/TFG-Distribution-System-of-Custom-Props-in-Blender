@@ -23,8 +23,8 @@ class ALG(Enum):
     BACKTRACKING = 2
     BEST_FIST_SEARCH = 3
 
-class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
-    bl_idname = "addon.distributedemo"
+class SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION(bpy.types.Operator):
+    bl_idname = "addon.distributepartialdemo"
     bl_label = "Distribute Operator"
     bl_description = "Distribute object over a surface"
 
@@ -78,14 +78,8 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
 
         for i in range(len(context.scene.partialsol)):
             obj = context.scene.partialsol[i]
-            # EXTRACT INFO FROM OBJ
+            partialSol.append(obj)
 
-            partialSol.append(obj) # INJECT INFO FOR 
-
-        # Bounding info
-        # for i in range(len(asset_bounding_box_local)):
-        #     print('Vértice ', i,'(x, y, z): ', asset_bounding_box_local[i])
-        
         # #Subdivide target to fit assets in every vertex
         if (context.scene.subdivide):
             makeSubdivision(target, asset_bounding_box_local, target_bounding_box_local, numCutsSubdivision)
@@ -99,9 +93,9 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
 
 
         if context.scene.solution_nodes == []:
-            self.report({'INFO'}, "Solution nodes empty, rellenating")
+            self.report({'INFO'}, "Solution nodes empty, refilling")
 
-            initialState = StateGrid(vertices, 0)
+            initialState = StateGrid(vertices, len(context.scene.partialsol))
             #Potential final state 
 
             num_assets = min(num_instances, len(vertices))
