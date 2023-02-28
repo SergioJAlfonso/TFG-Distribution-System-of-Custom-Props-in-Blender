@@ -120,6 +120,7 @@ class ThresholdRandDistribution(aimaProblem):
             i = randomIndices[j]
             if (self.checkRestrictions(state, i) == True):
                 j = 0
+                
                 # Check that is not a vertex that is already used
                 while (j < len(possibleActions) and (possibleActions[j].indexVertex != i)):
                     j += 1
