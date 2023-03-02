@@ -21,7 +21,7 @@ class MAIN_PT_Panel(bpy.types.Panel):
         
         # Add-on distribute buttons
         row.operator('addon.distribute', text = "Distribute")
-        row.operator('addon.distribute_partialdemo', text = "DistributeDemo")
+        row.operator('addon.distribute_partialdemo', text = "Multi Distribute")
         row.operator('addon.clear', text = "Clear")
 
         # Distribution Parameters box
@@ -39,7 +39,7 @@ class MAIN_PT_Panel(bpy.types.Panel):
 
         box2 = layout.box()
 
-        box2.label(text="Distribute Demo")
+        box2.label(text="Multi Distribute")
 
         box2.row().prop(context.scene, "num_searches")
         box2.row().prop(context.scene, "actual_search")

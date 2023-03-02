@@ -8,7 +8,8 @@ from ...ItemClasses.DefaultAttributes.FurnitureAttribs import *
 
 from ...utilsSS.draw_utils import *
 from ...utilsSS.addon_utils import *
-from ...heuristicsSS.ThresholdRandDistribution import *
+# from ...heuristicsSS.ThresholdRandDistribution import *
+from ...heuristicsSS.ThresholdRandDistributionV2_PartialSol import *
 from ...heuristicsSS.Demos.Demo_Dist_RotRang_Distribution import *
 from ...heuristicsSS.Demos.Demo_Dist_Overlap_Distribution import *
 from ...utilsSS.addon_utils import *
@@ -116,7 +117,7 @@ class SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION(bpy.types.Operator):
             # Establishes rules for the assets in order to place them correctly
             rules = setPanelItemRules(context)
             
-            distribution = ThresholdRandDistribution(rules, asset_bounding_box_local, initialState, goalState)    
+            distribution = ThresholdRandDistributionPartialSol(rules, asset_bounding_box_local, initialState, goalState)    
             #distribution = Demo_Over_Dist_RotRang_Distribution(rules, initialState, goalState)
             #DEPRECATED: distribution = Demo_Dist_Overlap_Distribution(rules, asset_bounding_box_local, initialState, goalState)
             for i in range(context.scene.num_searches):
