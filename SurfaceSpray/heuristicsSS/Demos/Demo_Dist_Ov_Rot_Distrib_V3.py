@@ -52,6 +52,13 @@ class Demo_Dist_Ov_Rot_Distrib_V3(aimaProblem):
 
         return False
 
+    def boundingSphereOverlapping(self, verA, verB, radius):
+        #Distance between verA and verB
+        distance = math.sqrt((verB[0] - verA[0])**2 + (verB[1] - verA[1])**2 + (verB[2] - verA[2])**2)
+
+        # True if distance < diameter
+        return distance < radius*2
+
     def checkRestrictions(self, state, indexVertex):
         """
         Checks all restrictions by rules.
@@ -64,18 +71,22 @@ class Demo_Dist_Ov_Rot_Distrib_V3(aimaProblem):
         if (state.vertices_[indexVertex][2]):
             return False
 
-        # Vertex we potentially want to place an object on.
+        # Vertex we potentially want to place an object on it.
         pCandidate = state.vertices_[indexVertex][0]
 
-        # Random rotation applied to the object
-        rotation = self.random_step_rotation()
+        # Get BBox/BShpere parameters
+        if (self.rules.overlap):
 
-        if (not self.rules.overlap):
-            # Vertex A limits
-            max_X, min_X, max_Y, min_Y, max_Z, min_Z = self.getVertexBBoxLimits(
-                pCandidate)
+            if (self.rules.use_bounding_box):
+                # Vertex A limits
+                max_X, min_X, max_Y, min_Y, max_Z, min_Z = self.getVertexBBoxLimits(
+                    pCandidate)
 
-            vertex_bbox_limits = (max_X, min_X, max_Y, min_Y, max_Z, min_Z)
+                vertex_bbox_limits = (max_X, min_X, max_Y, min_Y, max_Z, min_Z)
+            else:
+                # Vertex A radius
+                vertex_bsphere_radius = max(
+                    self.half_bounding_size_x, self.half_bounding_size_y, self.half_bounding_size_z)
 
         i = 0
         satisfiesRestrictions = True
@@ -85,12 +96,20 @@ class Demo_Dist_Ov_Rot_Distrib_V3(aimaProblem):
             indexVertex = state.actionsApplied_[i].indexVertex
             vertexInUse = state.vertices_[indexVertex][0]
 
-            # Check bounding box overlap if needed
-            if (not self.rules.overlap):
-                satisfiesRestrictions = not self.boundingBoxOverlapping(
-                    vertex_bbox_limits, vertexInUse)
+            # Check bounding overlap if needed
+            if (self.rules.overlap):
 
-            # Calculates distance between 2 tridimensional points.
+                # Using box
+                if (self.rules.use_bounding_box):
+                    satisfiesRestrictions = not self.boundingBoxOverlapping(
+                        vertex_bbox_limits, vertexInUse)
+
+                # Using sphere
+                else:
+                    satisfiesRestrictions = not self.boundingSphereOverlapping(
+                        pCandidate, vertexInUse, vertex_bsphere_radius)
+
+                    # Calculates distance between 2 tridimensional points.
             distance = math.sqrt((vertexInUse[0]-pCandidate[0])**2 + (
                 vertexInUse[1]-pCandidate[1])**2 + (vertexInUse[2]-pCandidate[2])**2)
             # Compares if distance is lesser or equals to minimum distance.
@@ -98,7 +117,7 @@ class Demo_Dist_Ov_Rot_Distrib_V3(aimaProblem):
 
             i += 1
 
-        return satisfiesRestrictions, rotation
+        return satisfiesRestrictions
 
     def actions(self, state):
         """
@@ -121,20 +140,16 @@ class Demo_Dist_Ov_Rot_Distrib_V3(aimaProblem):
         j = 0
         while (remaining > 0 and j < sizeV):
             i = randomIndices[j]
-
-            satisfiesRestrictions, rotation = self.checkRestrictions(state, i)
-
-            if (satisfiesRestrictions):
+            if (self.checkRestrictions(state, i) == True):
                 j = 0
-                
-                #TODO: delete if not needed
-                # Check that is not a vertex that is already used 
-                # while (j < len(possibleActions) and (possibleActions[j].indexVertex != i)):
-                #     j += 1
+
+                # Check that is not a vertex that is already used
+                while (j < len(possibleActions) and (possibleActions[j].indexVertex != i)):
+                    j += 1
 
                 if (j < len(possibleActions) or len(possibleActions) == 0):
                     remaining -= 1
-                    action = Actions(i, rotation)
+                    action = Actions(i, self.random_step_rotation())
                     possibleActions.append(action)
 
             j += 1

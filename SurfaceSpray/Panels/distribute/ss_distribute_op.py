@@ -116,14 +116,12 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
             return {'FINISHED'}
 
         objectsData = []
+        #We obtain data from actions to create real objects.
         for i in range(len(actionsSol)):
             indexVertex = actionsSol[i].indexVertex
             objRotation = actionsSol[i].rotation
             objectsData.append(
                 [vertices[indexVertex][0], vertices[indexVertex][1], objRotation])
-
-        # sol = distribution.distribute(data_tridimensional, asset_bounding_box_local,
-        #                               num_instances, threshold_weight, )
 
         createObjectsInPoints(objectsData, asset,
                               asset_bounding_box_local, collection)

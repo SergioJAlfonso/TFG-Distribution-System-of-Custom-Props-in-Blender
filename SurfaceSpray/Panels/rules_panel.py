@@ -145,9 +145,9 @@ class RULES_PT_Panel(bpy.types.Panel):
         )
 
         bpy.types.Scene.overlap_bool = bpy.props.BoolProperty(
-            name='Allow Overlap',
+            name='Don\'t Allow Overlap',
             description = "This checkbox allows the assets to overlap with each other",
-            default=False
+            default=True
         )
 
         bpy.types.Scene.bbox_bool = bpy.props.BoolProperty(

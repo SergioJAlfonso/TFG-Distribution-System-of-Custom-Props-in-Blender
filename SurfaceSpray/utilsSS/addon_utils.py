@@ -257,6 +257,8 @@ def setPanelItemRules(context):
 
     can_overlap = context.scene.overlap_bool
 
+    use_box = context.scene.bbox_bool
+
     item_distance = context.scene.item_distance
 
     #Set Item rules
@@ -266,6 +268,7 @@ def setPanelItemRules(context):
     rules.rotation_range = [rotation_range_x, rotation_range_y, rotation_range_z]
     rules.rotation_steps = [rotation_steps_x, rotation_steps_y, rotation_steps_z]
     rules.overlap = can_overlap
+    rules.use_bounding_box = use_box
     rules.distance_between_items = item_distance
 
     return rules
