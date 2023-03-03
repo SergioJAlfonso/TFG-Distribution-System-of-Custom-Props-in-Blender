@@ -204,6 +204,37 @@ def createObjectsInPoints(points, object, boundingBoxObject, collection):
         #Set Active object to new object so we can duplicate from this point
         object = bpy.context.active_object
 
+def createObjectsInPointsN(objectData, object, boundingBoxObject, collection):
+    inCollection = False 
+    #In case something else has been selected, we deselect everything
+    bpy.ops.object.select_all(action='DESELECT')
+    #Set Active object in case it has changed
+    bpy.context.view_layer.objects.active = object 
+    #Create object in points
+    
+    for i in range(len(objectData)):
+        object.select_set(True)
+        bpy.ops.object.duplicate(linked=1)
+        #We catch new object duplicated
+        newObj = bpy.context.active_object
+        
+        newObj.location = objectData[i][0]
+        #Set location relative to size
+        adjustPosition(newObj, boundingBoxObject, objectData[i][1])
+
+        #newObj.rotation_euler = Euler(points[i][2], 'XYZ')
+
+        #Unlink from all collections and link in desired collection
+        if(inCollection == False):
+            linkedCollection = newObj.users_collection
+            #Link before unlink from everything
+            collection.objects.link(newObj)
+            for col in linkedCollection:
+                if(col is not None): col.objects.unlink(newObj)
+            inCollection = True
+        #Set Active object to new object so we can duplicate from this point
+        object = bpy.context.active_object
+
 def adjustPosition(object, boundingBoxObject, normal):
     # object.location[2] += abs(boundingBoxObject[0][2])
     for i in range(3):
