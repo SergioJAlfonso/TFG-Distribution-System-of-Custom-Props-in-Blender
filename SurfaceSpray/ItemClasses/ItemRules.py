@@ -22,5 +22,8 @@ class ItemRules:
         # Item can overlap with another item
         self.overlap = False
 
+        # Uses box or sphere
+        self.use_bounding_box = False
+
         # TODO: Distance percentage to the center of the target
         
