@@ -67,10 +67,10 @@ def clearCollection(collection, checkPartialSol = False):
     for obj in collection.objects:
         #Search if object is a partial sol. If it is, dont remove it.
         j = 0
-        while(j < len(partialSol) and  obj.name != partialSol[j].name):
+        while(checkPartialSol and j < len(partialSol) and  obj.name != partialSol[j].name):
             j+=1
 
-        if(j >= len(partialSol)):    
+        if(j >= len(partialSol) or checkPartialSol == False):    
             bpy.data.objects.remove(obj, do_unlink=True)
 
 def filterVerticesByWeightThreshold(vertices, weightThreshold):
