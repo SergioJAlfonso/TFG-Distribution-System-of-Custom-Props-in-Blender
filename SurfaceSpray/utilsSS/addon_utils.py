@@ -47,6 +47,32 @@ def getBoundingBox(context, object):
 
     return asset_bounding_box_local
 
+def boundingBoxOverlapping(bbox_limits_A, bbox_limits_B):
+    """
+    Checks if the bounding box of Vertex A and Vertex B are overlapping
+
+    Returns True or False
+    """
+    # Overlap Condition
+    #Checking if any limit vertex of bounding box A is inside bounding box B.
+    return (bbox_limits_A[0] >= bbox_limits_B[1] and bbox_limits_A[1] <= bbox_limits_B[0] and
+        bbox_limits_A[2] >= bbox_limits_B[3] and bbox_limits_A[3] <= bbox_limits_B[2] and
+        bbox_limits_A[4] >= bbox_limits_B[5] and bbox_limits_A[5] <= bbox_limits_B[4])
+
+def getVertexBBoxLimits(vertex, half_bounding_size_x, half_bounding_size_y, half_bounding_size_z):
+    """
+    Returns the limits of the bounding box
+    """
+    max_X = vertex[0] + half_bounding_size_x
+    min_X = vertex[0] - half_bounding_size_x
+    max_Y = vertex[1] + half_bounding_size_y
+    min_Y = vertex[1] - half_bounding_size_y
+    max_Z = vertex[2] + half_bounding_size_z
+    min_Z = vertex[2] - half_bounding_size_z
+
+    return (max_X, min_X, max_Y, min_Y, max_Z, min_Z)
+
+
 def TestBoundingBox(context, boundingBox):
     """
     Crea objetos en las esquinas de la boundin box -> Depuracion

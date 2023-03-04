@@ -7,6 +7,7 @@ import numpy as np
 from enum import Enum
 
 from ..utilsSS.Actions import *
+from ..utilsSS.addon_utils import *
 from aima3.search import Problem as aimaProblem
 
 
@@ -22,37 +23,6 @@ class ThresholdRandDistributionPartialSol(aimaProblem):
         self.half_bounding_size_z = (bbox[1][2] - bbox[0][2])/2.0
         #Partial Sol Objects
         self.partialSol = partialSol_
-
-    def getVertexBBoxLimits(self, vertex):
-        """
-        Returns the limits of the bounding box
-        """
-        max_X = vertex[0] + self.half_bounding_size_x
-        min_X = vertex[0] - self.half_bounding_size_x
-        max_Y = vertex[1] + self.half_bounding_size_y
-        min_Y = vertex[1] - self.half_bounding_size_y
-        max_Z = vertex[2] + self.half_bounding_size_z
-        min_Z = vertex[2] - self.half_bounding_size_z
-
-        return max_X, min_X, max_Y, min_Y, max_Z, min_Z
-
-    def boundingBoxOverlapping(self, verA, verB):
-        """
-        Checks is the bounding box of Vertex A and Vertex B are overlapping
-
-        Returns True or False
-        """
-        # Vertex B limits
-        max_B_X, min_B_X, max_B_Y, min_B_Y, max_B_Z, min_B_Z = self.getVertexBBoxLimits(
-            verB)
-
-        # Overlap Condition
-        if (verA[0] >= min_B_X and verA[1] <= max_B_X and
-           verA[2] >= min_B_Y and verA[3] <= max_B_Y and
-           verA[4] >= min_B_Z and verA[5] <= max_B_Z):
-            return True
-
-        return False
 
     def checkRestrictions(self, state, indexVertex):
         """
@@ -71,10 +41,8 @@ class ThresholdRandDistributionPartialSol(aimaProblem):
 
         if (not self.rules.overlap):
             # Vertex A limits
-            max_X, min_X, max_Y, min_Y, max_Z, min_Z = self.getVertexBBoxLimits(
-                pCandidate)
-
-            vertex_bbox_limits = (max_X, min_X, max_Y, min_Y, max_Z, min_Z)
+            bbox_limits_Candidate = getVertexBBoxLimits(
+                pCandidate, self.half_bounding_size_x,self.half_bounding_size_y, self.half_bounding_size_z)
 
         i = 0
         satisfiesRestrictions = True
@@ -87,8 +55,12 @@ class ThresholdRandDistributionPartialSol(aimaProblem):
 
             # Check bounding box overlap if needed
             if (not self.rules.overlap):
-                satisfiesRestrictions = not self.boundingBoxOverlapping(
-                    vertex_bbox_limits, vertexInUse)
+                # Vertex B limits
+                bbox_limits_ActionObject = getVertexBBoxLimits(
+                    vertexInUse, self.half_bounding_size_x,self.half_bounding_size_y, self.half_bounding_size_z)
+
+                satisfiesRestrictions = not boundingBoxOverlapping(
+                    bbox_limits_Candidate, bbox_limits_ActionObject)
 
             # Calculates distance between 2 tridimensional points.
             distance = math.sqrt((vertexInUse[0]-pCandidate[0])**2 + (
@@ -98,10 +70,23 @@ class ThresholdRandDistributionPartialSol(aimaProblem):
 
             i += 1
 
-        #We need to also check if this object satisfies all restrictions with objects in partial solution
+        #We need to also check if this object satisfies all restrictions with partial solution objects 
         i = 0
-        # satisfiesRestrictions = True
-        # while(i < len(self.partialSol) and satisfiesRestrictions == True):
+        satisfiesRestrictions = True
+        while(i < len(self.partialSol) and satisfiesRestrictions == True):
+            # Check bounding box overlap if needed
+            
+            partialObjectLocation = self.partialSol[i].position
+            if (not self.rules.overlap):
+                satisfiesRestrictions = not boundingBoxOverlapping(
+                    bbox_limits_Candidate, partialObjectLocation)
+
+            distance = math.sqrt((partialObjectLocation[0]-pCandidate[0])**2 + (
+                partialObjectLocation[1]-pCandidate[1])**2 + (partialObjectLocation[2]-pCandidate[2])**2)
+            # Compares if distance is lesser or equals to minimum distance.
+            satisfiesRestrictions = satisfiesRestrictions and distance >= self.rules.distance_between_items
+
+            i += 1
 
         return satisfiesRestrictions
 

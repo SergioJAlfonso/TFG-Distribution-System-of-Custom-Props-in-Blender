@@ -20,9 +20,15 @@ class MAIN_PT_Panel(bpy.types.Panel):
         col.prop_search(context.scene, "target", context.scene, "objects", text="Target Object")
         
         # Add-on distribute buttons
-        row.operator('addon.distribute', text = "Distribute")
-        row.operator('addon.distribute_partialdemo', text = "Multi Distribute")
-        row.operator('addon.clear', text = "Clear")
+        row.operator('addon.distribute', icon='OUTLINER_OB_POINTCLOUD', text = "Distribute")
+        row.operator('addon.distribute_partialdemo', icon='OUTLINER_OB_POINTCLOUD', text = "Multi Distribute")
+        row.operator('addon.clear', icon='OUTLINER_DATA_POINTCLOUD', text = "Clear")
+
+        #Painting Mode
+        row = layout.row()
+        row.operator('addon.enter_paint_mode', icon='WPAINT_HLT', text = "Paint")
+        if (context.active_object.mode == "WEIGHT_PAINT"):
+                row.operator('addon.exit_paint_mode', icon='LOOP_BACK', text = "Exit")
 
         # Distribution Parameters box
         box3 = layout.box()
