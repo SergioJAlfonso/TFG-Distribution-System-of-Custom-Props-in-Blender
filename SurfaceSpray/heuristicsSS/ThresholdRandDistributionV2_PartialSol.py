@@ -39,7 +39,7 @@ class ThresholdRandDistributionPartialSol(aimaProblem):
         # Vertex we potentially want to place an object on it.
         pCandidate = state.vertices_[indexVertex][0]
 
-        if (not self.rules.overlap):
+        if (self.rules.overlap):
             # Vertex A limits
             bbox_limits_Candidate = getVertexBBoxLimits(
                 pCandidate, self.half_bounding_size_x,self.half_bounding_size_y, self.half_bounding_size_z)
@@ -54,7 +54,7 @@ class ThresholdRandDistributionPartialSol(aimaProblem):
             vertexInUse = state.vertices_[indexVertex][0]
 
             # Check bounding box overlap if needed
-            if (not self.rules.overlap):
+            if (self.rules.overlap):
                 # Vertex B limits
                 bbox_limits_ActionObject = getVertexBBoxLimits(
                     vertexInUse, self.half_bounding_size_x,self.half_bounding_size_y, self.half_bounding_size_z)
@@ -77,9 +77,20 @@ class ThresholdRandDistributionPartialSol(aimaProblem):
             # Check bounding box overlap if needed
             
             partialObjectLocation = self.partialSol[i].position
-            if (not self.rules.overlap):
+
+
+
+            if (self.rules.overlap):
+                bbox = self.partialSol[i].bounding_box
+                half_bounding_size_x = (bbox[4][0] - bbox[0][0])/2.0
+                half_bounding_size_y = (bbox[2][1] - bbox[0][1])/2.0
+                half_bounding_size_z = (bbox[1][2] - bbox[0][2])/2.0
+
+                bbox_limits_PartialObject = getVertexBBoxLimits(
+                    partialObjectLocation, half_bounding_size_x, half_bounding_size_y, half_bounding_size_z)
+
                 satisfiesRestrictions = not boundingBoxOverlapping(
-                    bbox_limits_Candidate, partialObjectLocation)
+                    bbox_limits_Candidate, bbox_limits_PartialObject)
 
             distance = math.sqrt((partialObjectLocation[0]-pCandidate[0])**2 + (
                 partialObjectLocation[1]-pCandidate[1])**2 + (partialObjectLocation[2]-pCandidate[2])**2)

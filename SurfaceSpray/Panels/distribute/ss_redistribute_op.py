@@ -26,7 +26,7 @@ class Redistribute_OT_Operator(bpy.types.Operator):
         threshold_weight = context.scene.threshold #valor de 0, 1
         
         collection = bpy.data.collections.get(nameCollection)
-        collection = initCollection(collection, nameCollection)
+        collection = initCollection(collection, nameCollection, True)
 
         bpy.ops.object.select_all(action='DESELECT')
 
