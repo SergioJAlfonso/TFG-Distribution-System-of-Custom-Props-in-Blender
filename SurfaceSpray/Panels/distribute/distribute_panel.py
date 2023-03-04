@@ -25,10 +25,18 @@ class MAIN_PT_Panel(bpy.types.Panel):
         row.operator('addon.clear', icon='OUTLINER_DATA_POINTCLOUD', text = "Clear")
 
         #Painting Mode
-        row = layout.row()
+        box1 = layout.box()
+        row = box1.row()
         row.operator('addon.enter_paint_mode', icon='WPAINT_HLT', text = "Paint")
         if (context.active_object.mode == "WEIGHT_PAINT"):
                 row.operator('addon.exit_paint_mode', icon='LOOP_BACK', text = "Exit")
+                
+                row = box1.row()
+                row.operator('addon.invert_painting', icon='UV_SYNC_SELECT', text = "Invert")
+
+                row = box1.row()
+                row.operator('addon.paint_all', icon='MATFLUID', text = "Paint All:")
+                row.column().prop(context.scene, "allWeightValue", text = "Weight Value")
 
         # Distribution Parameters box
         box3 = layout.box()
@@ -76,6 +84,13 @@ class MAIN_PT_Panel(bpy.types.Panel):
     def register():
         bpy.types.Scene.threshold = bpy.props.FloatProperty(
         name='Threshold',
+        default=0.5,
+        min = 0.0,
+        max = 1.0,
+        )
+
+        bpy.types.Scene.allWeightValue = bpy.props.FloatProperty(
+        name='All Weight Value',
         default=0.5,
         min = 0.0,
         max = 1.0,

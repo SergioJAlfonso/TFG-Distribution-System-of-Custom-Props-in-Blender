@@ -30,8 +30,10 @@ import sys, os, site
 from bpy.props import (PointerProperty,IntProperty, CollectionProperty)
 
 from .Panels.distribute.ss_clear_op import Clear_OT_Operator
-from .Panels.distribute.ss_paint_op import PaintMode_OT_Operator
-from .Panels.distribute.ss_exit_paint_op import ExitPaintMode_OT_Operator
+from .Panels.distribute.ss_paint_op import (PaintMode_OT_Operator, 
+                                            ExitPaintMode_OT_Operator,
+                                            InvertPainting_OT_Operator,
+                                            PaintAll_OT_Operator)
 from .Panels.distribute.ss_distribute_op import SurfaceSpray_OT_Operator
 from .Panels.distribute.ss_demo_distribute_op import SurfaceSpray_OT_Operator_DEMO_SELECTION
 from .Panels.distribute.ss_demo_partial_distribute_op import SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION
@@ -61,6 +63,8 @@ classes = ( MAIN_PT_Panel, PARTIAL_SOL_PG_objectCollection,PARTIAL_SOL_OT_action
            SUBDIVIDE_PT_Panel ,RULES_PT_Panel, SurfaceSpray_OT_Operator, 
            PaintMode_OT_Operator,
            ExitPaintMode_OT_Operator,
+           InvertPainting_OT_Operator,
+           PaintAll_OT_Operator,
            SurfaceSpray_OT_Operator_DEMO_SELECTION,
            SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION, 
            Redistribute_OT_Operator, Clear_OT_Operator)
