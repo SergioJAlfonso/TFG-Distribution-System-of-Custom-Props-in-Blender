@@ -49,12 +49,16 @@ class PARTIAL_SOL_OT_actions(Operator):
                 
         if self.action == 'ADD':
             if context.object:
-                item = scn.partialsol.add()
-                item.name = context.object.name
-                item.obj = context.object
-                scn.partialsol_index = len(scn.partialsol)-1
-                info = '"%s" added to list' % (item.name)
-                self.report({'INFO'}, info)
+
+                if(context.object == context.scene.target):
+                    self.report({'INFO'}, "Shouldn't add TARGET object!")
+                else:
+                    item = scn.partialsol.add()
+                    item.name = context.object.name
+                    item.obj = context.object
+                    scn.partialsol_index = len(scn.partialsol)-1
+                    info = '"%s" added to list' % (item.name)
+                    self.report({'INFO'}, info)
             else:
                 self.report({'INFO'}, "Nothing selected in the Viewport")
         return {"FINISHED"}
@@ -73,12 +77,16 @@ class PARTIAL_SOL_OT_addViewportSelection(Operator):
         if selected_objs:
             new_objs = []
             for i in selected_objs:
-                item = scn.partialsol.add()
-                item.name = i.name
-                item.obj = i
-                new_objs.append(item.name)
+                if(i == context.scene.target):
+                    self.report({'INFO'}, "Shouldn't add TARGET object!")
+                else:
+                    item = scn.partialsol.add()
+                    item.name = i.name
+                    item.obj = i
+                    new_objs.append(item.name)
             info = ', '.join(map(str, new_objs))
-            self.report({'INFO'}, 'Added: "%s"' % (info))
+            if(len(new_objs) > 0):
+                self.report({'INFO'}, 'Added: "%s"' % (info))
         else:
             self.report({'INFO'}, "Nothing selected in the Viewport")
         return{'FINISHED'}

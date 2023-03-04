@@ -7,6 +7,7 @@ import numpy as np
 from enum import Enum
 
 from ...utilsSS.Actions import *
+from ...utilsSS.addon_utils import *
 from aima3.search import Problem as aimaProblem
 
 
@@ -20,44 +21,6 @@ class Demo_Dist_Ov_Rot_Distrib_V3(aimaProblem):
         self.half_bounding_size_x = (bbox[4][0] - bbox[0][0])/2.0
         self.half_bounding_size_y = (bbox[2][1] - bbox[0][1])/2.0
         self.half_bounding_size_z = (bbox[1][2] - bbox[0][2])/2.0
-
-    def getVertexBBoxLimits(self, vertex):
-        """
-        Returns the limits of the bounding box
-        """
-        max_X = vertex[0] + self.half_bounding_size_x
-        min_X = vertex[0] - self.half_bounding_size_x
-        max_Y = vertex[1] + self.half_bounding_size_y
-        min_Y = vertex[1] - self.half_bounding_size_y
-        max_Z = vertex[2] + self.half_bounding_size_z
-        min_Z = vertex[2] - self.half_bounding_size_z
-
-        return max_X, min_X, max_Y, min_Y, max_Z, min_Z
-
-    def boundingBoxOverlapping(self, verA, verB):
-        """
-        Checks is the bounding box of Vertex A and Vertex B are overlapping
-
-        Returns True or False
-        """
-        # Vertex B limits
-        max_B_X, min_B_X, max_B_Y, min_B_Y, max_B_Z, min_B_Z = self.getVertexBBoxLimits(
-            verB)
-
-        # Overlap Condition
-        if (verA[0] >= min_B_X and verA[1] <= max_B_X and
-           verA[2] >= min_B_Y and verA[3] <= max_B_Y and
-           verA[4] >= min_B_Z and verA[5] <= max_B_Z):
-            return True
-
-        return False
-
-    def boundingSphereOverlapping(self, verA, verB, radius):
-        #Distance between verA and verB
-        distance = math.sqrt((verB[0] - verA[0])**2 + (verB[1] - verA[1])**2 + (verB[2] - verA[2])**2)
-
-        # True if distance < diameter
-        return distance < radius*2
 
     def checkRestrictions(self, state, indexVertex):
         """
@@ -79,10 +42,9 @@ class Demo_Dist_Ov_Rot_Distrib_V3(aimaProblem):
 
             if (self.rules.use_bounding_box):
                 # Vertex A limits
-                max_X, min_X, max_Y, min_Y, max_Z, min_Z = self.getVertexBBoxLimits(
-                    pCandidate)
+                vertex_A_bbox_limits = getVertexBBoxLimits(
+                    pCandidate,self.half_bounding_size_x, self.half_bounding_size_y, self.half_bounding_size_z)
 
-                vertex_bbox_limits = (max_X, min_X, max_Y, min_Y, max_Z, min_Z)
             else:
                 # Vertex A radius
                 vertex_bsphere_radius = max(
@@ -101,15 +63,21 @@ class Demo_Dist_Ov_Rot_Distrib_V3(aimaProblem):
 
                 # Using box
                 if (self.rules.use_bounding_box):
-                    satisfiesRestrictions = not self.boundingBoxOverlapping(
-                        vertex_bbox_limits, vertexInUse)
+                    # Vertex B limits
+                    vertex_B_bbox_limits = getVertexBBoxLimits(
+                        vertexInUse, self.half_bounding_size_x, self.half_bounding_size_y, self.half_bounding_size_z)
+                    
+                    # Check overlap
+                    satisfiesRestrictions = not boundingBoxOverlapping(
+                        vertex_A_bbox_limits, vertex_B_bbox_limits)
 
                 # Using sphere
                 else:
-                    satisfiesRestrictions = not self.boundingSphereOverlapping(
+                    # Check overlap
+                    satisfiesRestrictions = not boundingSphereOverlapping(
                         pCandidate, vertexInUse, vertex_bsphere_radius)
 
-                    # Calculates distance between 2 tridimensional points.
+            # Calculates distance between 2 tridimensional points.
             distance = math.sqrt((vertexInUse[0]-pCandidate[0])**2 + (
                 vertexInUse[1]-pCandidate[1])**2 + (vertexInUse[2]-pCandidate[2])**2)
             # Compares if distance is lesser or equals to minimum distance.
