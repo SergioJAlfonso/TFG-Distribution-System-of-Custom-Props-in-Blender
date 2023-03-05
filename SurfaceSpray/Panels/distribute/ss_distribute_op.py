@@ -123,7 +123,7 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
             objectsData.append(
                 [vertices[indexVertex][0], vertices[indexVertex][1], objRotation])
 
-        createObjectsInPoints(objectsData, asset,
+        createObjectsInPointsN(objectsData, asset,
                               asset_bounding_box_local, collection)
 
         if (context.scene.subdivide):

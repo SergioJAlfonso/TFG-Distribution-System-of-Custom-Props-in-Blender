@@ -2,6 +2,7 @@ import bpy
 import bmesh 
 import random
 from mathutils import Euler
+from mathutils import Vector
 from ..ItemClasses.ItemRules import *
 
 def getVerticesData(object):
@@ -222,6 +223,7 @@ def createObjectsInPointsN(objectData, object, boundingBoxObject, collection):
         #Set location relative to size
         adjustPosition(newObj, boundingBoxObject, objectData[i][1])
 
+        adjustRotation(newObj, objectData[i][1], objectData[i][2])
         #newObj.rotation_euler = Euler(points[i][2], 'XYZ')
 
         #Unlink from all collections and link in desired collection
@@ -239,6 +241,25 @@ def adjustPosition(object, boundingBoxObject, normal):
     # object.location[2] += abs(boundingBoxObject[0][2])
     for i in range(3):
         object.location[i] += abs(boundingBoxObject[0][i])* normal[i]
+
+def adjustRotation(obj, normal, rotation):
+    # Vertex Normal 
+    normal_vec = Vector((normal[0], normal[1], normal[2]))
+    # Random added rotation
+    rotation_quat = Euler.to_quaternion(Euler(rotation, 'XYZ'))
+    
+    # Save rotation mode
+    rotation_mode = obj.rotation_mode
+
+    # Change it to Quaternion mode to calculate rotation
+    obj.rotation_mode = 'QUATERNION'
+    # obj.rotation_quaternion = rotation_quat * normal_vec.to_track_quat('-Z', 'Y')
+    obj.rotation_quaternion = normal_vec.to_track_quat('-Z', 'Y')
+
+    # Restore rotation mode
+    obj.rotation_mode = rotation_mode
+
+    
 
 def setPanelItemRules(context):
     
