@@ -13,6 +13,7 @@ class Clear_OT_Operator(bpy.types.Operator):
 
         if(collection is not None): 
             clearCollection(collection)
+            bpy.ops.partialsol.update_list()
         else:
             self.report({'WARNING'}, 'Collection does not exists!')
             return {'FINISHED'}

@@ -1,5 +1,6 @@
 import bpy 
 import bmesh 
+import math
 import random
 from mathutils import Euler
 from mathutils import Vector
@@ -47,6 +48,44 @@ def getBoundingBox(context, object):
     # asset_bounding_box_global = [context.scene.asset.matrix_world @ Vector(bbox_co) for bbox_co in asset_bounding_box_local]
 
     return asset_bounding_box_local
+
+def getVertexBBoxLimits(vertex, half_bounding_size_x, half_bounding_size_y, half_bounding_size_z):
+    """
+    Returns the limits of the bounding box
+    Does not use bpy
+    """
+    max_X = vertex[0] + half_bounding_size_x
+    min_X = vertex[0] - half_bounding_size_x
+    max_Y = vertex[1] + half_bounding_size_y
+    min_Y = vertex[1] - half_bounding_size_y
+    max_Z = vertex[2] + half_bounding_size_z
+    min_Z = vertex[2] - half_bounding_size_z
+
+    return (max_X, min_X, max_Y, min_Y, max_Z, min_Z)
+
+def boundingBoxOverlapping(verA, verB):
+    """
+    Checks is the bounding box of Vertex A and Vertex B are overlapping
+
+    verA/VerB = (max_limit_X, min_limit_X, max_limit_Y, min_limit_Y, max_limit_Z, min_limit_Z)
+
+    Returns True or False
+    """
+
+    # Overlap Condition
+    if (verA[0] >= verB[1] and verA[1] <= verB[0] and
+        verA[2] >= verB[3] and verA[3] <= verB[2] and
+        verA[4] >= verB[5] and verA[5] <= verB[4]):
+        return True
+
+    return False
+
+def boundingSphereOverlapping(verA, verB, radius):
+    #Distance between verA and verB
+    distance = math.sqrt((verB[0] - verA[0])**2 + (verB[1] - verA[1])**2 + (verB[2] - verA[2])**2)
+
+    # True if distance < diameter
+    return distance <= radius*2
 
 def TestBoundingBox(context, boundingBox):
     """
