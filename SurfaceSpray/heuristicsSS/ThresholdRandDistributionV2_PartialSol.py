@@ -111,6 +111,9 @@ class ThresholdRandDistributionPartialSol(aimaProblem):
         """
         possibleActions = []
 
+        if(state.objectsPlaced_ >= self.goal.objectsPlaced_):
+            return possibleActions
+
         sizeV = len(state.vertices_)
 
         # Iterate over each state vertex checking if this vertex has a object on it, otherwise

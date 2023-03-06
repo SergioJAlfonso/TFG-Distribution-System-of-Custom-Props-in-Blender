@@ -105,11 +105,26 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         #DEPRECATED: distribution = Demo_Dist_Overlap_Distribution(rules, asset_bounding_box_local, initialState, goalState)
         
 
-        nodeSol = aimaBFTS(distribution)
+        nodeSol = breadth_first_tree_search(distribution,3)
 
         actionsSol = None
+
+        for i in range(len(nodeSol)):
+            actions = nodeSol[i].solution()
+
+            vertexes = []
+            rotations = []
+            for j in range(len(actions)):
+                vertexes.append(actions[j].indexVertex)
+                rotations.append(actions[j].rotation)
+            
+            print(f"Sol {i}:")
+            print("Indices:", vertexes)
+            print("Rotations:", rotations)
+
+
         if nodeSol is not None:
-            actionsSol = nodeSol.solution()
+            actionsSol = nodeSol[0].solution()
         else:
             # bpy.context.window_manager.popup("Couldn't distribute objects!", title="Error", icon='ERROR')
             self.report({'ERROR'}, "Couldn't distribute objects!")
@@ -162,4 +177,4 @@ def breadth_first_tree_search(problem, limit=5):
     if len(sols) < 1:
         return None
     else:
-        return None
+        return sols

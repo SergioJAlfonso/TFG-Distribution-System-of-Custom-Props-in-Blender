@@ -231,10 +231,6 @@ class PARTIAL_SOL_OT_update_list(Operator):
         default=False,
         name="Reverse Order")
     
-    @classmethod
-    def poll(cls, context):
-        return bool(context.scene.partialsol)
-    
     def execute(self, context):
         scn = context.scene
 

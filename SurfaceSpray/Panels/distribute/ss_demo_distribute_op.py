@@ -121,7 +121,7 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
             #DEPRECATED: distribution = Demo_Dist_Overlap_Distribution(rules, asset_bounding_box_local, initialState, goalState)
             for i in range(context.scene.num_searches):
                 print("Solution: ", i)
-                context.scene.solution_nodes.append(breadth_first_tree_search(distribution, 1))
+                context.scene.solution_nodes.append(breadth_first_tree_search(distribution, 2))
 
         return self.change_search(context, context.scene.solution_nodes[context.scene.actual_search-1], vertices, asset, asset_bounding_box_local, collection, target)
             
