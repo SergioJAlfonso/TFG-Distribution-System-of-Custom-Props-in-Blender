@@ -44,9 +44,11 @@ class MAIN_PT_Panel(bpy.types.Panel):
         box3.label(text="Distribution Parameters")
 
         box3.column().prop(context.scene, "algorithm_enum")
+
+        box3.column().prop(context.scene, "vertexSelection_enum")
         
-        if (context.scene.algorithm_enum == "OP1"):
-            box3.column().prop(context.scene, "threshold")
+        # if (context.scene.algorithm_enum == "OP1"):
+        box3.column().prop(context.scene, "threshold")
 
         box3.column().prop(context.scene, "num_assets")
         box3.column().prop(context.scene, "collectName")
@@ -56,7 +58,7 @@ class MAIN_PT_Panel(bpy.types.Panel):
         box2.label(text="Multi Distribute")
 
         box2.row().prop(context.scene, "num_searches")
-        box2.row().prop(context.scene, "actual_search")
+        box2.row().prop(context.scene, "current_search")
         # box2.row().operator('addon.redistribute', text = "Change search")
         # placeholder = context.scene.placeholder
         # col.prop(placeholder, "inc_dec_int", text="Asset Instances")
@@ -110,9 +112,17 @@ class MAIN_PT_Panel(bpy.types.Panel):
         bpy.types.Scene.algorithm_enum = bpy.props.EnumProperty(
                 name = "Algorithms",
                 description = "Select an option",
-                items = [('OP1', "Random", "Random Distribution", 1),
-                        ('OP2', "Poisson", "Poisson Distribution", 2),
-                        ('OP3', "Threshold", "Threshold Distribution", 3) 
+                items = [('OP1', "BFS", "Best First Search", 1),
+                        ('OP2', "Hill-climbing", "Hill-climbing", 2),
+                        ('OP3', "Simulated annealing", "Simulated annealing", 3) 
+                ]
+            )
+        
+        bpy.types.Scene.vertexSelection_enum = bpy.props.EnumProperty(
+                name = "Vertex Selection by Weight",
+                description = "Select an option",
+                items = [('OP1', "Random", "Random", 1),
+                        ('OP2', "Probability", "Its weight assign its probability", 2),
                 ]
             )
 
@@ -129,12 +139,12 @@ class MAIN_PT_Panel(bpy.types.Panel):
         update= update_max_searches
         )
 
-        bpy.types.Scene.actual_search = bpy.props.IntProperty(
-            name='Number of the actual selected search',
+        bpy.types.Scene.current_search = bpy.props.IntProperty(
+            name='Number of current selected search',
             default=1,
             min = 1,
             max = 20,
-            update= update_actual_search
+            update= update_current_search
         )
 
         bpy.types.Scene.solution_nodes = []
@@ -143,14 +153,14 @@ class MAIN_PT_Panel(bpy.types.Panel):
         del (bpy.types.Scene.threshold, bpy.types.Scene.num_assets, 
              bpy.types.Scene.target, bpy.types.Scene.asset,
              bpy.types.Scene.algorithm_enum, bpy.types.Scene.collectName,
-             bpy.types.Scene.num_searches, bpy.types.Scene.actual_search,
+             bpy.types.Scene.num_searches, bpy.types.Scene.current_search,
              bpy.types.Scene.solution_nodes)
 
 def update_max_searches(self, context):
-    self["actual_search"] = 1
+    self["current_search"] = 1
 
-def update_actual_search(self, context):
-    self["actual_search"] = min(self["actual_search"], self["num_searches"])
+def update_current_search(self, context):
+    self["current_search"] = min(self["current_search"], self["num_searches"])
     bpy.ops.addon.redistribute()
 
 

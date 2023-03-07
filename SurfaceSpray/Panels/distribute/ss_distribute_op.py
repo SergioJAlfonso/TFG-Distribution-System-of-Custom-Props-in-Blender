@@ -5,18 +5,21 @@ from ...ItemClasses.Item import *
 from ...ItemClasses.DefaultAttributes.FurnitureAttribs import *
 
 from ...utilsSS.draw_utils import *
-from ...utilsSS.addon_utils import *
+from ...utilsSS.blender_utils import *
 from ...heuristicsSS.ThresholdRandDistribution import *
 from ...heuristicsSS.Demos.Demo_Dist_Ov_Rot_Distrib_V3 import *
 #TODO: eventually remove deprecated distributions
 # from ...heuristicsSS.Demos.Demo_Dist_Overlap_Distribution_V2 import *
 # from ...heuristicsSS.Demos.Demo_Dist_RotRang_Distribution import *
 # from ...heuristicsSS.Demos.Demo_Dist_Overlap_Distribution import *
-from ...utilsSS.addon_utils import *
+from ...utilsSS.blender_utils import *
 from ...utilsSS.StateGrid import *
 
 from aima3.search import astar_search as aimaAStar
-from aima3.search import breadth_first_tree_search as aimaBFTS
+
+# from aima3.search import breadth_first_tree_search as aimaBFTS
+from ...algorithmsSS.algorithmsSS import breadth_first_tree_multiple_search as ss_bfms
+
 from aima3.search import depth_first_tree_search as aimaDFTS
 
 from aima3.search import Node
@@ -105,9 +108,8 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         #DEPRECATED: distribution = Demo_Dist_Overlap_Distribution(rules, asset_bounding_box_local, initialState, goalState)
         
 
-        nodeSol = breadth_first_tree_search(distribution,3)
+        nodeSol = ss_bfms(distribution,3)
 
-        actionsSol = None
 
         for i in range(len(nodeSol)):
             actions = nodeSol[i].solution()
@@ -122,11 +124,12 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
             print("Indices:", vertexes)
             print("Rotations:", rotations)
 
+        actionsSol = None
 
+        #Get just one solution
         if nodeSol is not None:
             actionsSol = nodeSol[0].solution()
         else:
-            # bpy.context.window_manager.popup("Couldn't distribute objects!", title="Error", icon='ERROR')
             self.report({'ERROR'}, "Couldn't distribute objects!")
             return {'FINISHED'}
 
@@ -152,29 +155,3 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         # active object
         obj = context.object
         return (obj is not None) and (obj.mode == "OBJECT")
-
-
-def breadth_first_tree_search(problem, limit=5):
-    """
-    [Figure 3.7]
-    Search the shallowest nodes in the search tree first.
-    Search through the successors of a problem to find a goal.
-    The argument frontier should be an empty queue.
-    Repeats infinitely in case of loops.
-    """
-
-    frontier = deque([Node(problem.initial)])  # FIFO queue
-
-    sols = []
-    found = 0
-    while frontier and found < limit:
-        node = frontier.popleft()
-        if problem.goal_test(node.state):
-            sols.append(node)
-            found += 1
-        frontier.extend(node.expand(problem))
-
-    if len(sols) < 1:
-        return None
-    else:
-        return sols

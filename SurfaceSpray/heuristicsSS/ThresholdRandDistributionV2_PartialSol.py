@@ -7,7 +7,7 @@ import numpy as np
 from enum import Enum
 
 from ..utilsSS.Actions import *
-from ..utilsSS.addon_utils import *
+from ..utilsSS.geometry_utils import *
 from aima3.search import Problem as aimaProblem
 
 
@@ -111,6 +111,7 @@ class ThresholdRandDistributionPartialSol(aimaProblem):
         """
         possibleActions = []
 
+        #In case the state has all objects placed, we return an empty list.
         if(state.objectsPlaced_ >= self.goal.objectsPlaced_):
             return possibleActions
 
@@ -119,20 +120,22 @@ class ThresholdRandDistributionPartialSol(aimaProblem):
         # Iterate over each state vertex checking if this vertex has a object on it, otherwise
         # it'll be considered as an action. (An object can be placed on it)
         # remaining = self.goal.objectsPlaced_ - state.objectsPlaced_
-        remaining = 1
+        remaining = 2
 
         randomIndices = random.sample(range(sizeV), sizeV)
         j = 0
         while (remaining > 0 and j < sizeV):
             i = randomIndices[j]
             if (self.checkRestrictions(state, i) == True):
-                j = 0
+                k = 0
                 
-                # Check that is not a vertex that is already used
-                while (j < len(possibleActions) and (possibleActions[j].indexVertex != i)):
-                    j += 1
+                # Check that this selected vertex is not already used as an action in this loop
+                while (k < len(possibleActions) and (possibleActions[k].indexVertex != i)):
+                    k += 1
 
-                if (j < len(possibleActions) or len(possibleActions) == 0):
+                #If we have reached end of list, none actions is the same as current.
+                #Or if there are no actions, we store it.
+                if (k >= len(possibleActions) or len(possibleActions) == 0):
                     remaining -= 1
                     action = Actions(i, self.random_step_rotation())
                     possibleActions.append(action)

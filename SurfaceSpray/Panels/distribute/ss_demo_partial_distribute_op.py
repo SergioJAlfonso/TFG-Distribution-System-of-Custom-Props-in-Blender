@@ -7,17 +7,19 @@ from ...ItemClasses.Item import *
 from ...ItemClasses.DefaultAttributes.FurnitureAttribs import *
 
 from ...utilsSS.draw_utils import *
-from ...utilsSS.addon_utils import *
+from ...utilsSS.blender_utils import *
 # from ...heuristicsSS.ThresholdRandDistribution import *
 from ...heuristicsSS.ThresholdRandDistributionV2_PartialSol import *
 from ...heuristicsSS.Demos.Demo_Dist_RotRang_Distribution import *
 from ...heuristicsSS.Demos.Demo_Dist_Overlap_Distribution import *
-from ...utilsSS.addon_utils import *
+from ...utilsSS.blender_utils import *
 from ...utilsSS.StateGrid import *
 
 from aima3.search import astar_search as aimaAStar
-from aima3.search import breadth_first_tree_search as aimaBFTS
 from aima3.search import depth_first_tree_search as aimaDFTS
+# from aima3.search import breadth_first_tree_search as aimaBFTS
+
+from ...algorithmsSS.algorithmsSS import breadth_first_tree_multiple_search as ss_bfms
 
 class ALG(Enum):
     A_STAR = 1
@@ -42,7 +44,7 @@ class SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION(bpy.types.Operator):
             return {'FINISHED'}
 
         context.scene.solution_nodes.clear()
-        context.scene.actual_search = 1
+        context.scene.current_search = 1
 
         #Obtenemos todos los datos necesarios
         if (context.scene.subdivide): 
@@ -64,19 +66,17 @@ class SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION(bpy.types.Operator):
         collection = initCollection(collection, nameCollection, True)
 
         bpy.ops.object.select_all(action='DESELECT')
-        # #Scale asset if necessary
+        #Scale asset if necessary
         scaleObject(self, asset)
 
-        # #Get bounding box
+        #Get bounding box
         asset_bounding_box_local = getBoundingBox(context, asset)
         target_bounding_box_local = getBoundingBox(context, target)
-
 
         #Make sure there are no duplicates
         bpy.ops.partialsol.remove_duplicates()
 
-
-        #Get objects from list.
+        #Get objects from list
         partialSol = []
 
         for i in range(len(context.scene.partialsol)):
@@ -84,14 +84,10 @@ class SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION(bpy.types.Operator):
             # EXTRACT INFO FROM OBJ
             bbox = getBoundingBox(context, obj.obj)
             itemSol = Item(obj.name, obj.obj, obj.obj.location, bbox)
-            partialSol.append(itemSol) # INJECT INFO FOR
+            partialSol.append(itemSol) # INJECT INFO
 
 
-        # Bounding info
-        # for i in range(len(asset_bounding_box_local)):
-        #     print('Vértice ', i,'(x, y, z): ', asset_bounding_box_local[i])
-        
-        # #Subdivide target to fit assets in every vertex
+        #Subdivide target to fit assets in every vertex
         if (context.scene.subdivide):
             makeSubdivision(target, asset_bounding_box_local, target_bounding_box_local, numCutsSubdivision)
 
@@ -99,20 +95,18 @@ class SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION(bpy.types.Operator):
         print('Algorithm:', context.scene.algorithm_enum)
 
         vertices = filterVerticesByWeightThreshold(data_tridimensional, threshold_weight)
-        #Initial state as all possible vertices to place an asset
         
-
-
         if context.scene.solution_nodes == []:
             self.report({'INFO'}, "Solution nodes empty, refilling")
-
+            
+            #Initial state as all possible vertices to place an asset
             initialState = StateGrid(vertices, len(context.scene.partialsol))
-            #Potential final state 
 
+            #Limit num asset to number of vertices
             num_assets = min(num_instances, len(vertices))
 
+            #Potential final state 
             goalState = StateGrid(None, num_assets)
-            # initialState.objectsPlaced_
 
             # Establishes rules for the assets in order to place them correctly
             rules = setPanelItemRules(context)
@@ -120,38 +114,15 @@ class SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION(bpy.types.Operator):
             distribution = ThresholdRandDistributionPartialSol(rules, asset_bounding_box_local, initialState, partialSol, goalState)    
             #distribution = Demo_Over_Dist_RotRang_Distribution(rules, initialState, goalState)
             #DEPRECATED: distribution = Demo_Dist_Overlap_Distribution(rules, asset_bounding_box_local, initialState, goalState)
-            for i in range(context.scene.num_searches):
-                print("Solution: ", i)
-                context.scene.solution_nodes.append(aimaBFTS(distribution))
 
-        return self.change_search(context, context.scene.solution_nodes[context.scene.actual_search-1], vertices, asset, asset_bounding_box_local, collection, target)
+            #Get list of solution actions            
+            nodeSol = ss_bfms(distribution,context.scene.num_searches)
             
-    def change_search(self, context, nodeSol, vertices, asset, asset_bounding_box_local, collection, target):
-        actionsSol = None
-        if nodeSol is not None:
-            actionsSol = nodeSol.solution()
-        else:
-            # bpy.context.window_manager.popup("Couldn't distribute objects!", title="Error", icon='ERROR')
-            self.report({'ERROR'}, "Couldn't distribute objects!")
-            return {'FINISHED'}
+            for i in range(len(nodeSol)):
+                context.scene.solution_nodes.append(nodeSol[i])
 
-        objectsData = []
-        for i in range(len(actionsSol)):
-            indexVertex = actionsSol[i].indexVertex
-            objRotation = actionsSol[i].rotation
-            objectsData.append([vertices[indexVertex][0], vertices[indexVertex][1], objRotation])
-
-        # sol = distribution.distribute(data_tridimensional, asset_bounding_box_local, 
-        #                               num_instances, threshold_weight, )
+        return change_search(self, context, context.scene.solution_nodes[context.scene.current_search-1], vertices, asset, asset_bounding_box_local, collection, target)
         
-        createObjectsInPoints(objectsData, asset, asset_bounding_box_local, collection)
-        
-        if (context.scene.subdivide):
-            bpy.data.meshes.remove(target.data)
-
-        return {'FINISHED'}
-        
-
     # static method
     @classmethod
     def poll(cls, context):

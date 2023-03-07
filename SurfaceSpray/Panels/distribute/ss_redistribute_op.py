@@ -1,6 +1,7 @@
 import bpy 
 from mathutils import Euler
-from ...utilsSS.addon_utils import *
+from ...utilsSS.blender_utils import *
+from ...utilsSS.geometry_utils import *
 
 class Redistribute_OT_Operator(bpy.types.Operator):
     bl_idname = "addon.redistribute"
@@ -44,7 +45,7 @@ class Redistribute_OT_Operator(bpy.types.Operator):
         vertices = filterVerticesByWeightThreshold(data_tridimensional, threshold_weight)
         #Initial state as all possible vertices to place an asset
 
-        return self.change_search(context, context.scene.solution_nodes[context.scene.actual_search-1], vertices, asset, asset_bounding_box_local, collection, target)
+        return self.change_search(context, context.scene.solution_nodes[context.scene.current_search-1], vertices, asset, asset_bounding_box_local, collection, target)
     
     def change_search(self, context, nodeSol, vertices, asset, asset_bounding_box_local, collection, target):
         actionsSol = None

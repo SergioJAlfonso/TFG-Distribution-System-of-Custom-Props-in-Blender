@@ -1,5 +1,5 @@
 import bpy 
-from ...utilsSS.addon_utils import *
+from ...utilsSS.blender_utils import *
 
 class PaintMode_OT_Operator(bpy.types.Operator):
     bl_idname = "addon.enter_paint_mode"
@@ -19,7 +19,7 @@ class PaintMode_OT_Operator(bpy.types.Operator):
     @classmethod
     def poll(cls, context):
         # active object
-        obj = context.object
+        obj = context.scene.target
         return (obj is not None) and (obj.mode == "OBJECT")
     
 class ExitPaintMode_OT_Operator(bpy.types.Operator):

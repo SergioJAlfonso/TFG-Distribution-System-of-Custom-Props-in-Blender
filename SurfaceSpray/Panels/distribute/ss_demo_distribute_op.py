@@ -7,11 +7,12 @@ from ...ItemClasses.Item import *
 from ...ItemClasses.DefaultAttributes.FurnitureAttribs import *
 
 from ...utilsSS.draw_utils import *
-from ...utilsSS.addon_utils import *
+from ...utilsSS.blender_utils import *
 from ...heuristicsSS.ThresholdRandDistribution import *
 from ...heuristicsSS.Demos.Demo_Dist_RotRang_Distribution import *
 from ...heuristicsSS.Demos.Demo_Dist_Overlap_Distribution import *
-from ...utilsSS.addon_utils import *
+from ...utilsSS.blender_utils import *
+from ...utilsSS.geometry_utils import *
 from ...utilsSS.StateGrid import *
 
 from aima3.search import astar_search as aimaAStar
@@ -19,10 +20,6 @@ from aima3.search import breadth_first_tree_search as aimaBFTS
 from aima3.search import depth_first_tree_search as aimaDFTS
 
 from ..partialSol.partialSol_ops import *
-
-
-from aima3.search import Node
-from collections import deque
 
 class ALG(Enum):
     A_STAR = 1
@@ -47,7 +44,7 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
             return {'FINISHED'}
 
         context.scene.solution_nodes.clear()
-        context.scene.actual_search = 1
+        context.scene.current_search = 1
 
         #Obtenemos todos los datos necesarios
         if (context.scene.subdivide): 
@@ -121,62 +118,14 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
             #DEPRECATED: distribution = Demo_Dist_Overlap_Distribution(rules, asset_bounding_box_local, initialState, goalState)
             for i in range(context.scene.num_searches):
                 print("Solution: ", i)
-                context.scene.solution_nodes.append(breadth_first_tree_search(distribution, 2))
+                context.scene.solution_nodes.append(aimaBFTS(distribution))
 
-        return self.change_search(context, context.scene.solution_nodes[context.scene.actual_search-1], vertices, asset, asset_bounding_box_local, collection, target)
+        return change_search(self, context, context.scene.solution_nodes[context.scene.current_search-1], vertices, asset, asset_bounding_box_local, collection, target)
             
-    def change_search(self, context, nodeSol, vertices, asset, asset_bounding_box_local, collection, target):
-        actionsSol = None
-        if nodeSol is not None:
-            actionsSol = nodeSol.solution()
-        else:
-            # bpy.context.window_manager.popup("Couldn't distribute objects!", title="Error", icon='ERROR')
-            self.report({'ERROR'}, "Couldn't distribute objects!")
-            return {'FINISHED'}
-
-        objectsData = []
-        for i in range(len(actionsSol)):
-            indexVertex = actionsSol[i].indexVertex
-            objRotation = actionsSol[i].rotation
-            objectsData.append([vertices[indexVertex][0], vertices[indexVertex][1], objRotation])
-
-        # sol = distribution.distribute(data_tridimensional, asset_bounding_box_local, 
-        #                               num_instances, threshold_weight, )
-        
-        createObjectsInPoints(objectsData, asset, asset_bounding_box_local, collection)
-        
-        if (context.scene.subdivide):
-            bpy.data.meshes.remove(target.data)
-
-        return {'FINISHED'}
-        
-
     # static method
     @classmethod
     def poll(cls, context):
         # active object
         obj = context.object
         return (obj is not None) and (obj.mode == "OBJECT")
-    
-
-def breadth_first_tree_search(problem, limit = 5):
-    """
-    [Figure 3.7]
-    Search the shallowest nodes in the search tree first.
-    Search through the successors of a problem to find a goal.
-    The argument frontier should be an empty queue.
-    Repeats infinitely in case of loops.
-    """
-
-    frontier = deque([Node(problem.initial)])  # FIFO queue
-    
-    sols = []
-    found = 0
-    while frontier and found < limit :
-        node = frontier.popleft()
-        if problem.goal_test(node.state):
-            sols.append(node)
-            found += 1
-        frontier.extend(node.expand(problem))
-    return None
 

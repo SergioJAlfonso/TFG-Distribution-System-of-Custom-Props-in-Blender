@@ -107,6 +107,7 @@ class ThresholdRandDistribution(aimaProblem):
         """
         possibleActions = []
 
+        #In case the state has all objects placed, we return an empty list.
         if(state.objectsPlaced_ >= self.goal.objectsPlaced_):
             return possibleActions
 
@@ -124,10 +125,12 @@ class ThresholdRandDistribution(aimaProblem):
             if (self.checkRestrictions(state, i) == True):
                 k = 0
                 
-                # Check that is not a vertex that is already used
+                # Check that this selected vertex is not already used as an action in this loop
                 while (k < len(possibleActions) and (possibleActions[k].indexVertex != i)):
                     k += 1
 
+                #If we have reached end of list, none actions is the same as current.
+                #Or if there are no actions, we store it.
                 if (k >= len(possibleActions) or len(possibleActions) == 0):
                     remaining -= 1
                     action = Actions(i, self.random_step_rotation())
