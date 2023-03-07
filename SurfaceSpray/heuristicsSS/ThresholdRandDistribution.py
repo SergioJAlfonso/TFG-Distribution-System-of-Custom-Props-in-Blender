@@ -7,6 +7,7 @@ import numpy as np
 from enum import Enum
 
 from ..utilsSS.Actions import *
+from ..utilsSS.geometry_utils import *
 from aima3.search import Problem as aimaProblem
 
 
@@ -67,12 +68,18 @@ class ThresholdRandDistribution(aimaProblem):
         # Vertex we potentially want to place an object on it.
         pCandidate = state.vertices_[indexVertex][0]
 
-        if (not self.rules.overlap):
-            # Vertex A limits
-            max_X, min_X, max_Y, min_Y, max_Z, min_Z = self.getVertexBBoxLimits(
-                pCandidate)
+                # Get BBox/BShpere parameters
+        if (self.rules.overlap):
 
-            vertex_bbox_limits = (max_X, min_X, max_Y, min_Y, max_Z, min_Z)
+            if (self.rules.use_bounding_box):
+                # Vertex A limits
+                vertex_A_bbox_limits = getVertexBBoxLimits(
+                    pCandidate,self.half_bounding_size_x, self.half_bounding_size_y, self.half_bounding_size_z)
+
+            else:
+                # Vertex A radius
+                vertex_bsphere_radius = max(
+                    self.half_bounding_size_x, self.half_bounding_size_y, self.half_bounding_size_z)
 
         i = 0
         satisfiesRestrictions = True
@@ -83,9 +90,23 @@ class ThresholdRandDistribution(aimaProblem):
             vertexInUse = state.vertices_[indexVertex][0]
 
             # Check bounding box overlap if needed
-            if (not self.rules.overlap):
-                satisfiesRestrictions = not self.boundingBoxOverlapping(
-                    vertex_bbox_limits, vertexInUse)
+            if (self.rules.overlap):
+
+                # Using box
+                if (self.rules.use_bounding_box):
+                    # Vertex B limits
+                    vertex_B_bbox_limits = getVertexBBoxLimits(
+                        vertexInUse, self.half_bounding_size_x, self.half_bounding_size_y, self.half_bounding_size_z)
+                    
+                    # Check overlap
+                    satisfiesRestrictions = not boundingBoxOverlapping(
+                        vertex_A_bbox_limits, vertex_B_bbox_limits)
+
+                # Using sphere
+                else:
+                    # Check overlap
+                    satisfiesRestrictions = not boundingSphereOverlapping(
+                        pCandidate, vertexInUse, vertex_bsphere_radius)
 
             # Calculates distance between 2 tridimensional points.
             distance = math.sqrt((vertexInUse[0]-pCandidate[0])**2 + (
