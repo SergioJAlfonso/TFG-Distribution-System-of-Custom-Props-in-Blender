@@ -178,7 +178,7 @@ def adjustRotation(obj, normal, rotation):
     # Change it to Quaternion mode to calculate rotation
     obj.rotation_mode = 'QUATERNION'
     # obj.rotation_quaternion = rotation_quat * normal_vec.to_track_quat('-Z', 'Y')
-    obj.rotation_quaternion = normal_vec.to_track_quat('-Z', 'Y')
+    obj.rotation_quaternion = normal_vec.to_track_quat('Z', 'Y')
 
     # Restore rotation mode
     obj.rotation_mode = rotation_mode
