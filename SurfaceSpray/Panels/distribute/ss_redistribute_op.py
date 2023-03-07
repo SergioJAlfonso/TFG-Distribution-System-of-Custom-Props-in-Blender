@@ -45,29 +45,4 @@ class Redistribute_OT_Operator(bpy.types.Operator):
         vertices = filterVerticesByWeightThreshold(data_tridimensional, threshold_weight)
         #Initial state as all possible vertices to place an asset
 
-        return self.change_search(context, context.scene.solution_nodes[context.scene.current_search-1], vertices, asset, asset_bounding_box_local, collection, target)
-    
-    def change_search(self, context, nodeSol, vertices, asset, asset_bounding_box_local, collection, target):
-        actionsSol = None
-        if nodeSol is not None:
-            actionsSol = nodeSol.solution()
-        else:
-            # bpy.context.window_manager.popup("Couldn't distribute objects!", title="Error", icon='ERROR')
-            self.report({'ERROR'}, "Couldn't distribute objects!")
-            return {'FINISHED'}
-
-        objectsData = []
-        for i in range(len(actionsSol)):
-            indexVertex = actionsSol[i].indexVertex
-            objRotation = actionsSol[i].rotation
-            objectsData.append([vertices[indexVertex][0], vertices[indexVertex][1], objRotation])
-
-        # sol = distribution.distribute(data_tridimensional, asset_bounding_box_local, 
-        #                               num_instances, threshold_weight, )
-        
-        createObjectsInPoints(objectsData, asset, asset_bounding_box_local, collection)
-
-        if (context.scene.subdivide):
-            bpy.data.meshes.remove(target.data)
-
-        return {'FINISHED'}
+        return change_search(self, context, context.scene.solution_nodes[context.scene.current_search-1], vertices, asset, asset_bounding_box_local, collection, target)

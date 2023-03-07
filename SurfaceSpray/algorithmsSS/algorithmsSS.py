@@ -1,7 +1,6 @@
 from aima3.search import Node
 from collections import deque
 
-
 def breadth_first_tree_multiple_search(problem, limit=5):
     """
     AIMA ALGORITHM ADAPTATION.

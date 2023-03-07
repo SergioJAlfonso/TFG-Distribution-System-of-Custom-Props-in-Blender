@@ -21,18 +21,11 @@ from aima3.search import depth_first_tree_search as aimaDFTS
 
 from ...algorithmsSS.algorithmsSS import breadth_first_tree_multiple_search as ss_bfms
 
-class ALG(Enum):
-    A_STAR = 1
-    BACKTRACKING = 2
-    BEST_FIST_SEARCH = 3
-
 class SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION(bpy.types.Operator):
     bl_idname = "addon.distribute_partialdemo"
     bl_label = "Distribute Operator"
     bl_description = "Distribute object over a surface"
 
-    #crear diferentes grupos de vertices para cada objeto a distribuir
-    # self = method defined for this class 
     def execute(self, context):
         # bpy.ops.view3d.snap_cursor_to_center()
         if(context.scene.target == None):

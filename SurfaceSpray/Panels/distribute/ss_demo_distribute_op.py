@@ -21,11 +21,6 @@ from aima3.search import depth_first_tree_search as aimaDFTS
 
 from ..partialSol.partialSol_ops import *
 
-class ALG(Enum):
-    A_STAR = 1
-    BACKTRACKING = 2
-    BEST_FIST_SEARCH = 3
-
 class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
     bl_idname = "addon.distributedemo"
     bl_label = "Distribute Operator"

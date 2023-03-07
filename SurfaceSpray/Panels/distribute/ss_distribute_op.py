@@ -25,13 +25,6 @@ from aima3.search import depth_first_tree_search as aimaDFTS
 from aima3.search import Node
 from collections import deque
 
-
-class ALG(Enum):
-    A_STAR = 1
-    BACKTRACKING = 2
-    BEST_FIST_SEARCH = 3
-
-
 class SurfaceSpray_OT_Operator(bpy.types.Operator):
     bl_idname = "addon.distribute"
     bl_label = "Distribute Operator"
@@ -109,7 +102,6 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         
 
         nodeSol = ss_bfms(distribution,3)
-
 
         for i in range(len(nodeSol)):
             actions = nodeSol[i].solution()
