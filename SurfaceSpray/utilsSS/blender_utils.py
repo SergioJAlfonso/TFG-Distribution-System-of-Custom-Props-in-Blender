@@ -160,6 +160,8 @@ def setPanelItemRules(context):
 
     item_distance = context.scene.item_distance
 
+    scale_variation = context.scene.scale_factor_variation
+
     #Set Item rules
     rules = ItemRules()
 
@@ -169,5 +171,6 @@ def setPanelItemRules(context):
     rules.overlap = can_overlap
     rules.use_bounding_box = use_box
     rules.distance_between_items = item_distance
+    rules.rand_scale_factor = scale_variation
 
     return rules

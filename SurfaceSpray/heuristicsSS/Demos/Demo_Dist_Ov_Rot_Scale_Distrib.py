@@ -1,3 +1,4 @@
+# Scale restriction
 import random
 import copy
 import math
@@ -6,12 +7,12 @@ import numpy as np
 
 from enum import Enum
 
-from ..utilsSS.Actions import *
-from ..utilsSS.geometry_utils import *
+from ...utilsSS.Actions import *
+from ...utilsSS.geometry_utils import *
 from aima3.search import Problem as aimaProblem
 
 
-class ThresholdRandDistribution(aimaProblem):
+class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
 
     def __init__(self, rules_, bbox, initial, goal=None, ):
         super().__init__(initial, goal)

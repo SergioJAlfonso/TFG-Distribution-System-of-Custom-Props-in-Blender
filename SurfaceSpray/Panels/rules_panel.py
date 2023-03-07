@@ -14,7 +14,7 @@ class RULES_PT_Panel(bpy.types.Panel):
         # Item Rules box
         box = layout.box()
 
-        box.label(text="Asset Rules")
+        #box.label(text="Asset Rules")
 
         rotationBox = box.box()
 
@@ -63,6 +63,8 @@ class RULES_PT_Panel(bpy.types.Panel):
 
         if(context.scene.overlap_bool):
             row.prop(context.scene, "bbox_bool")
+
+        box.row().prop(context.scene, "scale_factor_variation")
 
     def register():
         # Item rotation constraints
@@ -158,10 +160,36 @@ class RULES_PT_Panel(bpy.types.Panel):
             "rotation but not very accurate with oblong objects)",
             default=False
         )
+
+        # Item scale vairation
+        bpy.types.Scene.scale_factor_variation =  bpy.props.FloatProperty(
+            name='Scale Factor Variation',
+            description = "Sets random variation factor for the scale of the asset between 0 and the value in"+
+            "this field",
+            default=0,
+            min = 0.0,
+            max = 10.0,
+        )
+
+        # # Item rotation constraints
+        # bpy.types.Scene.consider_normal_inclination = bpy.props.BoolProperty(
+        #     name='Consider Normal Inclination',
+        #     description = "This checkbox allows the rotation of the object in the X axis",
+        #     default=False
+        # )
+
+        # bpy.types.Scene.max_normal_inclin_limit = bpy.props.FloatProperty(
+        #     name='Max Inclination Limit',
+        #     description = "Sets limit of normal inclination (in degrees) from which an asset cannot be placed",
+        #     default=0,
+        #     min = 0.0,
+        #     max = 180.0,
+        # )
     
     def unregister():
         del (bpy.types.Scene.rotate_x, bpy.types.Scene.rotate_y, bpy.types.Scene.rotate_z, 
              bpy.types.Scene.rot_range_x, bpy.types.Scene.rot_range_y, bpy.types.Scene.rot_range_z, 
-             bpy.types.Scene.item_distance, bpy.types.Scene.overlap_bool,bpy.types.Scene.bbox_bool)
+             bpy.types.Scene.item_distance, bpy.types.Scene.overlap_bool,bpy.types.Scene.bbox_bool,
+             bpy.types.Scene.scale_factor_variation)
     
 
