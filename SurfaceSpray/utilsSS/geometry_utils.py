@@ -169,16 +169,22 @@ def adjustPosition(object, boundingBoxObject, normal):
 def adjustRotation(obj, normal, rotation):
     # Vertex Normal 
     normal_vec = Vector((normal[0], normal[1], normal[2]))
-    # Random added rotation
-    rotation_quat = Euler.to_quaternion(Euler(rotation, 'XYZ'))
+    normal_euler = normal_vec.to_track_quat('Z', 'Y').to_euler()
     
-    # Save rotation mode
-    rotation_mode = obj.rotation_mode
+    # # Random added rotation
+    rotation_euler = Euler(rotation)
 
-    # Change it to Quaternion mode to calculate rotation
-    obj.rotation_mode = 'QUATERNION'
-    # obj.rotation_quaternion = rotation_quat * normal_vec.to_track_quat('-Z', 'Y')
-    obj.rotation_quaternion = normal_vec.to_track_quat('Z', 'Y')
+    # # Save rotation mode
+    previous_mode = obj.rotation_mode 
+    obj.rotation_mode = "XYZ"
 
-    # Restore rotation mode
-    obj.rotation_mode = rotation_mode
+    # Change to normal
+    obj.rotation_euler = normal_euler
+    
+    # Apply random rotation
+    obj.rotation_euler.rotate_axis('X', rotation_euler[0])
+    obj.rotation_euler.rotate_axis('Y', rotation_euler[1])
+    obj.rotation_euler.rotate_axis('Z', rotation_euler[2])
+    
+    # # Restore rotation mode
+    obj.rotation_mode = previous_mode

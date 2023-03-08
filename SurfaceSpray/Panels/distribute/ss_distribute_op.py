@@ -51,6 +51,10 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
 
         asset = context.scene.asset
 
+        # Remove previous solutions AND set current search to 1
+        context.scene.solution_nodes.clear()
+        context.scene.current_search = 1
+
         # Note : bpy.types.Scene.num_assets != context.scene.num_assets
         # Get user property data
         numCutsSubdivision = context.scene.num_cuts
