@@ -30,7 +30,8 @@ class MAIN_PT_Panel(bpy.types.Panel):
 
         
         row.operator('addon.enter_paint_mode', icon='WPAINT_HLT', text = "Paint")
-        if (context.active_object and   context.active_object.mode == "WEIGHT_PAINT"):
+        #In case we are in Weight Painting with Target Object, we show all options
+        if ((context.active_object == context.scene.target) and   context.active_object.mode == "WEIGHT_PAINT"):
                 row.operator('addon.exit_paint_mode', icon='LOOP_BACK', text = "Exit")
                 
                 row = box1.row()

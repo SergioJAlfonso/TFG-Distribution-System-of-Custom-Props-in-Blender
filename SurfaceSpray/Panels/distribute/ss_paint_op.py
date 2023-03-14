@@ -7,6 +7,8 @@ class PaintMode_OT_Operator(bpy.types.Operator):
     bl_description = "Switch to weight vertex painting mode."
 
     def execute(self, context):
+        bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
+        
         bpy.ops.object.select_all(action='DESELECT')
         #Change any selected object to Target object so it can be switched to weight painting. 
         bpy.context.view_layer.objects.active = context.scene.target
