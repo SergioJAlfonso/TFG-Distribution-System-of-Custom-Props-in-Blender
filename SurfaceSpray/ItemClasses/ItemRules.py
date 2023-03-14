@@ -25,5 +25,7 @@ class ItemRules:
         # Uses box or sphere
         self.use_bounding_box = False
 
-        # TODO: Distance percentage to the center of the target
+        # Scale factor (asset will be scaled a random amount between min_scale_factor and max_scale_factor)
+        self.min_scale_factor = 1
+        self.max_scale_factor = 1
         

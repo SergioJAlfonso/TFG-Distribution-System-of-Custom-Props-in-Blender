@@ -118,7 +118,7 @@ class Demo_Dist_Ov_Rot_Distrib_V3(aimaProblem):
 
                 if (j < len(possibleActions) or len(possibleActions) == 0):
                     remaining -= 1
-                    action = Actions(i, self.random_step_rotation())
+                    action = Actions(i, self.random_rotation())
                     possibleActions.append(action)
 
             j += 1
@@ -128,7 +128,7 @@ class Demo_Dist_Ov_Rot_Distrib_V3(aimaProblem):
 
         return possibleActions
 
-    def random_step_rotation(self):
+    def random_rotation(self):
         precision = 100.0
 
         rang_x = (int)(self.rules.rotation_range[0] * precision)

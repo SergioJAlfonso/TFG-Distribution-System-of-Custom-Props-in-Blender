@@ -38,7 +38,7 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
         # Vertex we potentially want to place an object on it.
         pCandidate = state.vertices_[indexVertex][0]
 
-                # Get BBox/BShpere parameters
+        # Get BBox/BShpere parameters
         if (self.rules.overlap):
 
             if (self.rules.use_bounding_box):
@@ -124,7 +124,7 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
                 #Or if there are no actions, we store it.
                 if (k >= len(possibleActions) or len(possibleActions) == 0):
                     remaining -= 1
-                    action = Actions(i, self.random_step_rotation())
+                    action = Actions(i, self.random_rotation(), self.random_scale())
                     possibleActions.append(action)
 
             j += 1
@@ -134,7 +134,21 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
 
         return possibleActions
 
-    def random_step_rotation(self):
+
+    def random_scale(self):
+        minfact = self.rules.min_scale_factor
+        maxfact = self.rules.max_scale_factor
+
+        # If min and max factors are equal (or min is higher)
+        if(minfact == maxfact or minfact > maxfact):
+            return minfact
+        
+        precision = 100.0
+
+        newScalefactor = random.randrange((int)(minfact*precision), (int)(maxfact*precision), (int)(0.01*precision))/precision
+        return newScalefactor
+
+    def random_rotation(self):
         precision = 100.0
 
         rang_x = (int)(self.rules.rotation_range[0] * precision)

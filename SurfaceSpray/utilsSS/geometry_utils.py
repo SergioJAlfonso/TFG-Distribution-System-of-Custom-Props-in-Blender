@@ -188,3 +188,11 @@ def adjustRotation(obj, normal, rotation):
     
     # # Restore rotation mode
     obj.rotation_mode = previous_mode
+
+def adjustScale(obj, scale):
+
+    
+    # Apply random scale
+    obj.scale[0] = scale
+    obj.scale[1] = scale
+    obj.scale[2] = scale
