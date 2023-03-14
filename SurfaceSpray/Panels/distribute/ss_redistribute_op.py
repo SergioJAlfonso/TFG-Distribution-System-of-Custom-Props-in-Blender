@@ -13,7 +13,6 @@ class Redistribute_OT_Operator(bpy.types.Operator):
             self.report({'WARNING'}, 'Nothing to redistribute!')
             return {'FINISHED'}
         
-
         if (context.scene.subdivide): 
             target = duplicateObject(context.scene.target)
         else:

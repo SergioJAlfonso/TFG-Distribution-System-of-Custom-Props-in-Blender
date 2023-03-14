@@ -11,8 +11,8 @@ from ..utilsSS.geometry_utils import *
 from aima3.search import Problem as aimaProblem
 
 """
-This class use actions as a tuple of actions to apply for each state.
-Instead of apply just one action at a time.
+This class use actions as a tuple of mini actions to apply for each state.
+Instead of applying just one action at a time.
 """
 class ThresholdRandDistributionPartialSol_MultiAction(aimaProblem):
 
