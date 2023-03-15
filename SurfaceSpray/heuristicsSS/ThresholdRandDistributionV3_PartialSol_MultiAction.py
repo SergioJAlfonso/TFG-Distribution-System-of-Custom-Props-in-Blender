@@ -194,6 +194,28 @@ class ThresholdRandDistributionPartialSol_MultiAction(aimaProblem):
         return state.objectsPlaced_ == self.goal.objectsPlaced_
         # return True
 
+    def path_cost(self, c, state1, action, state2):
+        """Return the cost of a solution path that arrives at state2 from
+        state1 via action, assuming cost c to get up to state1. If the problem
+        is such that the path doesn't matter, this function will only look at
+        state2. If the path does matter, it will consider c and maybe state1
+        and action. The default method costs 1 for every step in the path."""
+
+
+        """Assings a higher cost value to those states whose number of objects placed is far from the goal.
+           As it approaches to the goal, the cost is smaller
+        """
+
+        topLimitRange = 100 
+
+        #Simple rule of three. More objects placed, lower the cost.
+        range = int((state2.objectsPlaced_/self.goal.objectsPlaced_) * topLimitRange)
+
+        #In case range is the top, to prevent an empty range error, we just add c to the cost 
+        state2.pathCost = c + random.randrange(0, topLimitRange - range) if (range != topLimitRange) else c
+        
+        return state2.pathCost
+
     def h(self, node):
         """ 
         Return the heuristic value for a given state. Default heuristic function used is 

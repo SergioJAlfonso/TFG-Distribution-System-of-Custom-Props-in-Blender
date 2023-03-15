@@ -10,6 +10,7 @@ from ...utilsSS.draw_utils import *
 from ...utilsSS.blender_utils import *
 # from ...heuristicsSS.ThresholdRandDistribution import *
 from ...heuristicsSS.ThresholdRandDistributionV2_PartialSol import *
+from ...heuristicsSS.ThresholdRandDistributionV3_PartialSol_MultiAction import *
 from ...heuristicsSS.Demos.Demo_Dist_RotRang_Distribution import *
 from ...heuristicsSS.Demos.Demo_Dist_Overlap_Distribution import *
 from ...utilsSS.blender_utils import *
@@ -19,7 +20,8 @@ from aima3.search import astar_search as aimaAStar
 from aima3.search import depth_first_tree_search as aimaDFTS
 # from aima3.search import breadth_first_tree_search as aimaBFTS
 
-from ...algorithmsSS.algorithmsSS import breadth_first_tree_multiple_search as ss_bfms
+from ...algorithmsSS.algorithmsSS import breadth_first_tree_multiple_search as ss_breadth_fms
+from ...algorithmsSS.algorithmsSS import best_first_graph_multiple_search as ss_best_fms
 
 class SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION(bpy.types.Operator):
     bl_idname = "addon.distribute_partialdemo"
@@ -104,12 +106,12 @@ class SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION(bpy.types.Operator):
             # Establishes rules for the assets in order to place them correctly
             rules = setPanelItemRules(context)
             
-            distribution = ThresholdRandDistributionPartialSol(rules, asset_bounding_box_local, initialState, partialSol, goalState)    
+            distribution = ThresholdRandDistributionPartialSol_MultiAction(rules, asset_bounding_box_local, initialState, partialSol, goalState)    
             #distribution = Demo_Over_Dist_RotRang_Distribution(rules, initialState, goalState)
             #DEPRECATED: distribution = Demo_Dist_Overlap_Distribution(rules, asset_bounding_box_local, initialState, goalState)
 
             #Get list of solution actions            
-            nodeSol = ss_bfms(distribution,context.scene.num_searches)
+            nodeSol = ss_best_fms(distribution,context.scene.num_searches)
             
             for i in range(len(nodeSol)):
                 context.scene.solution_nodes.append(nodeSol[i])

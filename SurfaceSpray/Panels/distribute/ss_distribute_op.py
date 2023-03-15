@@ -19,7 +19,7 @@ from ...utilsSS.StateGrid import *
 from aima3.search import astar_search as aimaAStar
 
 # from aima3.search import breadth_first_tree_search as aimaBFTS
-from ...algorithmsSS.algorithmsSS import breadth_first_tree_multiple_search as ss_bfms
+from ...algorithmsSS.algorithmsSS import breadth_first_tree_multiple_search as ss_breadth_fms
 
 from aima3.search import depth_first_tree_search as aimaDFTS
 
@@ -104,7 +104,7 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         #distribution = ThresholdRandDistribution(rules, asset_bounding_box_local, initialState, goalState)
         #DEPRECATED:distribution = Demo_Dist_Ov_Rot_Distrib_V3(rules, asset_bounding_box_local, initialState, goalState)
 
-        nodeSol = ss_bfms(distribution,3)
+        nodeSol = ss_breadth_fms(distribution,3)
 
         for i in range(len(nodeSol)):
             actions = nodeSol[i].solution()
