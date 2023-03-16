@@ -1,4 +1,5 @@
 import bpy
+from mathutils import Color
 
 class RULES_PT_Panel(bpy.types.Panel):
     bl_idname = "RULES_PT_Panel"
@@ -69,6 +70,20 @@ class RULES_PT_Panel(bpy.types.Panel):
         scalerow.column().label(text="Random Scale Factor")
         scalerow.column().prop(context.scene, "scale_factor_min")
         scalerow.column().prop(context.scene, "scale_factor_max")
+
+
+        normalBox =  box.row()
+        
+        normalRow = normalBox.column()
+        normalRow.prop(context.scene, "adjust_normal_bool")
+
+        normalRow2 = normalBox.column()
+        normalRow2.prop(context.scene, "adjust_normal_value",slider=True, index=2, text="Value")
+
+        collection = bpy.data.collections.get(context.scene.collectName)
+        #If there are not objects distributed, cant adjust normal
+        if len(collection.objects) == 0:
+            normalRow2.enabled = False
 
     def register():
         # Item rotation constraints
@@ -175,6 +190,7 @@ class RULES_PT_Panel(bpy.types.Panel):
             max = 5.0,
         )
 
+
         bpy.types.Scene.scale_factor_max =  bpy.props.FloatProperty(
             name='max',
             description = "Sets random variation factor for the scale of the asset between (min, max) in"+
@@ -183,6 +199,21 @@ class RULES_PT_Panel(bpy.types.Panel):
             min = 0.0,
             max = 5.0,
         )
+
+        bpy.types.Scene.adjust_normal_value = bpy.props.FloatProperty(
+            name="Adjustment Percentage",
+            description="Normal adjustment percentage",
+            default=0,
+            min=0,
+            max=1
+        )
+        
+        bpy.types.Scene.adjust_normal_bool = bpy.props.BoolProperty(
+            name='Adjust to Normal',
+            description = "This checkbox determines that the object placed is going to face according to its normal vertex",
+            default=False
+        )
+        
 
         # # Item rotation constraints
         # bpy.types.Scene.consider_normal_inclination = bpy.props.BoolProperty(
@@ -204,5 +235,3 @@ class RULES_PT_Panel(bpy.types.Panel):
              bpy.types.Scene.rot_range_x, bpy.types.Scene.rot_range_y, bpy.types.Scene.rot_range_z, 
              bpy.types.Scene.item_distance, bpy.types.Scene.overlap_bool,bpy.types.Scene.bbox_bool,
              bpy.types.Scene.scale_factor_min, bpy.types.Scene.scale_factor_max)
-    
-
