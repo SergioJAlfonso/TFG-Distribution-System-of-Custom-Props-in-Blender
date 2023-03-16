@@ -78,12 +78,12 @@ def boundingBoxOverlapping(verA, verB):
 
     return False
 
-def boundingSphereOverlapping(verA, verB, radius):
+def boundingSphereOverlapping(verA, verB, radiusA, radiusB):
     #Distance between verA and verB
     distance = math.sqrt((verB[0] - verA[0])**2 + (verB[1] - verA[1])**2 + (verB[2] - verA[2])**2)
 
     # True if distance < diameter
-    return distance <= radius*2
+    return distance <= radiusA + radiusB
 
 def TestBoundingBox(context, boundingBox):
     """

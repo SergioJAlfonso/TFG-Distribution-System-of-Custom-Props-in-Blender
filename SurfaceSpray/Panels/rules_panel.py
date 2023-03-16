@@ -186,7 +186,7 @@ class RULES_PT_Panel(bpy.types.Panel):
             description = "Sets random variation factor for the scale of the asset between (min, max) in"+
             "this field",
             default=1.0,
-            min = 0.0,
+            min = 0.05,
             max = 5.0,
         )
 

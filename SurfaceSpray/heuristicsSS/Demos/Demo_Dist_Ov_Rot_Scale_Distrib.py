@@ -33,10 +33,13 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
         """
         # If vertex already in use
         if (state.vertices_[indexVertex][2]):
-            return False
+            return False, 1
 
         # Vertex we potentially want to place an object on it.
         pCandidate = state.vertices_[indexVertex][0]
+
+        # We generate the new scale so it can be used to calculate the overlap
+        scale = self.random_scale()
 
         # Get BBox/BShpere parameters
         if (self.rules.overlap):
@@ -44,12 +47,12 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
             if (self.rules.use_bounding_box):
                 # Vertex A limits
                 vertex_A_bbox_limits = getVertexBBoxLimits(
-                    pCandidate,self.half_bounding_size_x, self.half_bounding_size_y, self.half_bounding_size_z)
+                    pCandidate, self.half_bounding_size_x * scale, self.half_bounding_size_y * scale, self.half_bounding_size_z * scale)
 
             else:
                 # Vertex A radius
-                vertex_bsphere_radius = max(
-                    self.half_bounding_size_x, self.half_bounding_size_y, self.half_bounding_size_z)
+                vertex_A_sphere_radius = max(
+                    self.half_bounding_size_x * scale, self.half_bounding_size_y * scale, self.half_bounding_size_z * scale)
 
         i = 0
         satisfiesRestrictions = True
@@ -58,6 +61,7 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
             # Access vertices that has an object on it.
             indexVertex = state.actionsApplied_[i].indexVertex
             vertexInUse = state.vertices_[indexVertex][0]
+            vertexInUseScale = state.actionsApplied_[i].scale
 
             # Check bounding box overlap if needed
             if (self.rules.overlap):
@@ -66,7 +70,7 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
                 if (self.rules.use_bounding_box):
                     # Vertex B limits
                     vertex_B_bbox_limits = getVertexBBoxLimits(
-                        vertexInUse, self.half_bounding_size_x, self.half_bounding_size_y, self.half_bounding_size_z)
+                        vertexInUse, self.half_bounding_size_x * vertexInUseScale, self.half_bounding_size_y * vertexInUseScale, self.half_bounding_size_z * vertexInUseScale)
                     
                     # Check overlap
                     satisfiesRestrictions = not boundingBoxOverlapping(
@@ -75,8 +79,11 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
                 # Using sphere
                 else:
                     # Check overlap
+                    vertex_B_sphere_radius = max(
+                        self.half_bounding_size_x * vertexInUseScale, self.half_bounding_size_y * vertexInUseScale, self.half_bounding_size_z * vertexInUseScale)
+
                     satisfiesRestrictions = not boundingSphereOverlapping(
-                        pCandidate, vertexInUse, vertex_bsphere_radius)
+                        pCandidate, vertexInUse, vertex_A_sphere_radius, vertex_B_sphere_radius)
 
             # Calculates distance between 2 tridimensional points.
             distance = math.sqrt((vertexInUse[0]-pCandidate[0])**2 + (
@@ -86,7 +93,7 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
 
             i += 1
 
-        return satisfiesRestrictions
+        return satisfiesRestrictions, scale
 
     def actions(self, state):
         """
@@ -113,7 +120,8 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
         j = 0
         while (remaining > 0 and j < sizeV):
             i = randomIndices[j]
-            if (self.checkRestrictions(state, i) == True):
+            satisfiesRestrictions, scale = self.checkRestrictions(state, i)
+            if (satisfiesRestrictions == True):
                 k = 0
                 
                 # Check that this selected vertex is not already used as an action in this loop
@@ -124,7 +132,7 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
                 #Or if there are no actions, we store it.
                 if (k >= len(possibleActions) or len(possibleActions) == 0):
                     remaining -= 1
-                    action = Actions(i, self.random_rotation(), self.random_scale())
+                    action = Actions(i, self.random_rotation(), scale)
                     possibleActions.append(action)
 
             j += 1
