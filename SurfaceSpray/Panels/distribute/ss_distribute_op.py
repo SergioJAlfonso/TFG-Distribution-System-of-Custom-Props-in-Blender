@@ -142,7 +142,7 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
                 [vertices[indexVertex][0], vertices[indexVertex][1], objRotation, objScale])
 
         createObjectsInPointsNS(objectsData, asset,
-                              asset_bounding_box_local, collection)
+                              asset_bounding_box_local, collection, context.scene.adjust_normal_value)
 
         if (context.scene.subdivide):
             bpy.data.meshes.remove(target.data)

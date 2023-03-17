@@ -2,6 +2,7 @@ import bmesh
 import math
 from mathutils import Vector
 from mathutils import Euler
+from mathutils import Quaternion
 import bpy 
 
 def getVerticesData(object):
@@ -166,20 +167,29 @@ def adjustPosition(object, boundingBoxObject, normal):
     for i in range(3):
         object.location[i] += abs(boundingBoxObject[0][i])* normal[i]
 
-def adjustRotation(obj, normal, rotation):
+def adjustRotation(obj, normal, rotation, normal_factor = 1):
     # Vertex Normal 
     normal_vec = Vector((normal[0], normal[1], normal[2]))
-    normal_euler = normal_vec.to_track_quat('Z', 'Y').to_euler()
     
-    # # Random added rotation
-    rotation_euler = Euler(rotation)
+    # Quat to align normals in Z
+    z_quat = Vector((0,0,1)).to_track_quat('Z', 'Y')
+
+    # Normal vector to Euler
+    normal_quat = normal_vec.to_track_quat('Z', 'Y')
+    
+    # Final aligned rotation 
+    aligned_euler = z_quat.slerp(normal_quat, normal_factor).to_euler('XYZ')
+
 
     # # Save rotation mode
     previous_mode = obj.rotation_mode 
     obj.rotation_mode = "XYZ"
 
-    # Change to normal
-    obj.rotation_euler = normal_euler
+    # Apply aligned rotation to normal
+    obj.rotation_euler = aligned_euler
+    
+    # # Random added rotation
+    rotation_euler = Euler(rotation)
     
     # Apply random rotation
     obj.rotation_euler.rotate_axis('X', rotation_euler[0])

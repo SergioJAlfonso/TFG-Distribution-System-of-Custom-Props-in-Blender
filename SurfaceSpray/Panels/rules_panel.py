@@ -74,11 +74,11 @@ class RULES_PT_Panel(bpy.types.Panel):
 
         normalBox =  box.row()
         
-        normalRow = normalBox.column()
-        normalRow.prop(context.scene, "adjust_normal_bool")
+        # normalRow = normalBox.column()
+        # normalRow.prop(context.scene, "adjust_normal_bool")
 
         normalRow2 = normalBox.column()
-        normalRow2.prop(context.scene, "adjust_normal_value",slider=True, index=2, text="Value")
+        normalRow2.prop(context.scene, "adjust_normal_value",slider=True, index=2, text="Adjust to normal")
 
         collection = bpy.data.collections.get(context.scene.collectName)
         #If there are not objects distributed, cant adjust normal
@@ -207,12 +207,13 @@ class RULES_PT_Panel(bpy.types.Panel):
             min=0,
             max=1
         )
-        
-        bpy.types.Scene.adjust_normal_bool = bpy.props.BoolProperty(
-            name='Adjust to Normal',
-            description = "This checkbox determines that the object placed is going to face according to its normal vertex",
-            default=False
-        )
+
+        # Not needed, already got the value (0 means false, >0 means true)      
+        # bpy.types.Scene.adjust_normal_bool = bpy.props.BoolProperty(
+        #     name='Adjust to Normal',
+        #     description = "This checkbox determines that the object placed is going to face according to its normal vertex",
+        #     default=False
+        # )
         
 
         # # Item rotation constraints
