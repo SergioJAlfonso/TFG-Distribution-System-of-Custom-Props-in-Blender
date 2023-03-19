@@ -117,10 +117,10 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
                 rotations.append(actions[j].rotation)
                 scale.append(actions[j].scale)
             
-            print(f"Sol {i}:")
-            print("Indices:", vertexes)
-            print("Rotations:", rotations)
-            print("Scale:", scale)
+            # print(f"Sol {i}:")
+            # print("Indices:", vertexes)
+            # print("Rotations:", rotations)
+            # print("Scale:", scale)
 
         actionsSol = None
 
@@ -133,12 +133,16 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
 
         objectsData = []
         #We obtain data from actions to create real objects.
+        # ObjectData: [pos, normal, rotation, scale]
         for i in range(len(actionsSol)):
             indexVertex = actionsSol[i].indexVertex
             objRotation = actionsSol[i].rotation
             objScale = actionsSol[i].scale
             objectsData.append(
                 [vertices[indexVertex][0], vertices[indexVertex][1], objRotation, objScale])
+
+        # Save objectData
+        context.scene.solution_nodes.append(objectsData)
 
         createObjectsInPointsNS(objectsData, asset,
                               asset_bounding_box_local, collection, context.scene.adjust_normal_value)

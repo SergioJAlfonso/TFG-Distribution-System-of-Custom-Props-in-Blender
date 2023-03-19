@@ -209,14 +209,6 @@ class RULES_PT_Panel(bpy.types.Panel):
             update=update_normal_rotations
         )
 
-        bpy.types.Scene.previous_normal_value = bpy.props.FloatProperty(
-            name="Previous adjustment percentage",
-            description="Normal adjustment percentage before change",
-            default=0,
-            min=0,
-            max=1
-        )
-
         # Not needed, already got the value (0 means false, >0 means true)      
         # bpy.types.Scene.adjust_normal_bool = bpy.props.BoolProperty(
         #     name='Adjust to Normal',
@@ -248,8 +240,7 @@ class RULES_PT_Panel(bpy.types.Panel):
              bpy.types.Scene.rot_range_x, bpy.types.Scene.rot_range_y, bpy.types.Scene.rot_range_z, 
              bpy.types.Scene.item_distance, bpy.types.Scene.overlap_bool,bpy.types.Scene.bbox_bool,
              bpy.types.Scene.scale_factor_min, bpy.types.Scene.scale_factor_max, 
-             bpy.types.Scene.adjust_normal_value, bpy.types.Scene.previous_normal_value)
+             bpy.types.Scene.adjust_normal_value)
         
 def update_normal_rotations(self, context):
     bpy.ops.addon.rotate_normal()
-    self["previous_normal_value"] = self["adjust_normal_value"] 
