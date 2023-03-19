@@ -29,6 +29,8 @@ import sys, os, site
 
 from bpy.props import (PointerProperty,IntProperty, CollectionProperty)
 
+from .Panels.distribute.ss_rotate_op import Rotate_Operator
+
 from .Panels.distribute.ss_clear_op import Clear_OT_Operator
 from .Panels.distribute.ss_paint_op import (PaintMode_OT_Operator, 
                                             ExitPaintMode_OT_Operator,
@@ -67,7 +69,7 @@ classes = ( MAIN_PT_Panel, PARTIAL_SOL_PG_objectCollection,PARTIAL_SOL_OT_action
            PaintAll_OT_Operator,
            SurfaceSpray_OT_Operator_DEMO_SELECTION,
            SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION, 
-           Redistribute_OT_Operator, Clear_OT_Operator)
+           Redistribute_OT_Operator, Clear_OT_Operator, Rotate_Operator)
 
 def verify_user_sitepackages():
     usersitepackagespath = site.getsitepackages()

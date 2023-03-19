@@ -199,6 +199,35 @@ def adjustRotation(obj, normal, rotation, normal_factor = 1):
     # # Restore rotation mode
     obj.rotation_mode = previous_mode
 
+def readjustRotation(obj, normal_factor = 1, prev_normal_factor = 1):
+    # # Save rotation mode
+    previous_mode = obj.rotation_mode 
+    obj.rotation_mode = "XYZ"
+
+    # Obj Rotation 
+    rotation_vec = Vector((obj.rotation_euler[0], obj.rotation_euler[1], obj.rotation_euler[2]))
+    
+    # Quat to align normals in -Z
+    z_quat = Vector((0,0,-1)).to_track_quat('Z', 'Y')
+
+    # Normal vector to Euler
+    rotation_quat = rotation_vec.to_track_quat('Z', 'Y')
+    
+    # Obtain normal rotation 
+    normal_quat = rotation_quat.slerp(z_quat, prev_normal_factor)
+
+    # Quat to align normals in Z
+    z_quat = Vector((0,0,1)).to_track_quat('Z', 'Y')
+
+    # Calculate new rotation
+    aligned_euler = z_quat.slerp(normal_quat, normal_factor).to_euler('XYZ')
+
+    # Apply aligned rotation to normal
+    obj.rotation_euler = aligned_euler
+    
+    # # Restore rotation mode
+    obj.rotation_mode = previous_mode
+
 def adjustScale(obj, scale):
 
     

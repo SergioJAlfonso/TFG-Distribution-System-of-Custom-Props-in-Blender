@@ -80,10 +80,10 @@ class RULES_PT_Panel(bpy.types.Panel):
         normalRow2 = normalBox.column()
         normalRow2.prop(context.scene, "adjust_normal_value",slider=True, index=2, text="Adjust to normal")
 
-        collection = bpy.data.collections.get(context.scene.collectName)
-        #If there are not objects distributed, cant adjust normal
-        if len(collection.objects) == 0:
-            normalRow2.enabled = False
+        # collection = bpy.data.collections.get(context.scene.collectName)
+        # #If there are not objects distributed, cant adjust normal
+        # if len(collection.objects) == 0:
+        #     normalRow2.enabled = False
 
     def register():
         # Item rotation constraints
@@ -205,6 +205,15 @@ class RULES_PT_Panel(bpy.types.Panel):
             description="Normal adjustment percentage",
             default=0,
             min=0,
+            max=1,
+            update=update_normal_rotations
+        )
+
+        bpy.types.Scene.previous_normal_value = bpy.props.FloatProperty(
+            name="Previous adjustment percentage",
+            description="Normal adjustment percentage before change",
+            default=0,
+            min=0,
             max=1
         )
 
@@ -231,8 +240,16 @@ class RULES_PT_Panel(bpy.types.Panel):
         #     max = 180.0,
         # )
     
+
+
+
     def unregister():
         del (bpy.types.Scene.rotate_x, bpy.types.Scene.rotate_y, bpy.types.Scene.rotate_z, 
              bpy.types.Scene.rot_range_x, bpy.types.Scene.rot_range_y, bpy.types.Scene.rot_range_z, 
              bpy.types.Scene.item_distance, bpy.types.Scene.overlap_bool,bpy.types.Scene.bbox_bool,
-             bpy.types.Scene.scale_factor_min, bpy.types.Scene.scale_factor_max)
+             bpy.types.Scene.scale_factor_min, bpy.types.Scene.scale_factor_max, 
+             bpy.types.Scene.adjust_normal_value, bpy.types.Scene.previous_normal_value)
+        
+def update_normal_rotations(self, context):
+    bpy.ops.addon.rotate_normal()
+    self["previous_normal_value"] = self["adjust_normal_value"] 
