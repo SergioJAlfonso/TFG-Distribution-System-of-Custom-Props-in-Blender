@@ -1,7 +1,8 @@
 import bpy
 
 from ...algorithmsSS.algorithmsSS import best_first_graph_multiple_search as ss_best_fms
-from ...algorithmsSS.algorithmsSS import hill_climbing_multiple as hillClimbingMultiple
+from ...algorithmsSS.algorithmsSS import hill_climbing as hillClimbing
+from ...algorithmsSS.algorithmsSS import simulated_annealing_multiples as simulatedAnnealingMultiple
 
 class Main_Object_Collection(bpy.types.PropertyGroup):
      obj: bpy.props.PointerProperty(
@@ -157,7 +158,8 @@ class MAIN_PT_Panel(bpy.types.Panel):
         bpy.types.Scene.algorithms_HashMap = {}
 
         bpy.types.Scene.algorithms_HashMap["BFS"] = ss_best_fms
-        bpy.types.Scene.algorithms_HashMap["Hill-Climbing"] = hillClimbingMultiple
+        bpy.types.Scene.algorithms_HashMap["Hill-Climbing"] = hillClimbing
+        bpy.types.Scene.algorithms_HashMap["Simulated Annealing"] = simulatedAnnealingMultiple
         # bpy.types.Scene.algorithms_HashMap["BFS"] = ss_best_fms
 
         bpy.types.Scene.algorithm_enum = bpy.props.EnumProperty(
@@ -165,7 +167,7 @@ class MAIN_PT_Panel(bpy.types.Panel):
                 description = "Select an option",
                 items = [('OP1', "BFS", "Best First Search", 1),
                         ('OP2', "Hill-Climbing", "Hill-climbing", 2),
-                        ('OP3', "Simulated annealing", "Simulated annealing", 3) 
+                        ('OP3', "Simulated Annealing", "Simulated Annealing", 3) 
                 ]
             )
         
