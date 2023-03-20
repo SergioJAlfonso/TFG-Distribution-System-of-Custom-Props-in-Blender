@@ -3,6 +3,11 @@ import bpy
 from ...algorithmsSS.algorithmsSS import best_first_graph_multiple_search as ss_best_fms
 from ...algorithmsSS.algorithmsSS import hill_climbing_multiple as hillClimbingMultiple
 
+class Main_Object_Collection(bpy.types.PropertyGroup):
+     obj: bpy.props.PointerProperty(
+        name="Object",
+        type=bpy.types.Object)
+
 class MAIN_PT_Panel(bpy.types.Panel):
     bl_idname = "MAIN_PT_Panel"
     bl_label = "Object To Distribute"
@@ -14,11 +19,42 @@ class MAIN_PT_Panel(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
 
+        row2 = layout.row()
+        row2.template_list("PARTIAL_SOL_UL_items", "",  bpy.context.scene, "asset",  bpy.context.scene, "asset_index", rows=2)
+
+        col = row2.column(align=True)
+        col.operator("asset.list_action", icon='ADD', text="").action = 'ADD'
+        col.operator("asset.list_action", icon='REMOVE', text="").action = 'REMOVE'
+        col.separator()
+        col.operator("asset.list_action", icon='TRIA_UP', text="").action = 'UP'
+        col.operator("asset.list_action", icon='TRIA_DOWN', text="").action = 'DOWN'
+
+        row = layout.row()
+        col = row.column(align=True)
+        row = col.row(align=True)
+        row.operator("asset.update_list", icon="FILE_REFRESH")
+
+        row = col.row(align=True)
+        row.operator("asset.clear_list", icon="X")
+        row.operator("asset.remove_duplicates", icon="GHOST_ENABLED")
+        
+        row = layout.row()
+        col = row.column(align=True)
+        row = col.row(align=True)
+        row.operator("asset.add_viewport_selection", icon="HAND") #LINENUMBERS_OFF, ANIM
+        row = col.row(align=True)
+        row.operator("asset.select_items", icon="VIEW3D", text="Select Item in 3D View")
+        selectItems = row.operator("asset.select_items", icon="GROUP", text="Select All Items in 3D View")
+
+        selectItems.select_all = True
+
+        row = col.row(align=True)
+
         row = layout.row()
         col = layout.column()
 
         # Target and asset prop search
-        col.prop_search(context.scene, "asset", context.scene, "objects", text="Asset")
+        # col.prop_search(context.scene, "asset", context.scene, "objects", text="Asset")
         col.prop_search(context.scene, "target", context.scene, "objects", text="Target Object")
         
         # Add-on distribute buttons
@@ -111,8 +147,12 @@ class MAIN_PT_Panel(bpy.types.Panel):
         )    
 
         bpy.types.Scene.target = bpy.props.PointerProperty(type=bpy.types.Object)
+        
+        bpy.types.Scene.asset = bpy.props.PointerProperty(type=bpy.types.Object, update=updateAsset)
 
-        bpy.types.Scene.asset = bpy.props.PointerProperty(type=bpy.types.Object)
+        bpy.types.Scene.assets = bpy.props.CollectionProperty(type=Main_Object_Collection)
+
+        bpy.types.Scene.asset_index = bpy.props.IntProperty()
 
         bpy.types.Scene.algorithms_HashMap = {}
 
