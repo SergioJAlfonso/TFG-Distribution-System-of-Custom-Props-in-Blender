@@ -87,7 +87,11 @@ class SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION(bpy.types.Operator):
             makeSubdivision(target, asset_bounding_box_local, target_bounding_box_local, numCutsSubdivision)
 
         data_tridimensional = getVerticesData(target)
-        print('Algorithm:', context.scene.algorithm_enum)
+
+        option = bpy.context.scene.algorithm_enum
+        name = bpy.context.scene.bl_rna.properties['algorithm_enum'].enum_items[option].name
+        print(f'Algorithm: {name}')
+        algorithm = context.scene.algorithms_HashMap[name]
 
         vertices = filterVerticesByWeightThreshold(data_tridimensional, threshold_weight)
         
@@ -111,8 +115,9 @@ class SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION(bpy.types.Operator):
             #DEPRECATED: distribution = Demo_Dist_Overlap_Distribution(rules, asset_bounding_box_local, initialState, goalState)
 
             #Get list of solution actions            
-            nodeSol = ss_best_fms(distribution,context.scene.num_searches)
+            nodeSol = algorithm(distribution,context.scene.num_searches)
             
+            context.scene.num_searches = len(nodeSol)
             for i in range(len(nodeSol)):
                 context.scene.solution_nodes.append(nodeSol[i])
 

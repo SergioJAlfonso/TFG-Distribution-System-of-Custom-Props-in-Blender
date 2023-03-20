@@ -201,8 +201,8 @@ class ThresholdRandDistributionPartialSol_MultiAction(aimaProblem):
         state2. If the path does matter, it will consider c and maybe state1
         and action. The default method costs 1 for every step in the path."""
 
-
-        """Assings a higher cost value to those states whose number of objects placed is far from the goal.
+        """
+        Assings a higher cost value to those states whose number of objects placed is far from the goal.
            As it approaches to the goal, the cost is smaller
         """
 
@@ -224,3 +224,9 @@ class ThresholdRandDistributionPartialSol_MultiAction(aimaProblem):
         diff = self.goal.objectsPlaced_ - node.state.objectsPlaced_
         print(diff)
         return diff
+    
+    def value(self, state):
+        """For optimization problems, each state has a value. Hill Climbing
+        and related algorithms try to maximize this value."""
+        
+        return state.objectsPlaced_

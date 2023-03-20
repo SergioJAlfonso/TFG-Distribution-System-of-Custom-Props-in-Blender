@@ -253,3 +253,4 @@ class RULES_PT_Panel(bpy.types.Panel):
 def update_normal_rotations(self, context):
     bpy.ops.addon.rotate_normal()
     self["previous_normal_value"] = self["adjust_normal_value"] 
+    

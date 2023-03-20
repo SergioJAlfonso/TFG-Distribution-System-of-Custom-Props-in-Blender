@@ -1,6 +1,6 @@
 from aima3.search import Node
 from collections import deque
-from aima3.utils import (memoize, PriorityQueue)
+from aima3.utils import (memoize, argmax_random_tie, PriorityQueue)
 
 def breadth_first_tree_multiple_search(problem, limit=5):
     """
@@ -34,13 +34,21 @@ def breadth_first_tree_multiple_search(problem, limit=5):
     
 
 def best_first_graph_multiple_search(problem, limit=5, f = lambda node: node.path_cost, display=False):
-    """Search the nodes with the lowest f scores first.
+    """
+    
+    AIMA ALGORITHM ADAPTATION.
+
+    Search the nodes with the lowest f scores first.
     You specify the function f(node) that you want to minimize; for example,
     if f is a heuristic estimate to the goal, then we have greedy best
     first search; if f is node.depth then we have breadth-first search.
     There is a subtlety: the line "f = memoize(f, 'f')" means that the f
     values will be cached on the nodes as they are computed. So after doing
-    a best first search you can examine the f values of the path returned."""
+    a best first search you can examine the f values of the path returned.
+    
+    Aima algorithm adapted to find more than one solution.
+
+    """
     f = memoize(f, 'f')
     node = Node(problem.initial)
     frontier = PriorityQueue('min', f)
@@ -71,3 +79,31 @@ def best_first_graph_multiple_search(problem, limit=5, f = lambda node: node.pat
         return None
     else:
         return sols
+    
+def hill_climbing_multiple(problem, limit=5):
+    """
+    AIMA ALGORITHM ADAPTATION.
+
+    [Figure 4.2]
+    From the initial node, keep choosing the neighbor with highest value,
+    stopping when no neighbor is better.
+
+    """
+
+    sols = []
+    found = 0
+    current = Node(problem.initial)
+
+    # found < limit
+    while True:
+        neighbors = current.expand(problem)
+        if not neighbors:
+            break
+        neighbor = argmax_random_tie(neighbors, key=lambda node: problem.value(node.state))
+        if problem.value(neighbor.state) <= problem.value(current.state):
+            break
+        current = neighbor
+
+    sols.append(current)
+    # return current.state
+    return sols

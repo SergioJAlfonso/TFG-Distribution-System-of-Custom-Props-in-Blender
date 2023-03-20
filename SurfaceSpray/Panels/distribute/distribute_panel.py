@@ -1,5 +1,8 @@
 import bpy
 
+from ...algorithmsSS.algorithmsSS import best_first_graph_multiple_search as ss_best_fms
+from ...algorithmsSS.algorithmsSS import hill_climbing_multiple as hillClimbingMultiple
+
 class MAIN_PT_Panel(bpy.types.Panel):
     bl_idname = "MAIN_PT_Panel"
     bl_label = "Object To Distribute"
@@ -112,11 +115,17 @@ class MAIN_PT_Panel(bpy.types.Panel):
 
         bpy.types.Scene.asset = bpy.props.PointerProperty(type=bpy.types.Object)
 
+        bpy.types.Scene.algorithms_HashMap = {}
+
+        bpy.types.Scene.algorithms_HashMap["BFS"] = ss_best_fms
+        bpy.types.Scene.algorithms_HashMap["Hill-Climbing"] = hillClimbingMultiple
+        # bpy.types.Scene.algorithms_HashMap["BFS"] = ss_best_fms
+
         bpy.types.Scene.algorithm_enum = bpy.props.EnumProperty(
                 name = "Algorithms",
                 description = "Select an option",
                 items = [('OP1', "BFS", "Best First Search", 1),
-                        ('OP2', "Hill-climbing", "Hill-climbing", 2),
+                        ('OP2', "Hill-Climbing", "Hill-climbing", 2),
                         ('OP3', "Simulated annealing", "Simulated annealing", 3) 
                 ]
             )
@@ -151,6 +160,8 @@ class MAIN_PT_Panel(bpy.types.Panel):
         )
 
         bpy.types.Scene.solution_nodes = []
+
+
 
     def unregister():
         del (bpy.types.Scene.threshold, bpy.types.Scene.num_assets, 
