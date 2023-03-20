@@ -1,6 +1,10 @@
-from aima3.search import Node
+from aima3.search import (Node, exp_schedule)
 from collections import deque
-from aima3.utils import (memoize, argmax_random_tie, PriorityQueue)
+from aima3.utils import (memoize, argmax_random_tie, probability,PriorityQueue)
+
+import sys
+import numpy as np
+import random
 
 def breadth_first_tree_multiple_search(problem, limit=5):
     """
@@ -80,7 +84,7 @@ def best_first_graph_multiple_search(problem, limit=5, f = lambda node: node.pat
     else:
         return sols
     
-def hill_climbing_multiple(problem, limit=5):
+def hill_climbing(problem, limit=5):
     """
     AIMA ALGORITHM ADAPTATION.
 
@@ -107,3 +111,30 @@ def hill_climbing_multiple(problem, limit=5):
     sols.append(current)
     # return current.state
     return sols
+
+
+def simulated_annealing_multiples(problem, limit = 5, schedule=exp_schedule()):
+    """
+    AIMA ALGORITHM ADAPTATION.
+
+    [Figure 4.5] CAUTION: This differs from the pseudocode as it
+    returns a state instead of a Node.
+    
+    """
+
+    sols = []
+
+    current = Node(problem.initial)
+    for t in range(sys.maxsize):
+        T = schedule(t)
+        if T == 0:
+            sols.append(current)
+            return sols
+        neighbors = current.expand(problem)
+        if not neighbors:
+            sols.append(current)
+            return sols
+        next_choice = random.choice(neighbors)
+        delta_e = problem.value(next_choice.state) - problem.value(current.state)
+        if delta_e > 0 or probability(np.exp(delta_e / T)):
+            current = next_choice

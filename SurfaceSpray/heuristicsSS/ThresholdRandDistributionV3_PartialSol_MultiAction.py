@@ -211,6 +211,7 @@ class ThresholdRandDistributionPartialSol_MultiAction(aimaProblem):
         #Simple rule of three. More objects placed, lower the cost.
         range = int((state2.objectsPlaced_/self.goal.objectsPlaced_) * topLimitRange)
 
+
         #In case range is the top, to prevent an empty range error, we just add c to the cost 
         state2.pathCost = c + random.randrange(0, topLimitRange - range) if (range != topLimitRange) else c
         
