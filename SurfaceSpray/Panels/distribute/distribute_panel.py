@@ -4,10 +4,14 @@ from ...algorithmsSS.algorithmsSS import best_first_graph_multiple_search as ss_
 from ...algorithmsSS.algorithmsSS import hill_climbing as hillClimbing
 from ...algorithmsSS.algorithmsSS import simulated_annealing_multiples as simulatedAnnealingMultiple
 
+
+def update_asset(self, context):
+    context.scene.asset = context.scene.assets[0].obj
+
 class Main_Object_Collection(bpy.types.PropertyGroup):
      obj: bpy.props.PointerProperty(
         name="Object",
-        type=bpy.types.Object)
+        type=bpy.types.Object, update=update_asset)
 
 class MAIN_PT_Panel(bpy.types.Panel):
     bl_idname = "MAIN_PT_Panel"
@@ -21,31 +25,31 @@ class MAIN_PT_Panel(bpy.types.Panel):
         layout = self.layout
 
         row2 = layout.row()
-        row2.template_list("PARTIAL_SOL_UL_items", "",  bpy.context.scene, "asset",  bpy.context.scene, "asset_index", rows=2)
+        row2.template_list("PARTIAL_SOL_UL_items", "",  bpy.context.scene, "assets",  bpy.context.scene, "asset_index", rows=2)
 
         col = row2.column(align=True)
-        col.operator("asset.list_action", icon='ADD', text="").action = 'ADD'
-        col.operator("asset.list_action", icon='REMOVE', text="").action = 'REMOVE'
+        col.operator("assets.list_action", icon='ADD', text="").action = 'ADD'
+        col.operator("assets.list_action", icon='REMOVE', text="").action = 'REMOVE'
         col.separator()
-        col.operator("asset.list_action", icon='TRIA_UP', text="").action = 'UP'
-        col.operator("asset.list_action", icon='TRIA_DOWN', text="").action = 'DOWN'
+        col.operator("assets.list_action", icon='TRIA_UP', text="").action = 'UP'
+        col.operator("assets.list_action", icon='TRIA_DOWN', text="").action = 'DOWN'
 
         row = layout.row()
         col = row.column(align=True)
         row = col.row(align=True)
-        row.operator("asset.update_list", icon="FILE_REFRESH")
+        row.operator("assets.update_list", icon="FILE_REFRESH")
 
         row = col.row(align=True)
-        row.operator("asset.clear_list", icon="X")
-        row.operator("asset.remove_duplicates", icon="GHOST_ENABLED")
+        row.operator("assets.clear_list", icon="X")
+        row.operator("assets.remove_duplicates", icon="GHOST_ENABLED")
         
         row = layout.row()
         col = row.column(align=True)
         row = col.row(align=True)
-        row.operator("asset.add_viewport_selection", icon="HAND") #LINENUMBERS_OFF, ANIM
+        row.operator("assets.add_viewport_selection", icon="HAND") #LINENUMBERS_OFF, ANIM
         row = col.row(align=True)
-        row.operator("asset.select_items", icon="VIEW3D", text="Select Item in 3D View")
-        selectItems = row.operator("asset.select_items", icon="GROUP", text="Select All Items in 3D View")
+        row.operator("assets.select_items", icon="VIEW3D", text="Select Item in 3D View")
+        selectItems = row.operator("assets.select_items", icon="GROUP", text="Select All Items in 3D View")
 
         selectItems.select_all = True
 
@@ -149,7 +153,7 @@ class MAIN_PT_Panel(bpy.types.Panel):
 
         bpy.types.Scene.target = bpy.props.PointerProperty(type=bpy.types.Object)
         
-        bpy.types.Scene.asset = bpy.props.PointerProperty(type=bpy.types.Object, update=updateAsset)
+        bpy.types.Scene.asset = bpy.props.PointerProperty(type=bpy.types.Object)
 
         bpy.types.Scene.assets = bpy.props.CollectionProperty(type=Main_Object_Collection)
 

@@ -6,7 +6,7 @@ from bpy.types import (Operator)
 
 class ASSET_SELECT_OT_actions(Operator):
     """Move items up and down, add and remove"""
-    bl_idname = "asset.list_action"
+    bl_idname = "assets.list_action"
     bl_label = "List Actions"
     bl_description = "Move items up and down, add and remove"
     bl_options = {'REGISTER'}
@@ -23,40 +23,43 @@ class ASSET_SELECT_OT_actions(Operator):
         idx = scn.asset_index
 
         try:
-            item = scn.asset[idx]
+            item = scn.assets[idx]
         except IndexError:
             pass
         else:
-            if self.action == 'DOWN' and idx < len(scn.asset) - 1:
-                item_next = scn.asset[idx+1].name
-                scn.asset.move(idx, idx+1)
+            if self.action == 'DOWN' and idx < len(scn.assets) - 1:
+                item_next = scn.assets[idx+1].name
+                scn.assets.move(idx, idx+1)
                 scn.asset_index += 1
                 info = 'Item "%s" moved to position %d' % (item.name, scn.asset_index + 1)
                 self.report({'INFO'}, info)
 
             elif self.action == 'UP' and idx >= 1:
-                item_prev = scn.asset[idx-1].name
-                scn.asset.move(idx, idx-1)
+                item_prev = scn.assets[idx-1].name
+                scn.assets.move(idx, idx-1)
                 scn.asset_index -= 1
                 info = 'Item "%s" moved to position %d' % (item.name, scn.asset_index + 1)
                 self.report({'INFO'}, info)
 
             elif self.action == 'REMOVE':
-                info = 'Item "%s" removed from list' % (scn.asset[idx].name)
+                info = 'Item "%s" removed from list' % (scn.assets[idx].name)
                 scn.asset_index -= 1
-                scn.asset.remove(idx)
+                scn.assets.remove(idx)
                 self.report({'INFO'}, info)
-                
+            
+            if(len(context.scene.assets) > 0):
+                context.scene.asset = context.scene.assets[0].obj
+
         if self.action == 'ADD':
             if context.object:
 
                 if(context.object == context.scene.target):
                     self.report({'INFO'}, "Shouldn't add TARGET object!")
                 else:
-                    item = scn.asset.add()
+                    item = scn.assets.add()
                     item.name = context.object.name
                     item.obj = context.object
-                    scn.asset_index = len(scn.asset)-1
+                    scn.asset_index = len(scn.assets)-1
                     info = '"%s" added to list' % (item.name)
                     self.report({'INFO'}, info)
             else:
@@ -66,7 +69,7 @@ class ASSET_SELECT_OT_actions(Operator):
 
 class ASSET_SELECT_OT_addViewportSelection(Operator):
     """Add all items currently selected in the viewport"""
-    bl_idname = "asset.add_viewport_selection"
+    bl_idname = "assets.add_viewport_selection"
     bl_label = "Add Selected Objects"
     bl_description = "Add all items currently selected in the viewport"
     bl_options = {'REGISTER', 'UNDO'}
@@ -80,7 +83,7 @@ class ASSET_SELECT_OT_addViewportSelection(Operator):
                 if(i == context.scene.target):
                     self.report({'INFO'}, "Shouldn't add TARGET object!")
                 else:
-                    item = scn.asset.add()
+                    item = scn.assets.add()
                     item.name = i.name
                     item.obj = i
                     new_objs.append(item.name)
@@ -93,21 +96,21 @@ class ASSET_SELECT_OT_addViewportSelection(Operator):
 
 class ASSET_SELECT_OT_clearList(Operator):
     """Clear all items of the list"""
-    bl_idname = "asset.clear_list"
+    bl_idname = "assets.clear_list"
     bl_label = "Clear List"
     bl_description = "Clear all items of the list"
     bl_options = {'INTERNAL'}
 
     @classmethod
     def poll(cls, context):
-        return bool(context.scene.asset)
+        return bool(context.scene.assets)
 
     def invoke(self, context, event):
         return context.window_manager.invoke_confirm(self, event)
         
     def execute(self, context):
-        if bool(context.scene.asset):
-            context.scene.asset.clear()
+        if bool(context.scene.assets):
+            context.scene.assets.clear()
             self.report({'INFO'}, "All items removed")
         else:
             self.report({'INFO'}, "Nothing to remove")
@@ -116,7 +119,7 @@ class ASSET_SELECT_OT_clearList(Operator):
     
 class ASSET_SELECT_OT_removeDuplicates(Operator):
     """Remove all duplicates"""
-    bl_idname = "asset.remove_duplicates"
+    bl_idname = "assets.remove_duplicates"
     bl_label = "Remove Duplicates"
     bl_description = "Remove all duplicates"
     bl_options = {'INTERNAL'}
@@ -124,7 +127,7 @@ class ASSET_SELECT_OT_removeDuplicates(Operator):
     def find_duplicates(self, context):
         """find all duplicates by name"""
         name_lookup = {}
-        for c, i in enumerate(context.scene.asset):
+        for c, i in enumerate(context.scene.assets):
             name_lookup.setdefault(i.obj.name, []).append(c)
         duplicates = set()
         for name, indices in name_lookup.items():
@@ -143,10 +146,10 @@ class ASSET_SELECT_OT_removeDuplicates(Operator):
 
         # Reverse the list before removing the items
         for i in self.find_duplicates(context)[::-1]:
-            scn.asset.remove(i)
+            scn.assets.remove(i)
             removed_items.append(i)
         if removed_items:
-            scn.asset_index = len(scn.asset)-1
+            scn.asset_index = len(scn.assets)-1
             info = ', '.join(map(str, removed_items))
             self.report({'INFO'}, "Removed indices: %s" % (info))
         else:
@@ -159,7 +162,7 @@ class ASSET_SELECT_OT_removeDuplicates(Operator):
     
 class ASSET_SELECT_OT_selectItems(Operator):
     """Select Items in the Viewport"""
-    bl_idname = "asset.select_items"
+    bl_idname = "assets.select_items"
     bl_label = "Select Item"
     bl_description = "Select Items in the Viewport"
     bl_options = {'REGISTER', 'UNDO'}
@@ -171,14 +174,14 @@ class ASSET_SELECT_OT_selectItems(Operator):
         
     @classmethod
     def poll(cls, context):
-        return bool(context.scene.asset)
+        return bool(context.scene.assets)
     
     def execute(self, context):
         scn = context.scene
         idx = scn.asset_index
         
         try:
-            item = scn.asset[idx]
+            item = scn.assets[idx]
         except IndexError:
             self.report({'INFO'}, "Nothing selected in the list")
             return{'CANCELLED'}
@@ -186,7 +189,7 @@ class ASSET_SELECT_OT_selectItems(Operator):
         obj_error = False
         bpy.ops.object.select_all(action='DESELECT')
         if not self.select_all:
-            name = scn.asset[idx].obj.name
+            name = scn.assets[idx].obj.name
             obj = scn.objects.get(name, None)
             if not obj: 
                 obj_error = True
@@ -195,7 +198,7 @@ class ASSET_SELECT_OT_selectItems(Operator):
                 info = '"%s" selected in Vieport' % (obj.name)
         else:
             selected_items = []
-            unique_objs = set([i.obj.name for i in scn.asset])
+            unique_objs = set([i.obj.name for i in scn.assets])
             for i in unique_objs:
                 obj = scn.objects.get(i, None)
                 if obj:
@@ -222,7 +225,7 @@ class ASSET_SELECT_OT_selectItems(Operator):
 
 class ASSET_SELECT_OT_update_list(Operator):
     """Update list of objects"""
-    bl_idname = "asset.update_list"
+    bl_idname = "assets.update_list"
     bl_label = "Updates list of objects"
     bl_description = "Updates list of objects"
     bl_options = {'REGISTER', 'UNDO'}
@@ -235,7 +238,7 @@ class ASSET_SELECT_OT_update_list(Operator):
         scn = context.scene
 
         index_toRemove = []
-        for index, item in enumerate(context.scene.asset):
+        for index, item in enumerate(context.scene.assets):
             if (item.obj is None):
                 index_toRemove.append(index)
                 continue
@@ -245,7 +248,7 @@ class ASSET_SELECT_OT_update_list(Operator):
                 index_toRemove.append(index)
 
         for i in index_toRemove[::-1]:
-            scn.asset.remove(i)
+            scn.assets.remove(i)
  
-        scn.asset_index = max(0, len(scn.asset) - 1) 
+        scn.asset_index = max(0, len(scn.assets) - 1) 
         return{'FINISHED'}
