@@ -36,6 +36,9 @@ from .Panels.distribute.ss_paint_op import (PaintMode_OT_Operator,
                                             ExitPaintMode_OT_Operator,
                                             InvertPainting_OT_Operator,
                                             PaintAll_OT_Operator)
+
+from .Panels.distribute.ss_vertexProfile_op import (VertexProfile_ADD_OT_Operator, VertexProfile_REMOVE_OT_Operator)
+
 from .Panels.distribute.ss_distribute_op import SurfaceSpray_OT_Operator
 from .Panels.distribute.ss_demo_distribute_op import SurfaceSpray_OT_Operator_DEMO_SELECTION
 from .Panels.distribute.ss_demo_partial_distribute_op import SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION
@@ -69,7 +72,8 @@ classes = ( MAIN_PT_Panel, PARTIAL_SOL_PG_objectCollection,PARTIAL_SOL_OT_action
            PaintAll_OT_Operator,
            SurfaceSpray_OT_Operator_DEMO_SELECTION,
            SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION, 
-           Redistribute_OT_Operator, Clear_OT_Operator, Rotate_Operator)
+           Redistribute_OT_Operator, Clear_OT_Operator, Rotate_Operator,
+           VertexProfile_ADD_OT_Operator, VertexProfile_REMOVE_OT_Operator)
 
 def verify_user_sitepackages():
     usersitepackagespath = site.getsitepackages()
