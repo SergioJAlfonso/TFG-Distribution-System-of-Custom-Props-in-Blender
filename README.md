@@ -23,17 +23,22 @@ Es necesario instalar aima (y tener instalado Python). Para ello ejecutar el sig
 ~~~ 
 pip install aima3
 ~~~
-Se habrá añadido una carpeta llamada "aima3" al directorio site-packages de la carpeta python el cual se encuentra en la carpeta fuente de Python.
+Se habrá añadido una carpeta llamada _"aima3"_ al directorio _site-packages_ de la carpeta python el cual se encuentra en la carpeta fuente de Python.
 (Ejecutando where python mostrara la localización del ejecutable python).
 Por ej, debería estar en:
 ~~~
 "C:\Users\user_name\AppData\Local\Programs\Python\Python310\Lib\site-packages"
 ~~~
-Copiar la carpeta aima3 a la carpeta de python que usa Blender para ejecutar el código. Debería ser la carpeta de Blender cuya ruta sería tal que : Blender-X.X/python/lib/site-packages. 
-Si solo se tiene una version de Blender instalada, y dicha carpeta coincide con la versión, ya no hay que hacer nada más.
+En dicha ruta, copiar la carpeta _aima3_ a la carpeta de python que usa Blender para ejecutar el código: debería ser la carpeta de Blender cuya ruta sería tal que : _Blender-X.X/python/lib/site-packages_. 
+Si sólo se tiene una versión de Blender instalada, y dicha carpeta coincide con la versión, ya no hay que hacer nada más.
 
-De lo contrario se deberia encontrar en Blender-X.X/python/lib/site-packages de la versión deseada.
-Para saber exactamente la ruta, abrir la pestaña Scripting del Blender deseado y ejecutar el siguiente  código dándole al bóton PLAY situado arriba a la derecha.
+En caso de no saber dónde se encuentra la ruta de python que usa Blender, o si se tiene más de una versión de Blender instalada, realizar los siguientes pasos:
+
+- Abrir la versión de Blender deseada.
+- Abrir la pestaña _Scripting_ (barra de pestañas superior).
+- Crear un nuevo fichero usando el boton _+ New_.
+- Copiar y pegar el siguiente código, y ejecutarlo dándole al bóton RUN situado arriba a la derecha o usar el atajo de teclado _Alt + P_.
+
 ~~~
 import site
 
@@ -42,4 +47,4 @@ usersitepackagespath = site.getsitepackages()
 print("Path: ", usersitepackagespath)
 ~~~
 
-Abrir Toggle System Console desde la pestaña Window de Blender arriba a la izquierda para ver el texto impreso por el código anterior. El texto debería mostrar la carpeta de python que usa ésta versión de Blender.
+Abrir Toggle System Console desde arriba a la izquierda _Window -> Toggle System Console_,  para así poder ver el texto impreso por el código anterior. El texto debería mostrar la carpeta de python que ésta versión de Blender usa.

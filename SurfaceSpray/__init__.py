@@ -44,7 +44,9 @@ from .Panels.distribute.ss_demo_distribute_op import SurfaceSpray_OT_Operator_DE
 from .Panels.distribute.ss_demo_partial_distribute_op import SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION
 from .Panels.distribute.ss_redistribute_op import Redistribute_OT_Operator
 
-from .Panels.distribute.distribute_panel import MAIN_PT_Panel
+from .Panels.distribute.distribute_panel import *
+
+from .Panels.distribute.ss_asset_select_op import *
 
 from .Panels.partialSol.partialSol_ops import (PARTIAL_SOL_OT_actions,
                                                PARTIAL_SOL_OT_addViewportSelection,
@@ -62,7 +64,9 @@ from .Panels.subdivide_panel import SUBDIVIDE_PT_Panel
 
 # from.ss_panel import MY_OT_AddItem
 
-classes = ( MAIN_PT_Panel, PARTIAL_SOL_PG_objectCollection,PARTIAL_SOL_OT_actions,PARTIAL_SOL_OT_addViewportSelection,
+classes = ( ASSET_SELECT_OT_actions, ASSET_SELECT_OT_addViewportSelection, ASSET_SELECT_OT_clearList,
+           ASSET_SELECT_OT_removeDuplicates, ASSET_SELECT_OT_selectItems, ASSET_SELECT_OT_update_list, Main_Object_Collection,
+           PARTIAL_SOL_PG_objectCollection,PARTIAL_SOL_OT_actions,PARTIAL_SOL_OT_addViewportSelection, MAIN_PT_Panel, 
            PARTIAL_SOL_OT_clearList,PARTIAL_SOL_OT_removeDuplicates,PARTIAL_SOL_OT_selectItems,
            PARTIAL_SOL_UL_items,PARTIAL_SOL_OT_update_list,PARTIAL_SOL_PT_Panel,
            SUBDIVIDE_PT_Panel ,RULES_PT_Panel, SurfaceSpray_OT_Operator, 
