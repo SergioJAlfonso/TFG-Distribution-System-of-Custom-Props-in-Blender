@@ -139,6 +139,21 @@ def makeSubdivision(target, assetBoundingBox, targetBoundingBox, num_cuts):
     subdividedMesh.to_mesh(tData)
     tData.update()
 
+
+def getMinBoundingBox(assetBoundingBoxes, targetBoundingBox):
+    # Get bounding box with more cuts needed
+    min_cut = 0
+    bbox = assetBoundingBoxes[0]
+
+    for assetBoundingBox in assetBoundingBoxes:
+        cut = calculateNumCuts(assetBoundingBox, targetBoundingBox)
+        if cut > min_cut:
+            min_cut = cut
+            bbox = assetBoundingBox
+
+    return bbox
+
+
 def calculateNumCuts(assetBoundingBox, targetBoundingBox):
     # get size of the asset and the target in x and y
     sizeX = assetBoundingBox[6][0] - assetBoundingBox[2][0]

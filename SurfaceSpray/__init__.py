@@ -42,6 +42,8 @@ from .Panels.distribute.ss_vertexProfile_op import (VertexProfile_ADD_OT_Operato
 from .Panels.distribute.ss_distribute_op import SurfaceSpray_OT_Operator
 from .Panels.distribute.ss_demo_distribute_op import SurfaceSpray_OT_Operator_DEMO_SELECTION
 from .Panels.distribute.ss_demo_partial_distribute_op import SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION
+from .Panels.distribute.ss_demo_multi_distribute_op import SurfaceSpray_OT_Operator_DEMO_MULTI
+
 from .Panels.distribute.ss_redistribute_op import Redistribute_OT_Operator
 
 from .Panels.distribute.distribute_panel import *
@@ -75,7 +77,8 @@ classes = ( ASSET_SELECT_OT_actions, ASSET_SELECT_OT_addViewportSelection, ASSET
            InvertPainting_OT_Operator,
            PaintAll_OT_Operator,
            SurfaceSpray_OT_Operator_DEMO_SELECTION,
-           SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION, 
+           SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION,
+           SurfaceSpray_OT_Operator_DEMO_MULTI, 
            Redistribute_OT_Operator, Clear_OT_Operator, Rotate_Operator,
            VertexProfile_ADD_OT_Operator, VertexProfile_REMOVE_OT_Operator)
 

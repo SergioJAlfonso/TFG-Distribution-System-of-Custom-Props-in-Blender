@@ -64,7 +64,7 @@ class MAIN_PT_Panel(bpy.types.Panel):
         
         # Add-on distribute buttons
         row.operator('addon.distribute', icon='OUTLINER_OB_POINTCLOUD', text = "Distribute")
-        row.operator('addon.distribute_partialdemo', icon='OUTLINER_OB_POINTCLOUD', text = "Test Distribute")
+        row.operator('addon.multidistribute', icon='OUTLINER_OB_POINTCLOUD', text = "Test Distribute")
         row.operator('addon.clear', icon='OUTLINER_DATA_POINTCLOUD', text = "Clear")
 
         #Painting Mode
