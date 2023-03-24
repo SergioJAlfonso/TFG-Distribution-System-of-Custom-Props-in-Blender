@@ -37,6 +37,10 @@ class SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION(bpy.types.Operator):
         if(context.scene.asset == None):
             self.report({'WARNING'}, 'You must select an asset object!')
             return {'FINISHED'}
+        
+        if(context.scene.vgr_profile == " " or context.scene.vgr_profile == "" ):
+            self.report({'WARNING'}, 'You must select an vertex group profile!')
+            return {'FINISHED'}
 
         context.scene.solution_nodes.clear()
         context.scene.current_search = 1
@@ -86,7 +90,7 @@ class SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION(bpy.types.Operator):
         if (context.scene.subdivide):
             makeSubdivision(target, asset_bounding_box_local, target_bounding_box_local, numCutsSubdivision)
 
-        data_tridimensional = getVerticesData(target)
+        data_tridimensional = getVerticesData(target, context.scene.vgr_profile)
 
         option = bpy.context.scene.algorithm_enum
         name = bpy.context.scene.bl_rna.properties['algorithm_enum'].enum_items[option].name

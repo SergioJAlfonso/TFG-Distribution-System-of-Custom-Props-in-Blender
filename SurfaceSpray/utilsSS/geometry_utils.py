@@ -5,7 +5,7 @@ from mathutils import Euler
 from mathutils import Quaternion
 import bpy 
 
-def getVerticesData(object):
+def getVerticesData(object, vertexGroupName):
     """
     Returns a list of vertex, their weights and normals (vertex, weight, normal)
     """
@@ -14,13 +14,19 @@ def getVerticesData(object):
     #i = indice del vertice | v = el vertice 
     # vgroup = obj.vertex_groups[0]
     # vertices = [v for v in obj.data.vertices if v.groups]
+
+    # [vert for vert in bpy.context.object.data.vertices if bpy.context.object.vertex_groups['vertex_group_name'].index in [i.group for i in vert.groups]]
     for i, v in enumerate(object.data.vertices):
         #v.groups = grupos a los que esta asignado el vertice
         for g in v.groups:
+            #In case this vertex doesnt belongs to selected vertex Group, we continue.
+            if (object.vertex_groups[g.group].name != vertexGroupName):
+                continue
+
+
             # print("Vertex group:" + target.vertex_groups[g.group].name)
             pos = object.matrix_world @ v.co
 
-            
             # print("Vertex position:" + str(pos))
             weight = g.weight
             #g = datos del vertice en ese grupo
