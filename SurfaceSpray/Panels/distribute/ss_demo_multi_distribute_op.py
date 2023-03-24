@@ -43,6 +43,10 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
             self.report({'WARNING'}, 'You must select an asset object!')
             return {'FINISHED'}
 
+        if(context.scene.vgr_profile == " " or context.scene.vgr_profile == "" ):
+            self.report({'WARNING'}, 'You must select an vertex group profile!')
+            return {'FINISHED'}
+        
         # Obtenemos todos los datos necesarios
         if (context.scene.subdivide):
             target = duplicateObject(context.scene.target)
@@ -89,7 +93,7 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
             makeSubdivision(target, asset_bounding_box_local,
                             target_bounding_box_local, numCutsSubdivision)
 
-        data_tridimensional = getVerticesData(target)
+        data_tridimensional = getVerticesData(target, context.scene.vgr_profile)
         print('Algorithm:', context.scene.algorithm_enum)
 
         vertices = filterVerticesByWeightThreshold(
@@ -113,24 +117,6 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
 
         nodeSol = ss_best_fms(distribution,1)
 
-        for i in range(len(nodeSol)):
-            actions = nodeSol[i].solution()
-
-            vertexes = []
-            rotations = []
-            scale = []
-            asset_indexes = []
-            for j in range(len(actions)):
-                vertexes.append(actions[j].indexVertex)
-                rotations.append(actions[j].rotation)
-                scale.append(actions[j].scale)
-                asset_indexes.append(actions[j].asset_index)
-            
-            # print(f"Sol {i}:")
-            # print("Indices:", vertexes)
-            # print("Rotations:", rotations)
-            # print("Scale:", scale)
-
         actionsSol = None
 
         #Get just one solution
@@ -142,7 +128,7 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
 
         objectsData = []
         #We obtain data from actions to create real objects.
-        # ObjectData: [pos, normal, rotation, scale]
+        # ObjectData: [pos, normal, rotation, scale, index]
         for i in range(len(actionsSol)):
             indexVertex = actionsSol[i].indexVertex
             objRotation = actionsSol[i].rotation

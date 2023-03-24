@@ -103,45 +103,46 @@ def createObjectsInPointsNS(objectData, object, boundingBoxObject, collection, n
         object = bpy.context.active_object
 
 def createObjectsInPointsNSMulti(objectData, assets, boundingBoxObject, collection, normal_factor = 1):
-    inCollection = False 
     #In case something else has been selected, we deselect everything
     bpy.ops.object.select_all(action='DESELECT')
-
-
-    
+ 
     #Create object in points
-
     for i in range(len(objectData)):
         #Take current object
-        object = assets[objectData[i][3]]
+        obj_index = int(objectData[i][4])
+        object = assets[obj_index]
         #Set Active object in case it has changed
-        bpy.context.view_layer.objects.active = object 
+        # bpy.context.view_layer.objects.active = object 
 
-        object.select_set(True)
+        # object.select_set(True)
         
-        bpy.ops.object.duplicate(linked=1)
+        # bpy.ops.object.duplicate(linked=1)
         
         #We catch new object duplicated
-        newObj = bpy.context.active_object
+        # newObj = bpy.context.active_object
+        newObj = object.copy()
         
+        collection.objects.link(newObj)
         # Set scale
         adjustScale(newObj, objectData[i][3])
         
         newObj.location = objectData[i][0]
         #Set location relative to size
-        adjustPosition(newObj, boundingBoxObject, objectData[i][1])
+        adjustPosition(newObj, boundingBoxObject[obj_index], objectData[i][1])
 
         adjustRotation(newObj, objectData[i][1], objectData[i][2], normal_factor)
         #newObj.rotation_euler = Euler(points[i][2], 'XYZ')
 
         #Unlink from all collections and link in desired collection
-        if(inCollection == False):
-            linkedCollection = newObj.users_collection
-            #Link before unlink from everything
-            collection.objects.link(newObj)
-            for col in linkedCollection:
-                if(col is not None): col.objects.unlink(newObj)
-            inCollection = True
+        
+        # linkedCollection = newObj.users_collection
+        # #Link before unlink from everything
+        # collection.objects.link(newObj)
+        # for col in linkedCollection:
+        #     if(col is not None): col.objects.unlink(newObj)
+            
+
+        object.select_set(False)
         #Set Active object to new object so we can duplicate from this point
         #object = bpy.context.active_object
 

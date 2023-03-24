@@ -105,23 +105,6 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         #DEPRECATED:distribution = Demo_Dist_Ov_Rot_Distrib_V3(rules, asset_bounding_box_local, initialState, goalState)
 
         nodeSol = ss_best_fms(distribution,3)
-
-        for i in range(len(nodeSol)):
-            actions = nodeSol[i].solution()
-
-            vertexes = []
-            rotations = []
-            scale = []
-            for j in range(len(actions)):
-                vertexes.append(actions[j].indexVertex)
-                rotations.append(actions[j].rotation)
-                scale.append(actions[j].scale)
-            
-            # print(f"Sol {i}:")
-            # print("Indices:", vertexes)
-            # print("Rotations:", rotations)
-            # print("Scale:", scale)
-
         actionsSol = None
 
         #Get just one solution
