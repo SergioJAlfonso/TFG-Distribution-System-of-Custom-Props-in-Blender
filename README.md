@@ -19,17 +19,28 @@ The purpose of the project is to explore the procedural generation of meshes, an
 Trabajo de fin de grado por José Daniel Rave Robayo, Daniel Illanes Morillas y Sergio José Alfonso Rojas
 
 ## Notas Instalación
-Es necesario instalar aima (y tener instalado Python). Para ello ejecutar el siguiente comando desde cualquier cmd.
+Es necesario instalar aima (y tener instalado Python). Para ello ejecutar el siguiente comando desde cualquier ```cmd```.
 ~~~ 
 pip install aima3
 ~~~
-Se habrá añadido una carpeta llamada _"aima3"_ al directorio _site-packages_ de la carpeta python el cual se encuentra en la carpeta fuente de Python.
-(Ejecutando where python mostrara la localización del ejecutable python).
-Por ej, debería estar en:
+
+Se habrá añadido una carpeta llamada _"aima3"_ al directorio _site-packages_ (de la carpeta _python_) el cual se encuentra en la carpeta fuente de **Python**.
+
+Ejecutando el siguiente código en una cmd, mostrará la localización del ejecutable python.
+
+~~~ 
+where python
+~~~
+
+Por ejemplo, debería estar encontrarse en una ruta similar a:
 ~~~
 "C:\Users\user_name\AppData\Local\Programs\Python\Python310\Lib\site-packages"
 ~~~
-En dicha ruta, copiar la carpeta _aima3_ a la carpeta de python que usa Blender para ejecutar el código: debería ser la carpeta de Blender cuya ruta sería tal que : _Blender-X.X/python/lib/site-packages_. 
+A continuación, en dicha ruta copiar la carpeta _aima3_ a la carpeta de python que utiliza Blender: debería ser la carpeta de Blender cuya ruta sería tal que: 
+
+~~~ 
+Blender-X.X/python/lib/site-packages
+~~~ 
 Si sólo se tiene una versión de Blender instalada, y dicha carpeta coincide con la versión, ya no hay que hacer nada más.
 
 En caso de no saber dónde se encuentra la ruta de python que usa Blender, o si se tiene más de una versión de Blender instalada, realizar los siguientes pasos:
