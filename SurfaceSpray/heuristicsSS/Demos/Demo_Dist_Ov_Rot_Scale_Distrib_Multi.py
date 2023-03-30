@@ -134,7 +134,7 @@ class Demo_Dist_Ov_Rot_Scale_Multi_Distrib(aimaProblem):
             assetIndex = self.random_asset()
 
             satisfiesRestrictions, scale = self.checkRestrictions(state, i, assetIndex)
-            if (satisfiesRestrictions == True):
+            if (satisfiesRestrictions):
                 k = 0
                 
                 # Check that this selected vertex is not already used as an action in this loop

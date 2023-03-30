@@ -7,7 +7,9 @@ from ...ItemClasses.DefaultAttributes.FurnitureAttribs import *
 from ...utilsSS.draw_utils import *
 from ...utilsSS.blender_utils import *
 from ...heuristicsSS.ThresholdRandDistribution import *
-from ...heuristicsSS.Demos.Demo_Dist_Ov_Rot_Scale_Distrib_Multi import *
+from ...heuristicsSS.ThresholdRandDistributionV4_PartialSol_MultiAction import *
+# from ...heuristicsSS.Demos.Demo_Dist_Ov_Rot_Scale_Distrib_Multi import *
+
 #TODO: eventually remove deprecated distributions
 # from ...heuristicsSS.Demos.Demo_Dist_Ov_Rot_Distrib_V3 import *
 # from ...heuristicsSS.Demos.Demo_Dist_Overlap_Distribution_V2 import *
@@ -22,9 +24,6 @@ from ...algorithmsSS.algorithmsSS import breadth_first_tree_multiple_search as s
 from ...algorithmsSS.algorithmsSS import best_first_graph_multiple_search as ss_best_fms
 
 from aima3.search import depth_first_tree_search as aimaDFTS
-
-from aima3.search import Node
-from collections import deque
 
 class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
     bl_idname = "addon.multidistribute"
@@ -67,6 +66,9 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
         threshold_weight = context.scene.threshold  # valor de 0, 1
         num_instances = context.scene.num_assets
 
+        #Make sure there are no duplicates
+        bpy.ops.partialsol.remove_duplicates()
+
         collection = bpy.data.collections.get(nameCollection)
         collection = initCollection(collection, nameCollection)
 
@@ -82,10 +84,17 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
 
         target_bounding_box_local = getBoundingBox(context, target)
 
-        # Bounding info
-        # for i in range(len(asset_bounding_box_local)):
-        #     print('Vertice ', i,'(x, y, z): ', asset_bounding_box_local[i])
 
+        #Get objects from list.
+        partialSol = []
+
+        for i in range(len(context.scene.partialsol)):
+            obj = context.scene.partialsol[i]
+            # EXTRACT INFO FROM OBJ
+            bbox = getBoundingBox(context, obj.obj)
+            itemSol = Item(obj.name, obj.obj, obj.obj.location, bbox)
+            partialSol.append(itemSol) # INJECT INFO
+       
         # #Subdivide target to fit assets in every vertex
         if (context.scene.subdivide):
             # Get bounding box with more cuts needed
@@ -111,11 +120,15 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
         # Establishes rules for the assets in order to place them correctly
         rules = setPanelItemRules(context)
 
-        distribution = Demo_Dist_Ov_Rot_Scale_Multi_Distrib(rules, assets_bounding_box_local, initialState, goalState)
+        distribution = ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(rules, assets_bounding_box_local, initialState, partialSol, goalState)
         #distribution = ThresholdRandDistribution(rules, asset_bounding_box_local, initialState, goalState)
         #DEPRECATED:distribution = Demo_Dist_Ov_Rot_Distrib_V3(rules, asset_bounding_box_local, initialState, goalState)
+        option = bpy.context.scene.algorithm_enum
+        name = bpy.context.scene.bl_rna.properties['algorithm_enum'].enum_items[option].name
+        print(f'Algorithm: {name}')
+        algorithm = context.scene.algorithms_HashMap[name]
 
-        nodeSol = ss_best_fms(distribution,1)
+        nodeSol = algorithm(distribution,1)
 
         actionsSol = None
 

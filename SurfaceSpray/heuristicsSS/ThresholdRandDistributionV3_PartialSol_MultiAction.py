@@ -51,7 +51,7 @@ class ThresholdRandDistributionPartialSol_MultiAction(aimaProblem):
         satisfiesRestrictions = True
 
         #While all restrictions are acomplished and we are checking all actions applied.
-        while (i < len(state.actionsApplied_) and satisfiesRestrictions == True):
+        while (i < len(state.actionsApplied_) and satisfiesRestrictions):
             # Access vertices that has an object on it.
             indexVertex = state.actionsApplied_[i].indexVertex
             vertexInUse = state.vertices_[indexVertex][0]
@@ -75,8 +75,7 @@ class ThresholdRandDistributionPartialSol_MultiAction(aimaProblem):
 
         #We need to also check if this object satisfies all restrictions with partial solution objects 
         i = 0
-        satisfiesRestrictions = True
-        while(i < len(self.partialSol) and satisfiesRestrictions == True):
+        while(i < len(self.partialSol) and satisfiesRestrictions):
             # Check bounding box overlap if needed
             
             partialObjectLocation = self.partialSol[i].position
