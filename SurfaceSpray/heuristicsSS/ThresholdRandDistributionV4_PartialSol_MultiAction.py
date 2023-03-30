@@ -113,7 +113,7 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
         while(i < len(self.partialSol) and satisfiesRestrictions):
             # Check bounding box overlap if needed
             partialObjectLocation = self.partialSol[i].position
-
+            vertexInUse = state.vertices_[indexVertex][0]
             if (self.rules.overlap):
                 partial_bbox = self.partialSol[i].bounding_box
                 partial_half_bounding_size_x = (partial_bbox[4][0] - partial_bbox[0][0])/2.0
