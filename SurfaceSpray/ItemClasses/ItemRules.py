@@ -16,9 +16,6 @@ class ItemRules:
         # Distance offset
         self.distance_between_items = 0 
 
-        # Close offset
-        #self.object_offset = 0
-
         # Item can overlap with another item
         self.overlap = False
 
@@ -29,3 +26,4 @@ class ItemRules:
         self.min_scale_factor = 1
         self.max_scale_factor = 1
         
+        self.appear_percentage = 1

@@ -242,6 +242,8 @@ def setPanelItemRules(context):
     scale_min = context.scene.scale_factor_min
     scale_max = context.scene.scale_factor_max
 
+    appearance_percentage = context.scene.item_percentage
+
     #Set Item rules
     rules = ItemRules()
 
@@ -253,5 +255,6 @@ def setPanelItemRules(context):
     rules.distance_between_items = item_distance
     rules.min_scale_factor = scale_min
     rules.max_scale_factor = scale_max
+    rules.appear_percentage = appearance_percentage
 
     return rules

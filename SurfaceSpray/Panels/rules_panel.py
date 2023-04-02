@@ -15,75 +15,91 @@ class RULES_PT_Panel(bpy.types.Panel):
         # Item Rules box
         box = layout.box()
 
-        #box.label(text="Asset Rules")
+        # Asset which rules will be defined
+        current_asset_index = context.scene.assets.find(context.view_layer.objects.active.name)
 
-        rotationBox = box.box()
+        if current_asset_index != -1:
+            current_asset_name = context.scene.assets[current_asset_index].name
+        else:
+            current_asset_name = "None"
 
-        rotation_row = rotationBox.row()
+        box.label(text= "Currently Selected Asset:   " + current_asset_name)
 
-        rotation_row.alignment = "CENTER"
+        if current_asset_name != "None":
+            rotationBox = box.box()
 
-        # Rotation
-        rotation_row.label(text="Allow Rotation:")
-        rotation_row.prop(context.scene, "rotate_x")
-        rotation_row.prop(context.scene, "rotate_y")
-        rotation_row.prop(context.scene, "rotate_z")
+            rotation_row = rotationBox.row()
 
-        if(context.scene.rotate_x or context.scene.rotate_y or context.scene.rotate_z):
-            #Range and steps
-            
-            rotation_range_row = rotationBox.row()
-            rotation_step_row = rotationBox.row()
+            rotation_row.alignment = "CENTER"
 
-            rotation_range_row.alignment = "CENTER"
-            rotation_step_row.alignment = "CENTER"
+            # Rotation
+            rotation_row.label(text="Allow Rotation:")
+            rotation_row.prop(context.scene, "rotate_x")
+            rotation_row.prop(context.scene, "rotate_y")
+            rotation_row.prop(context.scene, "rotate_z")
 
-            rotation_range_row.label(text="Range:")
-            rotation_step_row.label(text="Steps:")
+            if(context.scene.rotate_x or context.scene.rotate_y or context.scene.rotate_z):
+                #Range and steps
+                
+                rotation_range_row = rotationBox.row()
+                rotation_step_row = rotationBox.row()
 
-            if(context.scene.rotate_x):
-                rotation_range_row.prop(context.scene, "rot_range_x")
-                rotation_step_row.prop(context.scene, "rot_steps_x")
+                rotation_range_row.alignment = "CENTER"
+                rotation_step_row.alignment = "CENTER"
 
-            if(context.scene.rotate_y):
-                rotation_range_row.prop(context.scene, "rot_range_y")
-                rotation_step_row.prop(context.scene, "rot_steps_y")
-            
-            if(context.scene.rotate_z):
-                rotation_range_row.prop(context.scene, "rot_range_z")
-                rotation_step_row.prop(context.scene, "rot_steps_z")
-            
+                rotation_range_row.label(text="Range:")
+                rotation_step_row.label(text="Steps:")
 
-        # Distance
-        box.row().prop(context.scene, "item_distance")
+                if(context.scene.rotate_x):
+                    rotation_range_row.prop(context.scene, "rot_range_x")
+                    rotation_step_row.prop(context.scene, "rot_steps_x")
 
-        # Overlap
-        row = box.row()
+                if(context.scene.rotate_y):
+                    rotation_range_row.prop(context.scene, "rot_range_y")
+                    rotation_step_row.prop(context.scene, "rot_steps_y")
+                
+                if(context.scene.rotate_z):
+                    rotation_range_row.prop(context.scene, "rot_range_z")
+                    rotation_step_row.prop(context.scene, "rot_steps_z")
+                
 
-        row.prop(context.scene, "overlap_bool")
+            # Distance
+            box.row().prop(context.scene, "item_distance")
 
-        if(context.scene.overlap_bool):
-            row.prop(context.scene, "bbox_bool")
+            # Overlap
+            row = box.row()
 
-        scalerow =  box.row()
+            row.prop(context.scene, "overlap_bool")
 
-        scalerow.column().label(text="Random Scale Factor")
-        scalerow.column().prop(context.scene, "scale_factor_min")
-        scalerow.column().prop(context.scene, "scale_factor_max")
+            if(context.scene.overlap_bool):
+                row.prop(context.scene, "bbox_bool")
 
+            #scale factor
+            scalerow = box.row()
 
-        normalBox =  box.row()
+            scalerow.column().label(text="Random Scale Factor")
+            scalerow.column().prop(context.scene, "scale_factor_min")
+            scalerow.column().prop(context.scene, "scale_factor_max")
+
+            #Percenetage of appeareance
+            appeareancerow = box.row()
+            appeareancerow.column().label(text="Percentage Of Appeareance")
+            appeareancerow.column().prop(context.scene, "item_percentage")
         
-        # normalRow = normalBox.column()
-        # normalRow.prop(context.scene, "adjust_normal_bool")
 
-        normalRow2 = normalBox.column()
-        normalRow2.prop(context.scene, "adjust_normal_value",slider=True, index=2, text="Adjust to normal")
 
-        # collection = bpy.data.collections.get(context.scene.collectName)
-        # #If there are not objects distributed, cant adjust normal
-        # if len(collection.objects) == 0:
-        #     normalRow2.enabled = False
+            normalBox = box.row()
+            
+            # normalRow = normalBox.column()
+            # normalRow.prop(context.scene, "adjust_normal_bool")
+
+            normalRow2 = normalBox.column()
+            normalRow2.prop(context.scene, "adjust_normal_value",slider=True, index=2, text="Adjust to normal")
+
+            # collection = bpy.data.collections.get(context.scene.collectName)
+            # #If there are not objects distributed, cant adjust normal
+            # if len(collection.objects) == 0:
+            #     normalRow2.enabled = False
 
     def register():
         # Item rotation constraints
@@ -209,6 +225,14 @@ class RULES_PT_Panel(bpy.types.Panel):
             update=update_normal_rotations
         )
 
+        bpy.types.Scene.item_percentage = bpy.props.FloatProperty(
+            name="",
+            description="Percentage of appearance of each item from 0 o 1",
+            default=1,
+            min=0,
+            max=1
+        )
+        
         # Not needed, already got the value (0 means false, >0 means true)      
         # bpy.types.Scene.adjust_normal_bool = bpy.props.BoolProperty(
         #     name='Adjust to Normal',
@@ -232,15 +256,12 @@ class RULES_PT_Panel(bpy.types.Panel):
         #     max = 180.0,
         # )
     
-
-
-
     def unregister():
         del (bpy.types.Scene.rotate_x, bpy.types.Scene.rotate_y, bpy.types.Scene.rotate_z, 
              bpy.types.Scene.rot_range_x, bpy.types.Scene.rot_range_y, bpy.types.Scene.rot_range_z, 
              bpy.types.Scene.item_distance, bpy.types.Scene.overlap_bool,bpy.types.Scene.bbox_bool,
              bpy.types.Scene.scale_factor_min, bpy.types.Scene.scale_factor_max, 
-             bpy.types.Scene.adjust_normal_value)
+             bpy.types.Scene.adjust_normal_value, bpy.types.Scene.item_percentage)
         
 def update_normal_rotations(self, context):
     bpy.ops.addon.rotate_normal()
