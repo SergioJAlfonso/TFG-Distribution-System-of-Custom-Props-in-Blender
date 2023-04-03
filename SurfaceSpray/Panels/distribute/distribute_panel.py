@@ -222,6 +222,7 @@ class MAIN_PT_Panel(bpy.types.Panel):
         )
 
         bpy.types.Scene.solution_nodes = []
+        bpy.types.Scene.objects_data = []
 
         bpy.types.Scene.vgr_profile = bpy.props.StringProperty(
              name="vertex_group_profile",

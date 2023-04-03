@@ -9,10 +9,7 @@ class Rotate_Operator(bpy.types.Operator):
     bl_description = "Aligns objects to normal by factor"
 
     def execute(self, context):
-        # TODO: Guardar el estado de la solucion del algoritmo, con sus correspondientes
-        # vertices y normales asociadas, lo cual vuelve esto un problema trivial.
-
-        solution_node = context.scene.solution_nodes[0]
+        solution_node = context.scene.objects_data[0]
 
         if(solution_node == None):
             self.report({'WARNING'}, 'No solution!')

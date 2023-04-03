@@ -57,6 +57,7 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
             assets.append(context.scene.assets[i].obj)
         # Remove previous solutions AND set current search to 1
         context.scene.solution_nodes.clear()
+        context.scene.objects_data.clear()
         context.scene.current_search = 1
 
         # Note : bpy.types.Scene.num_assets != context.scene.num_assets
@@ -121,8 +122,7 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
         rules = setPanelItemRules(context)
 
         distribution = ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(rules, assets_bounding_box_local, initialState, partialSol, goalState)
-        #distribution = ThresholdRandDistribution(rules, asset_bounding_box_local, initialState, goalState)
-        #DEPRECATED:distribution = Demo_Dist_Ov_Rot_Distrib_V3(rules, asset_bounding_box_local, initialState, goalState)
+
         option = bpy.context.scene.algorithm_enum
         name = bpy.context.scene.bl_rna.properties['algorithm_enum'].enum_items[option].name
         print(f'Algorithm: {name}')
@@ -151,7 +151,7 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
                 [vertices[indexVertex][0], vertices[indexVertex][1], objRotation, objScale, objIndex])
 
         # Save objectData
-        context.scene.solution_nodes.append(objectsData)
+        context.scene.objects_data.append(objectsData)
 
         createObjectsInPointsNSMulti(objectsData, assets,
                               assets_bounding_box_local, collection, context.scene.adjust_normal_value)
