@@ -71,7 +71,7 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
         bpy.ops.partialsol.remove_duplicates()
 
         collection = bpy.data.collections.get(nameCollection)
-        collection = initCollection(collection, nameCollection)
+        collection = initCollection(collection, nameCollection, True)
 
         bpy.ops.object.select_all(action='DESELECT')
         # #Scale asset if necessary
