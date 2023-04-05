@@ -8,7 +8,7 @@ class RULES_PT_Panel(bpy.types.Panel):
     bl_description = "Rules that specify how the asset is placed"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
-
+    
     def draw(self, context):
         layout = self.layout
 
@@ -16,16 +16,15 @@ class RULES_PT_Panel(bpy.types.Panel):
         box = layout.box()
 
         # Asset which rules will be defined
-        current_asset_index = context.scene.assets.find(context.view_layer.objects.active.name)
+        #context.scene.selected_item_index = context.scene.assets.find(context.view_layer.objects.active.name)
 
-        if current_asset_index != -1:
-            current_asset_name = context.scene.assets[current_asset_index].name
+        #print(context.scene.asset_index)
+
+        if context.scene.asset_index == -1:
+            box.label(text= "Currently Selected Asset:   None")
         else:
-            current_asset_name = "None"
+            box.label(text= "Currently Selected Asset:   " + context.scene.assets[context.scene.asset_index].name) 
 
-        box.label(text= "Currently Selected Asset:   " + current_asset_name)
-
-        if current_asset_name != "None":
             rotationBox = box.box()
 
             rotation_row = rotationBox.row()
@@ -81,7 +80,7 @@ class RULES_PT_Panel(bpy.types.Panel):
             scalerow.column().prop(context.scene, "scale_factor_min")
             scalerow.column().prop(context.scene, "scale_factor_max")
 
-            #Percenetage of appeareance
+            #Percentage of appeareance
             appeareancerow = box.row()
             appeareancerow.column().label(text="Percentage Of Appeareance")
             appeareancerow.column().prop(context.scene, "item_percentage")
@@ -100,34 +99,63 @@ class RULES_PT_Panel(bpy.types.Panel):
             # #If there are not objects distributed, cant adjust normal
             # if len(collection.objects) == 0:
             #     normalRow2.enabled = False
+            #print(context.scene.asset_index,": " ,bpy.types.Scene.ItemRules_HashMap, "\n")
 
     def register():
+
+        bpy.types.Scene.ItemRules_HashMap = {}
+
+        bpy.types.Scene.ItemRules_HashMap["rotate_x"] = [False for _ in range(10)]
+        bpy.types.Scene.ItemRules_HashMap["rotate_y"] = [False for _ in range(10)]
+        bpy.types.Scene.ItemRules_HashMap["rotate_z"] = [False for _ in range(10)]
+
+        bpy.types.Scene.ItemRules_HashMap["rot_range_x"] = [180.0 for _ in range(10)]
+        bpy.types.Scene.ItemRules_HashMap["rot_range_y"] = [180.0 for _ in range(10)]
+        bpy.types.Scene.ItemRules_HashMap["rot_range_z"] = [180.0 for _ in range(10)]
+
+        bpy.types.Scene.ItemRules_HashMap["rot_steps_x"] = [180.0 for _ in range(10)]
+        bpy.types.Scene.ItemRules_HashMap["rot_steps_y"] = [180.0 for _ in range(10)]
+        bpy.types.Scene.ItemRules_HashMap["rot_steps_z"] = [180.0 for _ in range(10)]
+
+        bpy.types.Scene.ItemRules_HashMap["item_distance"] = [0.0 for _ in range(10)]
+        bpy.types.Scene.ItemRules_HashMap["overlap_bool"] = [True for _ in range(10)]
+        bpy.types.Scene.ItemRules_HashMap["bbox_bool"] = [False for _ in range(10)]
+
+        bpy.types.Scene.ItemRules_HashMap["scale_factor_min"] = [1.0 for _ in range(10)]
+        bpy.types.Scene.ItemRules_HashMap["scale_factor_max"] = [1.0 for _ in range(10)]
+
+        bpy.types.Scene.ItemRules_HashMap["item_percentage"] = [1.0 for _ in range(10)]
+
         # Item rotation constraints
         bpy.types.Scene.rotate_x = bpy.props.BoolProperty(
             name='X',
             description = "This checkbox allows the rotation of the object in the X axis",
-            default=False
+            default=False,
+            update=update_rotate_x
         )
 
         bpy.types.Scene.rotate_y = bpy.props.BoolProperty(
             name='Y',
             description = "This checkbox allows the rotation of the object in the Y axis",
-            default=False
+            default=False,
+            update=update_rotate_y
         )
 
         bpy.types.Scene.rotate_z = bpy.props.BoolProperty(
             name='Z',
             description = "This checkbox allows the rotation of the object in the Z axis",
-            default=False
+            default= False,
+            update=update_rotate_z
         )
 
-        # Item rotation range
+        #Item rotation range
         bpy.types.Scene.rot_range_x = bpy.props.FloatProperty(
             name='X',
             description = "Sets rotation range in the X axis",
             default=180.0,
             min = 0.0,
             max = 180.0,
+            update=update_rot_range_x
         )
 
         bpy.types.Scene.rot_range_y = bpy.props.FloatProperty(
@@ -136,6 +164,7 @@ class RULES_PT_Panel(bpy.types.Panel):
             default=180.0,
             min = 0.0,
             max = 180.0,
+            update=update_rot_range_y
         )
 
         bpy.types.Scene.rot_range_z = bpy.props.FloatProperty(
@@ -144,6 +173,7 @@ class RULES_PT_Panel(bpy.types.Panel):
             default=180.0,
             min = 0.0,
             max = 180.0,
+            update=update_rot_range_z
         )
 
         # Item rotation steps
@@ -153,6 +183,7 @@ class RULES_PT_Panel(bpy.types.Panel):
             default=1.0,
             min = 0.02,
             max = 360.0,
+            update=update_rot_steps_x
         )
 
         bpy.types.Scene.rot_steps_y = bpy.props.FloatProperty(
@@ -161,6 +192,7 @@ class RULES_PT_Panel(bpy.types.Panel):
             default=1.0,
             min = 0.02,
             max = 360.0,
+            update=update_rot_steps_y
         )
 
         bpy.types.Scene.rot_steps_z = bpy.props.FloatProperty(
@@ -169,6 +201,7 @@ class RULES_PT_Panel(bpy.types.Panel):
             default=1.0,
             min = 0.02,
             max = 360.0,
+            update=update_rot_steps_z
         )
 
         # Item distance to other objects
@@ -179,12 +212,14 @@ class RULES_PT_Panel(bpy.types.Panel):
             default=0,
             min = 0.0,
             max = 100.0,
+            update=update_item_distance
         )
 
         bpy.types.Scene.overlap_bool = bpy.props.BoolProperty(
             name='Don\'t Allow Overlap',
             description = "This checkbox allows the assets to overlap with each other",
-            default=True
+            default=True,
+            update=update_overlap_bool
         )
 
         bpy.types.Scene.bbox_bool = bpy.props.BoolProperty(
@@ -193,7 +228,8 @@ class RULES_PT_Panel(bpy.types.Panel):
             " going to be\nchecked using a bounding box (Recomended if the asset is not going to be rotated)."+
             "\n\nLeaving it unchecked makes use of a bounding sphere (More reliable\n if the asset allows "+
             "rotation but not very accurate with oblong objects)",
-            default=False
+            default=False,
+            update=update_bbox_bool
         )
 
         # Item scale vairation
@@ -204,6 +240,7 @@ class RULES_PT_Panel(bpy.types.Panel):
             default=1.0,
             min = 0.05,
             max = 5.0,
+            update=update_scale_factor_min
         )
 
 
@@ -214,6 +251,16 @@ class RULES_PT_Panel(bpy.types.Panel):
             default=1.0,
             min = 0.0,
             max = 5.0,
+            update=update_scale_factor_max
+        )
+
+        bpy.types.Scene.item_percentage = bpy.props.FloatProperty(
+            name="",
+            description="Percentage of appearance of each item from 0 o 1",
+            default=1,
+            min=0,
+            max=1,
+            update=update_item_percentage
         )
 
         bpy.types.Scene.adjust_normal_value = bpy.props.FloatProperty(
@@ -223,16 +270,8 @@ class RULES_PT_Panel(bpy.types.Panel):
             min=0,
             max=1,
             update=update_normal_rotations
-        )
+        )     
 
-        bpy.types.Scene.item_percentage = bpy.props.FloatProperty(
-            name="",
-            description="Percentage of appearance of each item from 0 o 1",
-            default=1,
-            min=0,
-            max=1
-        )
-        
         # Not needed, already got the value (0 means false, >0 means true)      
         # bpy.types.Scene.adjust_normal_bool = bpy.props.BoolProperty(
         #     name='Adjust to Normal',
@@ -256,6 +295,7 @@ class RULES_PT_Panel(bpy.types.Panel):
         #     max = 180.0,
         # )
     
+
     def unregister():
         del (bpy.types.Scene.rotate_x, bpy.types.Scene.rotate_y, bpy.types.Scene.rotate_z, 
              bpy.types.Scene.rot_range_x, bpy.types.Scene.rot_range_y, bpy.types.Scene.rot_range_z, 
@@ -265,3 +305,38 @@ class RULES_PT_Panel(bpy.types.Panel):
         
 def update_normal_rotations(self, context):
     bpy.ops.addon.rotate_normal()
+
+
+def update_rotate_x(self, context):
+    bpy.types.Scene.ItemRules_HashMap["rotate_x"][context.scene.asset_index] = self["rotate_x"]
+def update_rotate_y(self, context):
+    bpy.types.Scene.ItemRules_HashMap["rotate_y"][context.scene.asset_index] = self["rotate_y"]
+def update_rotate_z(self, context):
+    bpy.types.Scene.ItemRules_HashMap["rotate_z"][context.scene.asset_index] = self["rotate_z"]
+    
+def update_rot_range_x(self, context):
+    bpy.types.Scene.ItemRules_HashMap["rot_range_x"][context.scene.asset_index] = self["rot_range_x"]
+def update_rot_range_y(self, context):
+    bpy.types.Scene.ItemRules_HashMap["rot_range_y"][context.scene.asset_index] = self["rot_range_y"]
+def update_rot_range_z(self, context):
+    bpy.types.Scene.ItemRules_HashMap["rot_range_z"][context.scene.asset_index] = self["rot_range_z"]
+
+def update_rot_steps_x(self, context):
+    bpy.types.Scene.ItemRules_HashMap["rot_steps_x"][context.scene.asset_index] = self["rot_steps_x"]
+def update_rot_steps_y(self, context):
+    bpy.types.Scene.ItemRules_HashMap["rot_steps_y"][context.scene.asset_index] = self["rot_steps_y"]
+def update_rot_steps_z(self, context):
+    bpy.types.Scene.ItemRules_HashMap["rot_steps_z"][context.scene.asset_index] = self["rot_steps_z"]
+
+def update_item_distance(self, context):
+    bpy.types.Scene.ItemRules_HashMap["item_distance"][context.scene.asset_index] = self["item_distance"]
+def update_overlap_bool(self, context):
+    bpy.types.Scene.ItemRules_HashMap["overlap_bool"][context.scene.asset_index] = self["overlap_bool"]
+def update_bbox_bool(self, context):
+    bpy.types.Scene.ItemRules_HashMap["bbox_bool"][context.scene.asset_index] = self["bbox_bool"]
+def update_scale_factor_min(self, context):
+    bpy.types.Scene.ItemRules_HashMap["scale_factor_min"][context.scene.asset_index] = self["scale_factor_min"]
+def update_scale_factor_max(self, context):
+    bpy.types.Scene.ItemRules_HashMap["scale_factor_max"][context.scene.asset_index] = self["scale_factor_max"]
+def update_item_percentage(self, context):
+    bpy.types.Scene.ItemRules_HashMap["item_percentage"][context.scene.asset_index] = self["item_percentage"]

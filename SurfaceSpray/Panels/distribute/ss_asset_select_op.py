@@ -10,6 +10,9 @@ class ASSET_SELECT_OT_actions(Operator):
     bl_label = "List Actions"
     bl_description = "Move items up and down, add and remove"
     bl_options = {'REGISTER'}
+
+    # Max different items to place
+    max_items = 10
     
     action: bpy.props.EnumProperty(
         items=(
@@ -55,6 +58,8 @@ class ASSET_SELECT_OT_actions(Operator):
 
                 if(context.object == context.scene.target):
                     self.report({'INFO'}, "Shouldn't add TARGET object!")
+                elif len(scn.assets) >= self.max_items:
+                    self.report({'INFO'}, "Can't add more assets!")    
                 else:
                     item = scn.assets.add()
                     item.name = context.object.name

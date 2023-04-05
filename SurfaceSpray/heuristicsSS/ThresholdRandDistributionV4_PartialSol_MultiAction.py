@@ -24,6 +24,7 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
         self.half_bounding_size_x = []
         self.half_bounding_size_y = []
         self.half_bounding_size_z = []
+        
         for box in bbox:
             self.half_bounding_size_x.append((box[4][0] - box[0][0])/2.0)
             self.half_bounding_size_y.append((box[2][1] - box[0][1])/2.0)
@@ -44,7 +45,7 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
         if (state.vertices_[indexVertex][2]):
             return False, 0
 
-        # Vertex we potentially want to place an object on it.
+        # Vertex we potentially want to place an object on
         pCandidate = state.vertices_[indexVertex][0]
 
         # We generate the new scale so it can be used to calculate the overlap
