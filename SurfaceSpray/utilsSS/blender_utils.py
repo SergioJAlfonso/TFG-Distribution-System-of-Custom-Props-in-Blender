@@ -218,31 +218,31 @@ def clearCollection(collection, checkPartialSol = False):
         if(j >= len(partialSol) or checkPartialSol == False):    
             bpy.data.objects.remove(obj, do_unlink=True)
 
-def setPanelItemRules(context):
+def setPanelItemRules(context, item_index = 0):
     
     # get item rules from panel
-    rotation_x = context.scene.rotate_x
-    rotation_y = context.scene.rotate_y
-    rotation_z = context.scene.rotate_z
+    rotation_x = context.scene.itemRules_HashMap["rotate_x"][item_index]
+    rotation_y = context.scene.itemRules_HashMap["rotate_y"][item_index]
+    rotation_z = context.scene.itemRules_HashMap["rotate_z"][item_index]
 
-    rotation_range_x = context.scene.rot_range_x
-    rotation_range_y = context.scene.rot_range_y
-    rotation_range_z = context.scene.rot_range_z
+    rotation_range_x = context.scene.itemRules_HashMap["rot_range_x"][item_index]
+    rotation_range_y = context.scene.itemRules_HashMap["rot_range_y"][item_index]
+    rotation_range_z = context.scene.itemRules_HashMap["rot_range_z"][item_index]
 
-    rotation_steps_x = context.scene.rot_steps_x
-    rotation_steps_y = context.scene.rot_steps_y
-    rotation_steps_z = context.scene.rot_steps_z
+    rotation_steps_x = context.scene.itemRules_HashMap["rot_steps_x"][item_index]
+    rotation_steps_y = context.scene.itemRules_HashMap["rot_steps_y"][item_index]
+    rotation_steps_z = context.scene.itemRules_HashMap["rot_steps_z"][item_index]
 
-    can_overlap = context.scene.overlap_bool
+    can_overlap = context.scene.itemRules_HashMap["overlap_bool"][item_index]
 
-    use_box = context.scene.bbox_bool
+    use_box = context.scene.itemRules_HashMap["bbox_bool"][item_index]
 
-    item_distance = context.scene.item_distance
+    item_distance = context.scene.itemRules_HashMap["item_distance"][item_index]
 
-    scale_min = context.scene.scale_factor_min
-    scale_max = context.scene.scale_factor_max
+    scale_min = context.scene.itemRules_HashMap["scale_factor_min"][item_index]
+    scale_max = context.scene.itemRules_HashMap["scale_factor_max"][item_index]
 
-    appearance_percentage = context.scene.item_percentage
+    appearance_percentage = context.scene.itemRules_HashMap["item_percentage"][item_index]
 
     #Set Item rules
     rules = ItemRules()

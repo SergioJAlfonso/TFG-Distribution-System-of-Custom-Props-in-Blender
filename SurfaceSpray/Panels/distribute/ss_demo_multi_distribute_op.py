@@ -119,7 +119,10 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
         # initialState.objectsPlaced_
 
         # Establishes rules for the assets in order to place them correctly
-        rules = setPanelItemRules(context)
+        rules = [None]*len(assets)
+        for i in range(len(assets)):
+            print(i)
+            rules[i] = setPanelItemRules(context, i)
 
         distribution = ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(rules, assets_bounding_box_local, initialState, partialSol, goalState)
 

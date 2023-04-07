@@ -49,7 +49,7 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
         pCandidate = state.vertices_[indexVertex][0]
 
         # We generate the new scale so it can be used to calculate the overlap
-        scale = self.random_scale()
+        scale = self.random_scale(assetIndex)
 
         # Take bounding box of chosen asset
         half_bounding_size_x = self.half_bounding_size_x[assetIndex]
@@ -57,9 +57,9 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
         half_bounding_size_z = self.half_bounding_size_z[assetIndex]
 
         # Get BBox/BShpere parameters
-        if (self.rules.overlap):
+        if (self.rules[assetIndex].overlap):
 
-            if (self.rules.use_bounding_box):
+            if (self.rules[assetIndex].use_bounding_box):
                 # Vertex A limits
                 bbox_limits_Candidate = getVertexBBoxLimits(
                     pCandidate, half_bounding_size_x * scale, half_bounding_size_y * scale, half_bounding_size_z * scale)
@@ -80,10 +80,10 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
             vertexInUseScale = state.actionsApplied_[i].scale
 
             # Check bounding box overlap if needed
-            if (self.rules.overlap):
+            if (self.rules[assetIndex].overlap):
 
                 # Using box
-                if (self.rules.use_bounding_box):
+                if (self.rules[assetIndex].use_bounding_box):
                     # Vertex B limits
                     vertex_B_bbox_limits = getVertexBBoxLimits(
                         vertexInUse, half_bounding_size_x * vertexInUseScale, half_bounding_size_y * vertexInUseScale, half_bounding_size_z * vertexInUseScale)
@@ -105,7 +105,7 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
             distance = math.sqrt((vertexInUse[0]-pCandidate[0])**2 + (
                 vertexInUse[1]-pCandidate[1])**2 + (vertexInUse[2]-pCandidate[2])**2)
             # Compares if distance is lesser or equals to minimum distance.
-            satisfiesRestrictions = satisfiesRestrictions and distance >= self.rules.distance_between_items
+            satisfiesRestrictions = satisfiesRestrictions and distance >= self.rules[assetIndex].distance_between_items
 
             i += 1
 
@@ -115,14 +115,14 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
             # Check bounding box overlap if needed
             partialObjectLocation = self.partialSol[i].position
             vertexInUse = state.vertices_[indexVertex][0]
-            if (self.rules.overlap):
+            if (self.rules[assetIndex].overlap):
                 partial_bbox = self.partialSol[i].bounding_box
                 partial_half_bounding_size_x = (partial_bbox[4][0] - partial_bbox[0][0])/2.0
                 partial_half_bounding_size_y = (partial_bbox[2][1] - partial_bbox[0][1])/2.0
                 partial_half_bounding_size_z = (partial_bbox[1][2] - partial_bbox[0][2])/2.0
 
                 # Using box
-                if (self.rules.use_bounding_box):               
+                if (self.rules[assetIndex].use_bounding_box):               
                     bbox_limits_PartialObject = getVertexBBoxLimits(
                         partialObjectLocation, partial_half_bounding_size_x, partial_half_bounding_size_y, partial_half_bounding_size_z)
 
@@ -142,7 +142,7 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
             distance = math.sqrt((partialObjectLocation[0]-pCandidate[0])**2 + (
                 partialObjectLocation[1]-pCandidate[1])**2 + (partialObjectLocation[2]-pCandidate[2])**2)
             # Compares if distance is lesser or equals to minimum distance.
-            satisfiesRestrictions = satisfiesRestrictions and distance >= self.rules.distance_between_items
+            satisfiesRestrictions = satisfiesRestrictions and distance >= self.rules[assetIndex].distance_between_items
 
             i += 1
 
@@ -189,7 +189,7 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
                 #Or if there are no actions, we store it.
                 if (k >= len(possibleActions) or len(possibleActions) == 0):
                     remaining -= 1
-                    action = Actions(i, self.random_step_rotation(), scale, assetIndex)
+                    action = Actions(i, self.random_step_rotation(assetIndex), scale, assetIndex)
                     possibleActions.append(action)
 
             j += 1
@@ -199,9 +199,9 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
 
         return possibleActions
     
-    def random_scale(self):
-        minfact = self.rules.min_scale_factor
-        maxfact = self.rules.max_scale_factor
+    def random_scale(self,assetIndex):
+        minfact = self.rules[assetIndex].min_scale_factor
+        maxfact = self.rules[assetIndex].max_scale_factor
 
         # If min and max factors are equal (or min is higher)
         if(minfact == maxfact or minfact > maxfact):
@@ -216,26 +216,26 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
         # TODO: random por porcentajes de rules para cada asset
         return random.randint(0, len(self.bounding_box)-1)
 
-    def random_step_rotation(self):
+    def random_step_rotation(self,assetIndex):
         precision = 100.0
 
-        rang_x = (int)(self.rules.rotation_range[0] * precision)
-        rang_y = (int)(self.rules.rotation_range[1] * precision)
-        rang_z = (int)(self.rules.rotation_range[2] * precision)
+        rang_x = (int)(self.rules[assetIndex].rotation_range[0] * precision)
+        rang_y = (int)(self.rules[assetIndex].rotation_range[1] * precision)
+        rang_z = (int)(self.rules[assetIndex].rotation_range[2] * precision)
 
-        step_x = (int)(self.rules.rotation_steps[0] * precision)
-        step_y = (int)(self.rules.rotation_steps[1] * precision)
-        step_z = (int)(self.rules.rotation_steps[2] * precision)
+        step_x = (int)(self.rules[assetIndex].rotation_steps[0] * precision)
+        step_y = (int)(self.rules[assetIndex].rotation_steps[1] * precision)
+        step_z = (int)(self.rules[assetIndex].rotation_steps[2] * precision)
 
         rot_x = 0
         rot_y = 0
         rot_z = 0
 
-        if (self.rules.rotations[0] != 0):
+        if (self.rules[assetIndex].rotations[0] != 0):
             rot_x = random.randrange(-rang_x, rang_x, step_x)
-        if (self.rules.rotations[1] != 0):
+        if (self.rules[assetIndex].rotations[1] != 0):
             rot_y = random.randrange(-rang_y, rang_y, step_y)
-        if (self.rules.rotations[2] != 0):
+        if (self.rules[assetIndex].rotations[2] != 0):
             rot_z = random.randrange(-rang_z, rang_z, step_z)
 
         return ((rot_x/precision) * (math.pi/180.0), rot_y/precision * (math.pi/180.0), rot_z/precision * (math.pi/180.0))
