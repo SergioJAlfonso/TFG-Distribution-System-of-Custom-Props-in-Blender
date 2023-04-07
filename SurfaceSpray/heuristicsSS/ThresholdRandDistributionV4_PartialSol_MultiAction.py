@@ -3,7 +3,6 @@ import copy
 import math
 import numpy as np
 
-
 from enum import Enum
 
 from ..utilsSS.Actions import *
@@ -29,6 +28,15 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
             self.half_bounding_size_x.append((box[4][0] - box[0][0])/2.0)
             self.half_bounding_size_y.append((box[2][1] - box[0][1])/2.0)
             self.half_bounding_size_z.append((box[1][2] - box[0][2])/2.0)
+
+        # Establish percentage of appearance of each item
+        self.total_item_percentage = 0
+        self.item_percentages = []
+        cont = 0
+        for rule in rules_:
+            self.total_item_percentage += rule.appear_percentage
+            self.item_percentages.append((self.total_item_percentage, cont))
+            cont += 1
 
         #Partial Sol Objects
         self.partialSol = partialSol_
@@ -212,9 +220,12 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
         newScalefactor = random.randrange((int)(minfact*precision), (int)(maxfact*precision), (int)(0.01*precision))/precision
         return newScalefactor
     
-    def random_asset(self):
-        # TODO: random por porcentajes de rules para cada asset
-        return random.randint(0, len(self.bounding_box)-1)
+    def random_asset(self):     
+        # Selects a random asset taking percentage of appearance in account  
+        random_percent = self.total_item_percentage * random.random()
+        for asset_weight, asset_index in self.item_percentages:
+            if asset_weight >= random_percent:
+                return asset_index
 
     def random_step_rotation(self,assetIndex):
         precision = 100.0
