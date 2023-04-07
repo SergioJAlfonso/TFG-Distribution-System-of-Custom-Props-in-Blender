@@ -273,25 +273,3 @@ def update_vertexGroupSelection(self, context):
     # bpy.ops.object.vertex_group_set_active(group='Group')
     #Get back to old mode
     bpy.ops.object.mode_set(mode=current_mode)
-
-
-
-
-
-
-
-
-
-
-
-
-# class VGRUP_PT_Panel(bpy.types.Panel):
-#     bl_idname = "VGoup_PT_Panel"
-#     bl_label = "Vertex weight groups"
-#     bl_category = "SurfaceSpray"
-#     bl_description = "Vertex weight groups"
-#     bl_space_type = "VIEW_3D"
-#     bl_region_type = "UI"
-
-#     def draw(self, context):
-#         layout = self.layout

@@ -63,6 +63,7 @@ from .Panels.partialSol.partialSol_panel import (PARTIAL_SOL_PG_objectCollection
 
 from .Panels.rules_panel  import RULES_PT_Panel
 from .Panels.subdivide_panel import SUBDIVIDE_PT_Panel
+from .Panels.ss_reset_rules_op import Reset_Rules_OT_Operator
 
 # from.ss_panel import MY_OT_AddItem
 
@@ -80,7 +81,8 @@ classes = ( ASSET_SELECT_OT_actions, ASSET_SELECT_OT_addViewportSelection, ASSET
            SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION,
            SurfaceSpray_OT_Operator_DEMO_MULTI, 
            Redistribute_OT_Operator, Clear_OT_Operator, Rotate_Operator,
-           VertexProfile_ADD_OT_Operator, VertexProfile_REMOVE_OT_Operator)
+           VertexProfile_ADD_OT_Operator, VertexProfile_REMOVE_OT_Operator,
+           Reset_Rules_OT_Operator)
 
 def verify_user_sitepackages():
     usersitepackagespath = site.getsitepackages()
