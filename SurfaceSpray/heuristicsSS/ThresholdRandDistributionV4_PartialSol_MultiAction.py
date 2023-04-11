@@ -83,9 +83,9 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
         #While all restrictions are acomplished and we are checking all actions applied.
         while (i < len(state.actionsApplied_) and satisfiesRestrictions):
             # Access vertices that has an object on it.
-            indexVertex = state.actionsApplied_[i].indexVertex
+            applied_indexVertex = state.actionsApplied_[i].indexVertex
 
-            vertexInUse = state.vertices_[indexVertex][0]
+            vertexInUse = state.vertices_[applied_indexVertex][0]
             vertexInUseScale = state.actionsApplied_[i].scale
 
             # Check bounding box overlap if needed

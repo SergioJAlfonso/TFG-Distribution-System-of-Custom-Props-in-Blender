@@ -29,7 +29,7 @@ from collections import deque
 class SurfaceSpray_OT_Operator(bpy.types.Operator):
     bl_idname = "addon.distribute"
     bl_label = "Distribute Operator"
-    bl_description = "Distribute object over a surface"
+    bl_description = "Distributes an object over a surface"
 
     # crear diferentes grupos de vertices para cada objeto a distribuir
     # self = method defined for this class
@@ -39,8 +39,12 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
             self.report({'WARNING'}, 'You must select a target object!')
             return {'FINISHED'}
 
-        if (context.scene.asset == None):
+        if (len(context.scene.assets) == 0):
             self.report({'WARNING'}, 'You must select an asset object!')
+            return {'FINISHED'}
+
+        if(context.scene.vgr_profile == " " or context.scene.vgr_profile == "" ):
+            self.report({'WARNING'}, 'You must select an vertex group profile!')
             return {'FINISHED'}
 
         # Obtenemos todos los datos necesarios
@@ -82,7 +86,7 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
             makeSubdivision(target, asset_bounding_box_local,
                             target_bounding_box_local, numCutsSubdivision)
 
-        data_tridimensional = getVerticesData(target)
+        data_tridimensional = getVerticesData(target, context.scene.vgr_profile)
         print('Algorithm:', context.scene.algorithm_enum)
 
         vertices = filterVerticesByWeightThreshold(

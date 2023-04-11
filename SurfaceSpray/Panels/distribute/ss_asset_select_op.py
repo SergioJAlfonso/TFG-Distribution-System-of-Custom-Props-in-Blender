@@ -12,7 +12,7 @@ class ASSET_SELECT_OT_actions(Operator):
     bl_options = {'REGISTER'}
 
     # Max different items to place
-    max_items = 10
+    # max_items = 10
     
     action: bpy.props.EnumProperty(
         items=(
@@ -54,21 +54,25 @@ class ASSET_SELECT_OT_actions(Operator):
                 context.scene.asset = context.scene.assets[0].obj
 
         if self.action == 'ADD':
-            if context.object:
+            bpy.ops.assets.add_viewport_selection()
+            bpy.ops.assets.remove_duplicates()
+            bpy.ops.assets.update_list()
 
-                if(context.object == context.scene.target):
-                    self.report({'INFO'}, "Shouldn't add TARGET object!")
-                elif len(scn.assets) >= self.max_items:
-                    self.report({'INFO'}, "Can't add more assets!")    
-                else:
-                    item = scn.assets.add()
-                    item.name = context.object.name
-                    item.obj = context.object
-                    scn.asset_index = len(scn.assets)-1
-                    info = '"%s" added to list' % (item.name)
-                    self.report({'INFO'}, info)
-            else:
-                self.report({'INFO'}, "Nothing selected in the Viewport")
+            # if context.object:
+
+            #     if(context.object == context.scene.target):
+            #         self.report({'INFO'}, "Shouldn't add TARGET object!")
+            #     elif len(scn.assets) >= self.max_items:
+            #         self.report({'INFO'}, "Can't add more assets!")    
+            #     else:
+            #         item = scn.assets.add()
+            #         item.name = context.object.name
+            #         item.obj = context.object
+            #         scn.asset_index = len(scn.assets)-1
+            #         info = '"%s" added to list' % (item.name)
+            #         self.report({'INFO'}, info)
+            # else:
+            #     self.report({'INFO'}, "Nothing selected in the Viewport")
         return {"FINISHED"}
     
 
@@ -87,6 +91,9 @@ class ASSET_SELECT_OT_addViewportSelection(Operator):
             for i in selected_objs:
                 if(i == context.scene.target):
                     self.report({'INFO'}, "Shouldn't add TARGET object!")
+                # elif len(scn.assets) >= self.max_items:
+                #     self.report({'INFO'}, "Can't add more assets!")    
+                #     break
                 else:
                     item = scn.assets.add()
                     item.name = i.name

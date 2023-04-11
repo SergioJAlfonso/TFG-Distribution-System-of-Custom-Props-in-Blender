@@ -25,7 +25,7 @@ class MAIN_PT_Panel(bpy.types.Panel):
         layout = self.layout
 
         row2 = layout.row()
-        row2.template_list("PARTIAL_SOL_UL_items", "",  bpy.context.scene, "assets",  bpy.context.scene, "asset_index", rows=2)
+        row2.template_list("ASSETS_UL_items", "",  bpy.context.scene, "assets",  bpy.context.scene, "asset_index", rows=2)
 
         col = row2.column(align=True)
         col.operator("assets.list_action", icon='ADD', text="").action = 'ADD'
@@ -37,16 +37,10 @@ class MAIN_PT_Panel(bpy.types.Panel):
         row = layout.row()
         col = row.column(align=True)
         row = col.row(align=True)
-        row.operator("assets.update_list", icon="FILE_REFRESH")
-
-        row = col.row(align=True)
-        row.operator("assets.clear_list", icon="X")
-        row.operator("assets.remove_duplicates", icon="GHOST_ENABLED")
         
-        row = layout.row()
-        col = row.column(align=True)
-        row = col.row(align=True)
-        row.operator("assets.add_viewport_selection", icon="HAND") #LINENUMBERS_OFF, ANIM
+        row.operator("assets.update_list", icon="FILE_REFRESH")
+        # row.operator("assets.add_viewport_selection", icon="HAND") #LINENUMBERS_OFF, ANIM
+        row.operator("assets.clear_list", icon="X")
         row = col.row(align=True)
         row.operator("assets.select_items", icon="VIEW3D", text="Select Item in 3D View")
         selectItems = row.operator("assets.select_items", icon="GROUP", text="Select All Items in 3D View")
@@ -55,6 +49,8 @@ class MAIN_PT_Panel(bpy.types.Panel):
 
         row = col.row(align=True)
 
+        col.separator()
+        col.separator()
         row = layout.row()
         col = layout.column()
 
@@ -64,27 +60,16 @@ class MAIN_PT_Panel(bpy.types.Panel):
         
         # Add-on distribute buttons
         row.operator('addon.distribute', icon='OUTLINER_OB_POINTCLOUD', text = "Distribute")
-        row.operator('addon.multidistribute', icon='OUTLINER_OB_POINTCLOUD', text = "Test Distribute")
+        row.operator('addon.multidistribute', icon='GEOMETRY_NODES', text = "Multi Distribute")
         row.operator('addon.clear', icon='OUTLINER_DATA_POINTCLOUD', text = "Clear")
 
         #Painting Mode
         box1 = layout.box()
         row = box1.row()
 
-        
         row.prop_search(context.scene, "vgr_profile", context.scene.target, "vertex_groups", text="Profile")
         row.operator("addon.vertex_profile_add", icon='ADD', text="")
         row.operator("addon.vertex_profile_remove", icon='REMOVE', text="")
-       
-        # target.vertex_groups[g.group].name)
-        # for vertex in vertices:
-        #     for vgroup in vertex.groups:
-        #         if(vgroup.name==context.scene.vgr_profile):
-        #             vertices[vertex.index].select = True
-
-        # row = box1.row()
-        # row.template_ID(context.scene.target, "active_material", new="material.new")
-        # row.template_ID(context.object, "vertex_groups", new="object.vertex_group_add")
 
         row = box1.row()
         row.operator('addon.enter_paint_mode', icon='WPAINT_HLT', text = "Paint")
@@ -122,29 +107,6 @@ class MAIN_PT_Panel(bpy.types.Panel):
 
         box2.row().prop(context.scene, "num_searches")
         box2.row().prop(context.scene, "current_search")
-        # box2.row().operator('addon.redistribute', text = "Change search")
-        # placeholder = context.scene.placeholder
-        # col.prop(placeholder, "inc_dec_int", text="Asset Instances")
-
-        # # Show list of vertex groups
-        # boxVGroup = layout.box()
-        # boxVGroup.label(text="Vertex Groups")
-
-        # obj = context.scene.target
-        # row = boxVGroup.row()
-        # row.template_list("MESH_UL_vgroups", "", obj, "vertex_groups", obj.vertex_groups, "active_index")
-        
-        # # Add new vertex group button
-        # col = boxVGroup.column()
-        # col.operator("object.vertex_group_add", icon='ADD', text="New Vertex Group")
-
-        # # Remove vertex group button
-        # if obj.vertex_groups:
-        #     col.operator("object.vertex_group_remove", icon='REMOVE', text="Remove Vertex Group")
-        
-        # # Rename vertex group
-        # row = boxVGroup.row()
-        # row.prop(context.object.vertex_groups.active, "name")
 
     def register():
         bpy.types.Scene.threshold = bpy.props.FloatProperty(
@@ -250,7 +212,7 @@ def update_current_search(self, context):
 
 def update_asset_rules(self, context):
     scn = context.scene
-    
+
     scn.rules_panel_asset_index = scn.asset_index 
 
     scn.rotate_x = scn.itemRules_HashMap["rotate_x"][scn.asset_index]

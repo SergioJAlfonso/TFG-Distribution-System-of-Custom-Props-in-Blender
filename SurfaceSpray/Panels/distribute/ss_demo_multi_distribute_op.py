@@ -28,7 +28,7 @@ from aima3.search import depth_first_tree_search as aimaDFTS
 class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
     bl_idname = "addon.multidistribute"
     bl_label = "Distribute Operator"
-    bl_description = "Distribute multiple objects over a surface"
+    bl_description = "Distributes multiple objects over a surface"
 
     # crear diferentes grupos de vertices para cada objeto a distribuir
     # self = method defined for this class

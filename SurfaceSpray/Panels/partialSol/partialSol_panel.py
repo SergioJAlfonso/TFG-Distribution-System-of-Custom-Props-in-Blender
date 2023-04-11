@@ -28,6 +28,18 @@ class PARTIAL_SOL_UL_items(UIList):
     def invoke(self, context, event):
         pass   
 
+class ASSETS_UL_items(UIList):
+    
+    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+        obj = item.obj
+        partialsol_icon = "OUTLINER_OB_%s" % obj.type
+        split = layout.split(factor=0.3)
+        split.label(text="%d" % (index))
+        split.prop(obj, "name", text="", emboss=False, translate=False, icon=partialsol_icon)
+            
+    def invoke(self, context, event):
+        pass
+
 class PARTIAL_SOL_PT_Panel(bpy.types.Panel):
     bl_idname = "PARTIAL_SOL_PT_Panel"
     bl_label = "Objects Part Of The Solution"

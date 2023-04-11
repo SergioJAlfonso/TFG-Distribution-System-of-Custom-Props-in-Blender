@@ -59,7 +59,8 @@ from .Panels.partialSol.partialSol_ops import (PARTIAL_SOL_OT_actions,
 
 from .Panels.partialSol.partialSol_panel import (PARTIAL_SOL_PG_objectCollection,
                                                  PARTIAL_SOL_UL_items,
-                                                 PARTIAL_SOL_PT_Panel)
+                                                 PARTIAL_SOL_PT_Panel,
+                                                 ASSETS_UL_items)
 
 from .Panels.rules_panel  import RULES_PT_Panel
 from .Panels.subdivide_panel import SUBDIVIDE_PT_Panel
@@ -68,7 +69,7 @@ from .Panels.ss_reset_rules_op import Reset_Rules_OT_Operator
 # from.ss_panel import MY_OT_AddItem
 
 classes = ( ASSET_SELECT_OT_actions, ASSET_SELECT_OT_addViewportSelection, ASSET_SELECT_OT_clearList,
-           ASSET_SELECT_OT_removeDuplicates, ASSET_SELECT_OT_selectItems, ASSET_SELECT_OT_update_list, Main_Object_Collection,
+           ASSET_SELECT_OT_removeDuplicates, ASSET_SELECT_OT_selectItems, ASSET_SELECT_OT_update_list, ASSETS_UL_items,Main_Object_Collection,
            PARTIAL_SOL_PG_objectCollection,PARTIAL_SOL_OT_actions,PARTIAL_SOL_OT_addViewportSelection, MAIN_PT_Panel, 
            PARTIAL_SOL_OT_clearList,PARTIAL_SOL_OT_removeDuplicates,PARTIAL_SOL_OT_selectItems,
            PARTIAL_SOL_UL_items,PARTIAL_SOL_OT_update_list,PARTIAL_SOL_PT_Panel,
