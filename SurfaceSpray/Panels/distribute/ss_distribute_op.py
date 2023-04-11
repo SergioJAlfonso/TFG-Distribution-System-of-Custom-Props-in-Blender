@@ -108,7 +108,12 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         #distribution = ThresholdRandDistribution(rules, asset_bounding_box_local, initialState, goalState)
         #DEPRECATED:distribution = Demo_Dist_Ov_Rot_Distrib_V3(rules, asset_bounding_box_local, initialState, goalState)
 
-        nodeSol = ss_best_fms(distribution,3)
+        option = bpy.context.scene.algorithm_enum
+        name = bpy.context.scene.bl_rna.properties['algorithm_enum'].enum_items[option].name
+        print(f'Algorithm: {name}')
+        algorithm = context.scene.algorithms_HashMap[name]
+        
+        nodeSol = algorithm(distribution,1)
         actionsSol = None
 
         #Get just one solution

@@ -51,7 +51,8 @@ class ASSET_SELECT_OT_actions(Operator):
                 self.report({'INFO'}, info)
             
             if(len(context.scene.assets) > 0):
-                context.scene.asset = context.scene.assets[0].obj
+                context.scene.asset = context.scene.assets[context.scene.asset_index].obj
+                # context.scene.asset = context.scene.assets[0].obj
 
         if self.action == 'ADD':
             bpy.ops.assets.add_viewport_selection()

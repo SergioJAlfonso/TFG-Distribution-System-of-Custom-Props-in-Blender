@@ -6,7 +6,7 @@ from ...algorithmsSS.algorithmsSS import simulated_annealing_multiples as simula
 
 
 def update_asset(self, context):
-    context.scene.asset = context.scene.assets[0].obj
+    context.scene.asset = context.scene.assets[context.scene.asset_index].obj
 
 class Main_Object_Collection(bpy.types.PropertyGroup):
      obj: bpy.props.PointerProperty(
@@ -103,7 +103,7 @@ class MAIN_PT_Panel(bpy.types.Panel):
 
         box2 = layout.box()
 
-        box2.label(text="Multi Distribute")
+        box2.label(text="Distribution Variations")
 
         box2.row().prop(context.scene, "num_searches")
         box2.row().prop(context.scene, "current_search")
@@ -212,6 +212,8 @@ def update_current_search(self, context):
 
 def update_asset_rules(self, context):
     scn = context.scene
+
+    context.scene.asset = context.scene.assets[context.scene.asset_index].obj
 
     scn.rules_panel_asset_index = scn.asset_index 
 
