@@ -84,6 +84,7 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
         while (i < len(state.actionsApplied_) and satisfiesRestrictions):
             # Access vertices that has an object on it.
             indexVertex = state.actionsApplied_[i].indexVertex
+
             vertexInUse = state.vertices_[indexVertex][0]
             vertexInUseScale = state.actionsApplied_[i].scale
 
@@ -122,7 +123,7 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
         while(i < len(self.partialSol) and satisfiesRestrictions):
             # Check bounding box overlap if needed
             partialObjectLocation = self.partialSol[i].position
-            vertexInUse = state.vertices_[indexVertex][0]
+
             if (self.rules[assetIndex].overlap):
                 partial_bbox = self.partialSol[i].bounding_box
                 partial_half_bounding_size_x = (partial_bbox[4][0] - partial_bbox[0][0])/2.0
@@ -144,8 +145,7 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
                         partial_half_bounding_size_x, partial_half_bounding_size_y, partial_half_bounding_size_z)
 
                     satisfiesRestrictions = not boundingSphereOverlapping(
-                        pCandidate, vertexInUse, bbox_limits_Candidate, vertex_B_sphere_radius)
-
+                        pCandidate, partialObjectLocation, bbox_limits_Candidate, vertex_B_sphere_radius)
 
             distance = math.sqrt((partialObjectLocation[0]-pCandidate[0])**2 + (
                 partialObjectLocation[1]-pCandidate[1])**2 + (partialObjectLocation[2]-pCandidate[2])**2)

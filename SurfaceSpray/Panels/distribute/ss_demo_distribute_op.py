@@ -13,7 +13,7 @@ from ...heuristicsSS.Demos.Demo_Dist_RotRang_Distribution import *
 from ...heuristicsSS.Demos.Demo_Dist_Overlap_Distribution import *
 from ...utilsSS.blender_utils import *
 from ...utilsSS.geometry_utils import *
-from ...utilsSS.StateGrid import *
+from ...utilsSS.StateDistribution import *
 
 from aima3.search import astar_search as aimaAStar
 from aima3.search import breadth_first_tree_search as aimaBFTS
@@ -101,12 +101,12 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
         if context.scene.solution_nodes == []:
             self.report({'INFO'}, "Solution nodes empty, rellenating")
 
-            initialState = StateGrid(vertices, 0)
+            initialState = StateDistribution(vertices, 0)
             #Potential final state 
 
             num_assets = min(num_instances, len(vertices))
 
-            goalState = StateGrid(None, num_assets)
+            goalState = StateDistribution(None, num_assets)
             # initialState.objectsPlaced_
 
             # Establishes rules for the assets in order to place them correctly

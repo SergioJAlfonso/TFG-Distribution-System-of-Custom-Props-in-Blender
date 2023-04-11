@@ -1,5 +1,5 @@
 
-class StateGrid():
+class StateDistribution():
 
    def __init__(self, vertices, objectsPlaced):
       self.vertices_ = vertices

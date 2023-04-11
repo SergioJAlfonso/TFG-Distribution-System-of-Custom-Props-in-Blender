@@ -14,7 +14,7 @@ from ...heuristicsSS.ThresholdRandDistributionV3_PartialSol_MultiAction import *
 from ...heuristicsSS.Demos.Demo_Dist_RotRang_Distribution import *
 from ...heuristicsSS.Demos.Demo_Dist_Overlap_Distribution import *
 from ...utilsSS.blender_utils import *
-from ...utilsSS.StateGrid import *
+from ...utilsSS.StateDistribution import *
 
 from aima3.search import astar_search as aimaAStar
 from aima3.search import depth_first_tree_search as aimaDFTS
@@ -103,13 +103,13 @@ class SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION(bpy.types.Operator):
             self.report({'INFO'}, "Solution nodes empty, refilling")
             
             #Initial state as all possible vertices to place an asset
-            initialState = StateGrid(vertices, len(context.scene.partialsol))
+            initialState = StateDistribution(vertices, len(context.scene.partialsol))
 
             #Limit num asset to number of vertices
             num_assets = min(num_instances, len(vertices))
 
             #Potential final state 
-            goalState = StateGrid(None, num_assets)
+            goalState = StateDistribution(None, num_assets)
 
             # Establishes rules for the assets in order to place them correctly
             rules = setPanelItemRules(context)

@@ -15,7 +15,7 @@ from ...heuristicsSS.ThresholdRandDistributionV4_PartialSol_MultiAction import *
 # from ...heuristicsSS.Demos.Demo_Dist_Overlap_Distribution_V2 import *
 # from ...heuristicsSS.Demos.Demo_Dist_RotRang_Distribution import *
 # from ...heuristicsSS.Demos.Demo_Dist_Overlap_Distribution import *
-from ...utilsSS.StateGrid import *
+from ...utilsSS.StateDistribution import *
 
 from aima3.search import astar_search as aimaAStar
 
@@ -110,12 +110,12 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
             data_tridimensional, threshold_weight)
         # Initial state as all possible vertices to place an asset
 
-        initialState = StateGrid(vertices, 0)
+        initialState = StateDistribution(vertices, 0)
         # Potential final state
 
         num_assets = min(num_instances, len(vertices))
 
-        goalState = StateGrid(None, num_assets)
+        goalState = StateDistribution(None, num_assets)
         # initialState.objectsPlaced_
 
         # Establishes rules for the assets in order to place them correctly
