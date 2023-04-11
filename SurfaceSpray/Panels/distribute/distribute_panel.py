@@ -174,7 +174,10 @@ class MAIN_PT_Panel(bpy.types.Panel):
 
         bpy.types.Scene.assets = bpy.props.CollectionProperty(type=Main_Object_Collection)
 
-        bpy.types.Scene.asset_index = bpy.props.IntProperty()
+        bpy.types.Scene.asset_index = bpy.props.IntProperty(
+            name = "Asset Collection Index",
+            update = update_asset_rules
+        )
 
         bpy.types.Scene.algorithms_HashMap = {}
 
@@ -244,6 +247,33 @@ def update_max_searches(self, context):
 def update_current_search(self, context):
     self["current_search"] = min(self["current_search"], self["num_searches"])
     bpy.ops.addon.redistribute()
+
+def update_asset_rules(self, context):
+    scn = context.scene
+    
+    scn.rules_panel_asset_index = scn.asset_index 
+
+    scn.rotate_x = scn.itemRules_HashMap["rotate_x"][scn.asset_index]
+    scn.rotate_y = scn.itemRules_HashMap["rotate_y"][scn.asset_index]
+    scn.rotate_z = scn.itemRules_HashMap["rotate_z"][scn.asset_index]
+
+    scn.rot_range_x = scn.itemRules_HashMap["rot_range_x"][scn.asset_index]
+    scn.rot_range_y = scn.itemRules_HashMap["rot_range_y"][scn.asset_index]
+    scn.rot_range_z = scn.itemRules_HashMap["rot_range_z"][scn.asset_index]
+
+    scn.rot_steps_x = scn.itemRules_HashMap["rot_steps_x"][scn.asset_index]
+    scn.rot_steps_y = scn.itemRules_HashMap["rot_steps_y"][scn.asset_index]
+    scn.rot_steps_z = scn.itemRules_HashMap["rot_steps_z"][scn.asset_index]
+
+    scn.overlap_bool = scn.itemRules_HashMap["overlap_bool"][scn.asset_index]
+    scn.bbox_bool = scn.itemRules_HashMap["bbox_bool"][scn.asset_index]
+
+    scn.item_distance = scn.itemRules_HashMap["item_distance"][scn.asset_index]
+
+    scn.scale_factor_min = scn.itemRules_HashMap["scale_factor_min"][scn.asset_index]
+    scn.scale_factor_max = scn.itemRules_HashMap["scale_factor_max"][scn.asset_index]
+
+    scn.item_percentage = scn.itemRules_HashMap["item_percentage"][scn.asset_index]
 
 def update_vertexGroupSelection(self, context):
     # context.scene.target.vertex_groups[context.scene.vgr_profile].select = True
