@@ -23,6 +23,12 @@ class MAIN_PT_Panel(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
+        
+        row = layout.row()
+        # Add-on distribute buttons
+        row.operator('addon.distribute', icon='OUTLINER_OB_POINTCLOUD', text = "Distribute")
+        row.operator('addon.multidistribute', icon='GEOMETRY_NODES', text = "Multi Distribute")
+        row.operator('addon.clear', icon='OUTLINER_DATA_POINTCLOUD', text = "Clear")
 
         row2 = layout.row()
         row2.template_list("ASSETS_UL_items", "",  bpy.context.scene, "assets",  bpy.context.scene, "asset_index", rows=2)
@@ -44,7 +50,6 @@ class MAIN_PT_Panel(bpy.types.Panel):
         row = col.row(align=True)
         row.operator("assets.select_items", icon="VIEW3D", text="Select Item in 3D View")
         selectItems = row.operator("assets.select_items", icon="GROUP", text="Select All Items in 3D View")
-
         selectItems.select_all = True
 
         row = col.row(align=True)
@@ -58,18 +63,17 @@ class MAIN_PT_Panel(bpy.types.Panel):
         # col.prop_search(context.scene, "asset", context.scene, "objects", text="Asset")
         col.prop_search(context.scene, "target", context.scene, "objects", text="Target Object")
         
-        # Add-on distribute buttons
-        row.operator('addon.distribute', icon='OUTLINER_OB_POINTCLOUD', text = "Distribute")
-        row.operator('addon.multidistribute', icon='GEOMETRY_NODES', text = "Multi Distribute")
-        row.operator('addon.clear', icon='OUTLINER_DATA_POINTCLOUD', text = "Clear")
+
 
         #Painting Mode
         box1 = layout.box()
         row = box1.row()
 
-        row.prop_search(context.scene, "vgr_profile", context.scene.target, "vertex_groups", text="Profile")
-        row.operator("addon.vertex_profile_add", icon='ADD', text="")
-        row.operator("addon.vertex_profile_remove", icon='REMOVE', text="")
+
+        if(context.scene.target is not None):
+            row.prop_search(context.scene, "vgr_profile", context.scene.target, "vertex_groups", text="Profile")
+            row.operator("addon.vertex_profile_add", icon='ADD', text="")
+            row.operator("addon.vertex_profile_remove", icon='REMOVE', text="")
 
         row = box1.row()
         row.operator('addon.enter_paint_mode', icon='WPAINT_HLT', text = "Paint")
@@ -138,7 +142,8 @@ class MAIN_PT_Panel(bpy.types.Panel):
 
         bpy.types.Scene.asset_index = bpy.props.IntProperty(
             name = "Asset Collection Index",
-            update = update_asset_rules
+            update = update_asset_rules,
+            default=-1
         )
 
         bpy.types.Scene.algorithms_HashMap = {}

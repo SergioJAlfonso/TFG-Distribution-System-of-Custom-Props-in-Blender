@@ -1,5 +1,40 @@
 import bpy
 from mathutils import Color
+from bpy.types import Menu, Panel, UIList
+
+class PRUEBA_PT_tools_object_options(Panel):
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'UI'
+    bl_category = "SurfaceSpray"
+    bl_context = ".objectmode"  # dot on purpose (access from topbar)
+    bl_label = "Optionss"
+    bl_region_type = "UI"
+
+    def draw(self, context):
+        # layout = self.layout
+        pass
+
+
+class PRUEBA_PT_tools_object_options_transform(Panel):
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'UI'
+    bl_category = "SurfaceSpray"
+    bl_label = "Transform"
+    bl_parent_id = "RULES_PT_Panel"
+
+    def draw(self, context):
+        layout = self.layout
+
+        layout.use_property_split = True
+        layout.use_property_decorate = False
+
+        tool_settings = context.tool_settings
+
+        col = layout.column(heading="Affect Only", align=True)
+        col.prop(tool_settings, "use_transform_data_origin", text="Origins")
+        col.prop(tool_settings, "use_transform_pivot_point_align", text="Locations")
+        col.prop(tool_settings, "use_transform_skip_children", text="Parents")
+
 
 class RULES_PT_Panel(bpy.types.Panel):
     bl_idname = "RULES_PT_Panel"

@@ -110,7 +110,7 @@ class ASSET_SELECT_OT_addViewportSelection(Operator):
 class ASSET_SELECT_OT_clearList(Operator):
     """Clear all items of the list"""
     bl_idname = "assets.clear_list"
-    bl_label = "Clear List"
+    bl_label = "Empty List"
     bl_description = "Clear all items of the list"
     bl_options = {'INTERNAL'}
 

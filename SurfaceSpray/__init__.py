@@ -46,9 +46,15 @@ from .Panels.distribute.ss_demo_multi_distribute_op import SurfaceSpray_OT_Opera
 
 from .Panels.distribute.ss_redistribute_op import Redistribute_OT_Operator
 
+
 from .Panels.distribute.distribute_panel import *
 
+from .Panels.rules_panel  import RULES_PT_Panel
+
+from .Panels.rules_panel  import (PRUEBA_PT_tools_object_options_transform, PRUEBA_PT_tools_object_options)
+
 from .Panels.distribute.ss_asset_select_op import *
+
 
 from .Panels.partialSol.partialSol_ops import (PARTIAL_SOL_OT_actions,
                                                PARTIAL_SOL_OT_addViewportSelection,
@@ -62,18 +68,16 @@ from .Panels.partialSol.partialSol_panel import (PARTIAL_SOL_PG_objectCollection
                                                  PARTIAL_SOL_PT_Panel,
                                                  ASSETS_UL_items)
 
-from .Panels.rules_panel  import RULES_PT_Panel
 from .Panels.subdivide_panel import SUBDIVIDE_PT_Panel
 from .Panels.ss_reset_rules_op import Reset_Rules_OT_Operator
 
-# from.ss_panel import MY_OT_AddItem
 
-classes = ( ASSET_SELECT_OT_actions, ASSET_SELECT_OT_addViewportSelection, ASSET_SELECT_OT_clearList,
+classes = (ASSET_SELECT_OT_actions, ASSET_SELECT_OT_addViewportSelection, ASSET_SELECT_OT_clearList,
            ASSET_SELECT_OT_removeDuplicates, ASSET_SELECT_OT_selectItems, ASSET_SELECT_OT_update_list, ASSETS_UL_items,Main_Object_Collection,
            PARTIAL_SOL_PG_objectCollection,PARTIAL_SOL_OT_actions,PARTIAL_SOL_OT_addViewportSelection, MAIN_PT_Panel, 
-           PARTIAL_SOL_OT_clearList,PARTIAL_SOL_OT_removeDuplicates,PARTIAL_SOL_OT_selectItems,
+           RULES_PT_Panel,PARTIAL_SOL_OT_clearList,PARTIAL_SOL_OT_removeDuplicates,PARTIAL_SOL_OT_selectItems,
            PARTIAL_SOL_UL_items,PARTIAL_SOL_OT_update_list,PARTIAL_SOL_PT_Panel,
-           SUBDIVIDE_PT_Panel ,RULES_PT_Panel, SurfaceSpray_OT_Operator, 
+           SUBDIVIDE_PT_Panel , SurfaceSpray_OT_Operator, 
            PaintMode_OT_Operator,
            ExitPaintMode_OT_Operator,
            InvertPainting_OT_Operator,
@@ -83,7 +87,9 @@ classes = ( ASSET_SELECT_OT_actions, ASSET_SELECT_OT_addViewportSelection, ASSET
            SurfaceSpray_OT_Operator_DEMO_MULTI, 
            Redistribute_OT_Operator, Clear_OT_Operator, Rotate_Operator,
            VertexProfile_ADD_OT_Operator, VertexProfile_REMOVE_OT_Operator,
-           Reset_Rules_OT_Operator)
+           Reset_Rules_OT_Operator,
+           PRUEBA_PT_tools_object_options_transform,
+           PRUEBA_PT_tools_object_options)
 
 def verify_user_sitepackages():
     usersitepackagespath = site.getsitepackages()
