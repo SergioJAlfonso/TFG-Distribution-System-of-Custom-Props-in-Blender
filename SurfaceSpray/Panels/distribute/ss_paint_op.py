@@ -7,6 +7,9 @@ class PaintMode_OT_Operator(bpy.types.Operator):
     bl_description = "Switch to weight vertex painting mode."
 
     def execute(self, context):
+        if(len(context.scene.target.vertex_groups) < 1):
+            bpy.ops.addon.vertex_profile_add('INVOKE_DEFAULT')
+
         bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
         
         bpy.ops.object.select_all(action='DESELECT')
