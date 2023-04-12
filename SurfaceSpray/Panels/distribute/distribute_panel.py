@@ -23,12 +23,12 @@ class MAIN_PT_Panel(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
-        
+
         row = layout.row()
         # Add-on distribute buttons
         row.operator('addon.distribute', icon='OUTLINER_OB_POINTCLOUD', text = "Distribute")
         row.operator('addon.multidistribute', icon='GEOMETRY_NODES', text = "Multi Distribute")
-        row.operator('addon.clear', icon='OUTLINER_DATA_POINTCLOUD', text = "Clear")
+        row.operator('addon.clear', icon='OUTLINER_DATA_POINTCLOUD', text = "Clear Distribution")
 
         row2 = layout.row()
         row2.template_list("ASSETS_UL_items", "",  bpy.context.scene, "assets",  bpy.context.scene, "asset_index", rows=2)

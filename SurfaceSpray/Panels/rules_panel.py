@@ -43,6 +43,7 @@ class RULES_PT_Panel(bpy.types.Panel):
     bl_description = "Rules that specify how the asset is placed"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
+    bl_parent_id = "MAIN_PT_Panel"
 
     def draw(self, context):
         layout = self.layout
