@@ -14,7 +14,7 @@ from aima3.search import Problem as aimaProblem
 
 class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
 
-    def __init__(self, rules_, bbox, initial, goal=None, ):
+    def __init__(self, rules_, bbox, initial, partialSol_, goal=None, ):
         super().__init__(initial, goal)
         self.rules = rules_
         self.bounding_box = bbox
@@ -22,6 +22,8 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
         self.half_bounding_size_x = (bbox[4][0] - bbox[0][0])/2.0
         self.half_bounding_size_y = (bbox[2][1] - bbox[0][1])/2.0
         self.half_bounding_size_z = (bbox[1][2] - bbox[0][2])/2.0
+
+        self.partialSol = partialSol_
 
     def checkRestrictions(self, state, indexVertex):
         """
@@ -46,12 +48,12 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
 
             if (self.rules.use_bounding_box):
                 # Vertex A limits
-                vertex_A_bbox_limits = getVertexBBoxLimits(
+                bbox_limits_Candidate = getVertexBBoxLimits(
                     pCandidate, self.half_bounding_size_x * scale, self.half_bounding_size_y * scale, self.half_bounding_size_z * scale)
 
             else:
                 # Vertex A radius
-                vertex_A_sphere_radius = max(
+                bbox_limits_Candidate = max(
                     self.half_bounding_size_x * scale, self.half_bounding_size_y * scale, self.half_bounding_size_z * scale)
 
         i = 0
@@ -74,7 +76,7 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
                     
                     # Check overlap
                     satisfiesRestrictions = not boundingBoxOverlapping(
-                        vertex_A_bbox_limits, vertex_B_bbox_limits)
+                        bbox_limits_Candidate, vertex_B_bbox_limits)
 
                 # Using sphere
                 else:
@@ -83,11 +85,47 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
                         self.half_bounding_size_x * vertexInUseScale, self.half_bounding_size_y * vertexInUseScale, self.half_bounding_size_z * vertexInUseScale)
 
                     satisfiesRestrictions = not boundingSphereOverlapping(
-                        pCandidate, vertexInUse, vertex_A_sphere_radius, vertex_B_sphere_radius)
+                        pCandidate, vertexInUse, bbox_limits_Candidate, vertex_B_sphere_radius)
 
             # Calculates distance between 2 tridimensional points.
             distance = math.sqrt((vertexInUse[0]-pCandidate[0])**2 + (
                 vertexInUse[1]-pCandidate[1])**2 + (vertexInUse[2]-pCandidate[2])**2)
+            # Compares if distance is lesser or equals to minimum distance.
+            satisfiesRestrictions = satisfiesRestrictions and distance >= self.rules.distance_between_items
+
+            i += 1
+
+            #We need to also check if this object satisfies all restrictions with partial solution objects 
+        i = 0
+        while(i < len(self.partialSol) and satisfiesRestrictions):
+            # Check bounding box overlap if needed
+            partialObjectLocation = self.partialSol[i].position
+
+            if (self.rules.overlap):
+                partial_bbox = self.partialSol[i].bounding_box
+                partial_half_bounding_size_x = (partial_bbox[4][0] - partial_bbox[0][0])/2.0
+                partial_half_bounding_size_y = (partial_bbox[2][1] - partial_bbox[0][1])/2.0
+                partial_half_bounding_size_z = (partial_bbox[1][2] - partial_bbox[0][2])/2.0
+
+                # Using box
+                if (self.rules.use_bounding_box):               
+                    bbox_limits_PartialObject = getVertexBBoxLimits(
+                        partialObjectLocation, partial_half_bounding_size_x, partial_half_bounding_size_y, partial_half_bounding_size_z)
+
+                    satisfiesRestrictions = not boundingBoxOverlapping(
+                        bbox_limits_Candidate, bbox_limits_PartialObject)
+                    
+                # Using sphere
+                else:
+                    # Check overlap
+                    vertex_B_sphere_radius = max(
+                        partial_half_bounding_size_x, partial_half_bounding_size_y, partial_half_bounding_size_z)
+
+                    satisfiesRestrictions = not boundingSphereOverlapping(
+                        pCandidate, partialObjectLocation, bbox_limits_Candidate, vertex_B_sphere_radius)
+
+            distance = math.sqrt((partialObjectLocation[0]-pCandidate[0])**2 + (
+                partialObjectLocation[1]-pCandidate[1])**2 + (partialObjectLocation[2]-pCandidate[2])**2)
             # Compares if distance is lesser or equals to minimum distance.
             satisfiesRestrictions = satisfiesRestrictions and distance >= self.rules.distance_between_items
 

@@ -67,7 +67,7 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         num_instances = context.scene.num_assets
 
         collection = bpy.data.collections.get(nameCollection)
-        collection = initCollection(collection, nameCollection)
+        collection = initCollection(collection, nameCollection, True)
 
         bpy.ops.object.select_all(action='DESELECT')
         # #Scale asset if necessary
@@ -104,7 +104,17 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         # Establishes rules for the assets in order to place them correctly
         rules = setPanelItemRules(context)
 
-        distribution = Demo_Dist_Ov_Rot_Scale_Distrib(rules, asset_bounding_box_local, initialState, goalState)
+        #Get objects from list.
+        partialSol = []
+
+        for i in range(len(context.scene.partialsol)):
+            obj = context.scene.partialsol[i]
+            # EXTRACT INFO FROM OBJ
+            bbox = getBoundingBox(context, obj.obj)
+            itemSol = Item(obj.name, obj.obj, obj.obj.location, bbox)
+            partialSol.append(itemSol) # INJECT INFO
+
+        distribution = Demo_Dist_Ov_Rot_Scale_Distrib(rules, asset_bounding_box_local, initialState, partialSol, goalState)
         #distribution = ThresholdRandDistribution(rules, asset_bounding_box_local, initialState, goalState)
         #DEPRECATED:distribution = Demo_Dist_Ov_Rot_Distrib_V3(rules, asset_bounding_box_local, initialState, goalState)
 
