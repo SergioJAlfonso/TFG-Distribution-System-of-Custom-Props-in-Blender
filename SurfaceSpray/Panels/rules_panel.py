@@ -2,19 +2,6 @@ import bpy
 from mathutils import Color
 from bpy.types import Menu, Panel, UIList
 
-class PRUEBA_PT_tools_object_options(Panel):
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = "SurfaceSpray"
-    bl_context = ".objectmode"  # dot on purpose (access from topbar)
-    bl_label = "Optionss"
-    bl_region_type = "UI"
-
-    def draw(self, context):
-        # layout = self.layout
-        pass
-
-
 class PRUEBA_PT_tools_object_options_transform(Panel):
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'

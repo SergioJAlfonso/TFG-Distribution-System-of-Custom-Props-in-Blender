@@ -93,7 +93,7 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
             data_tridimensional, threshold_weight)
         # Initial state as all possible vertices to place an asset
 
-        initialState = StateDistribution(vertices, 0)
+        initialState = StateDistribution(vertices, len(context.scene.partialsol))
         # Potential final state
 
         num_assets = min(num_instances, len(vertices))
