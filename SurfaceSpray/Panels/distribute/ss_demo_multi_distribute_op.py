@@ -57,9 +57,10 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
             assets.append(context.scene.assets[i].obj)
         # Remove previous solutions AND set current search to 1
         context.scene.solution_nodes.clear()
-        context.scene.objects_data.clear()
         context.scene.current_search = 1
-
+        # Remove previous assets data
+        context.scene.objects_data.clear()
+        
         # Note : bpy.types.Scene.num_assets != context.scene.num_assets
         # Get user property data
         numCutsSubdivision = context.scene.num_cuts
@@ -130,7 +131,7 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
         print(f'Algorithm: {name}')
         algorithm = context.scene.algorithms_HashMap[name]
 
-        nodeSol = algorithm(distribution,1)
+        nodeSol = algorithm(distribution, context.scene.num_searches)
 
         actionsSol = None
 
@@ -138,8 +139,11 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
         if nodeSol is not None:
             actionsSol = nodeSol[0].solution()
         else:
-            self.report({'ERROR'}, "Couldn't distribute objects!")
+            self.report({'ERROR'}, "Couldn't distribute objects! No solutions found.")
             return {'FINISHED'}
+        
+        for node in nodeSol:
+            context.scene.solution_nodes.append(node)
 
         objectsData = []
         #We obtain data from actions to create real objects.

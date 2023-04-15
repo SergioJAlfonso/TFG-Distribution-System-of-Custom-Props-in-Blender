@@ -22,31 +22,43 @@ class Redistribute_OT_Operator(bpy.types.Operator):
             target = duplicateObject(context.scene.target)
         else:
              target = context.scene.target
-        asset = context.scene.asset
-
-        #Note : bpy.types.Scene.num_assets != context.scene.num_assets
+        
+        assets = []
+        for i in range(len(context.scene.assets)):
+            assets.append(context.scene.assets[i].obj)
+            
         #Get user property data
         numCutsSubdivision = context.scene.num_cuts
         nameCollection = context.scene.collectName
         threshold_weight = context.scene.threshold #valor de 0, 1
-        
+        num_instances = context.scene.num_assets
+
         collection = bpy.data.collections.get(nameCollection)
         collection = initCollection(collection, nameCollection, True)
 
         bpy.ops.object.select_all(action='DESELECT')
 
+        # #Scale asset if necessary
+        for asset in assets:
+            scaleObject(self, asset)
+
         # #Get bounding box
-        asset_bounding_box_local = getBoundingBox(context, asset)
+        assets_bounding_box_local = []
+        for asset in assets:
+            assets_bounding_box_local.append(getBoundingBox(context, asset))
+
         target_bounding_box_local = getBoundingBox(context, target)
 
         # #Subdivide target to fit assets in every vertex
         if (context.scene.subdivide):
-            makeSubdivision(target, asset_bounding_box_local, target_bounding_box_local, numCutsSubdivision)
+             # Get bounding box with more cuts needed
+            asset_bounding_box_local = getMinBoundingBox(assets_bounding_box_local, target_bounding_box_local)
+            makeSubdivision(target, asset_bounding_box_local,
+                            target_bounding_box_local, numCutsSubdivision)
 
-        data_tridimensional = getVerticesData(target)
-        print('Algorithm:', context.scene.algorithm_enum)
+        data_tridimensional = getVerticesData(target, context.scene.vgr_profile)
 
         vertices = filterVerticesByWeightThreshold(data_tridimensional, threshold_weight)
         #Initial state as all possible vertices to place an asset
 
-        return change_search(self, context, context.scene.solution_nodes[context.scene.current_search-1], vertices, asset, asset_bounding_box_local, collection, target)
+        return change_searchN(self, context, context.scene.solution_nodes[context.scene.current_search-1], vertices, assets, assets_bounding_box_local, collection, target)

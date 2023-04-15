@@ -93,7 +93,8 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
         data_tridimensional = getVerticesData(target, context.scene.vgr_profile)
         print('Algorithm:', context.scene.algorithm_enum)
 
-        vertices = filterVerticesByWeightThreshold(data_tridimensional, threshold_weight)
+        vertices = filterVerticesByWeightThreshold(
+            data_tridimensional, threshold_weight)
         #Initial state as all possible vertices to place an asset
         
 
@@ -101,7 +102,7 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
         if context.scene.solution_nodes == []:
             self.report({'INFO'}, "Solution nodes empty, rellenating")
 
-            initialState = StateDistribution(vertices, 0)
+            initialState = StateDistribution(vertices, len(context.scene.partialsol))
             #Potential final state 
 
             num_assets = min(num_instances, len(vertices))

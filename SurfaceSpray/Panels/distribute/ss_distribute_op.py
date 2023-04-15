@@ -46,8 +46,15 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         if(context.scene.vgr_profile == " " or context.scene.vgr_profile == "" ):
             self.report({'WARNING'}, 'You must select an vertex group profile!')
             return {'FINISHED'}
+          
+        # Remove previous solutions AND set current search to 1
+        context.scene.solution_nodes.clear()
+        context.scene.current_search = 1
 
-        # Obtenemos todos los datos necesarios
+        # Remove previous assets data
+        context.scene.objects_data.clear()
+        
+        # Get duplicated target if needed to subdivide
         if (context.scene.subdivide):
             target = duplicateObject(context.scene.target)
         else:
@@ -55,16 +62,15 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
 
         asset = context.scene.asset
 
-        # Remove previous solutions AND set current search to 1
-        context.scene.solution_nodes.clear()
-        context.scene.current_search = 1
-
         # Note : bpy.types.Scene.num_assets != context.scene.num_assets
         # Get user property data
         numCutsSubdivision = context.scene.num_cuts
         nameCollection = context.scene.collectName
         threshold_weight = context.scene.threshold  # valor de 0, 1
         num_instances = context.scene.num_assets
+
+        #Make sure there are no duplicates
+        bpy.ops.partialsol.remove_duplicates()
 
         collection = bpy.data.collections.get(nameCollection)
         collection = initCollection(collection, nameCollection, True)
@@ -123,7 +129,7 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         print(f'Algorithm: {name}')
         algorithm = context.scene.algorithms_HashMap[name]
         
-        nodeSol = algorithm(distribution,1)
+        nodeSol = algorithm(distribution, context.scene.num_searches)
         actionsSol = None
 
         #Get just one solution
@@ -133,18 +139,22 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
             self.report({'ERROR'}, "Couldn't distribute objects!")
             return {'FINISHED'}
 
+        for node in nodeSol:
+            context.scene.solution_nodes.append(node)
+
         objectsData = []
-        #We obtain data from actions to create real objects.
-        # ObjectData: [pos, normal, rotation, scale]
+       #We obtain data from actions to create real objects.
+        # ObjectData: [pos, normal, rotation, scale, index]
         for i in range(len(actionsSol)):
             indexVertex = actionsSol[i].indexVertex
             objRotation = actionsSol[i].rotation
             objScale = actionsSol[i].scale
+            objIndex = context.scene.asset_index + 1 # actual asset
             objectsData.append(
-                [vertices[indexVertex][0], vertices[indexVertex][1], objRotation, objScale])
+                [vertices[indexVertex][0], vertices[indexVertex][1], objRotation, objScale, objIndex])
 
         # Save objectData
-        context.scene.solution_nodes.append(objectsData)
+        context.scene.objects_data.append(objectsData)
 
         createObjectsInPointsNS(objectsData, asset,
                               asset_bounding_box_local, collection, context.scene.adjust_normal_value)

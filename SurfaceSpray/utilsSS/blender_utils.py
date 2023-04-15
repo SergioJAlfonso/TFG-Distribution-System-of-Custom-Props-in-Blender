@@ -146,6 +146,7 @@ def createObjectsInPointsNSMulti(objectData, assets, boundingBoxObject, collecti
         #Set Active object to new object so we can duplicate from this point
         #object = bpy.context.active_object
 
+#deprecated
 def change_search(self, context, nodeSol, vertices, asset, asset_bounding_box_local, collection, target):
         actionsSol = None
         if nodeSol is not None:
@@ -167,6 +168,40 @@ def change_search(self, context, nodeSol, vertices, asset, asset_bounding_box_lo
             bpy.data.meshes.remove(target.data)
 
         return {'FINISHED'}
+
+def change_searchN(self, context, nodeSol, vertices, assets, assets_bounding_box_local, collection, target):
+        actionsSol = nodeSol.solution()
+
+        #Get just one solution
+        # if nodeSol is not None:
+        #     actionsSol = nodeSol[0].solution()
+        # else:
+        #     self.report({'ERROR'}, "Couldn't distribute objects!")
+        #     return {'FINISHED'}
+
+        objectsData = []
+        #We obtain data from actions to create real objects.
+        # ObjectData: [pos, normal, rotation, scale, index]
+        for i in range(len(actionsSol)):
+            indexVertex = actionsSol[i].indexVertex
+            objRotation = actionsSol[i].rotation
+            objScale = actionsSol[i].scale
+            objIndex = actionsSol[i].asset_index
+            objectsData.append(
+                [vertices[indexVertex][0], vertices[indexVertex][1], objRotation, objScale, objIndex])
+
+        # Save objectData
+        context.scene.objects_data.clear()
+        context.scene.objects_data.append(objectsData)
+
+        createObjectsInPointsNSMulti(objectsData, assets,
+                              assets_bounding_box_local, collection, context.scene.adjust_normal_value)
+
+        if (context.scene.subdivide):
+            bpy.data.meshes.remove(target.data)
+
+        return {'FINISHED'}
+
 
 def initCollection(collection, nameCollection, checkPartialSol = False):
     """ 
