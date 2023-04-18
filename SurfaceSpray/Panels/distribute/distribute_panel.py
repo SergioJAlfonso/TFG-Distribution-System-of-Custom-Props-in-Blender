@@ -64,12 +64,12 @@ class MAIN_PT_Panel(bpy.types.Panel):
         # col.prop_search(context.scene, "asset", context.scene, "objects", text="Asset")
         col.prop_search(context.scene, "target", context.scene, "objects", text="Target Object")
         
-
+        row.operator('addon.toggle_face_orientation', icon='OUTLINER_OB_POINTCLOUD', text = "Toggle Face Orientation")
+        row.operator('addon.recalc_normals', icon='OUTLINER_OB_POINTCLOUD', text = "Recalc Normals")
 
         #Painting Mode
         box1 = layout.box()
         row = box1.row()
-
 
         if(context.scene.target is not None):
             row.prop_search(context.scene, "vgr_profile", context.scene.target, "vertex_groups", text="Profile")
@@ -78,7 +78,6 @@ class MAIN_PT_Panel(bpy.types.Panel):
 
         row = box1.row()
         row.operator('addon.enter_paint_mode', icon='WPAINT_HLT', text = "Paint")
-
 
         #In case we are in Weight Painting with Target Object, we show all options
         if ((context.active_object == context.scene.target) and   context.active_object.mode == "WEIGHT_PAINT"):

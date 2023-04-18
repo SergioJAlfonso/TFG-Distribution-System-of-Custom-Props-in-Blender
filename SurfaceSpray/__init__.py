@@ -35,7 +35,9 @@ from .Panels.distribute.ss_clear_op import Clear_OT_Operator
 from .Panels.distribute.ss_paint_op import (PaintMode_OT_Operator, 
                                             ExitPaintMode_OT_Operator,
                                             InvertPainting_OT_Operator,
-                                            PaintAll_OT_Operator)
+                                            PaintAll_OT_Operator,
+                                            FaceOrientation_OT_Operator,
+                                            RecalcNormals_OT_Operator)
 
 from .Panels.distribute.ss_vertexProfile_op import (VertexProfile_ADD_OT_Operator, VertexProfile_REMOVE_OT_Operator)
 
@@ -82,6 +84,8 @@ classes = (ASSET_SELECT_OT_actions, ASSET_SELECT_OT_addViewportSelection, ASSET_
            ExitPaintMode_OT_Operator,
            InvertPainting_OT_Operator,
            PaintAll_OT_Operator,
+           FaceOrientation_OT_Operator,
+           RecalcNormals_OT_Operator,
            SurfaceSpray_OT_Operator_DEMO_SELECTION,
            SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION,
            SurfaceSpray_OT_Operator_DEMO_MULTI, 

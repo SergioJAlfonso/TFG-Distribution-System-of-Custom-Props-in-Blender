@@ -35,6 +35,8 @@ class install_Dependencies_OT_Operator(bpy.types.Operator):
     bl_options = {"REGISTER", "UNDO"}
  
     def execute(self, context):
+        result = subprocess.run(['pip', 'install', 'aima3'], capture_output=True, text=True)
+
         result = subprocess.run(['where', 'python'], capture_output=True, text=True)
 
         rutas = result.stdout.split("\n")

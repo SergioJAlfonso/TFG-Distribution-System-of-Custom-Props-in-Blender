@@ -80,3 +80,60 @@ class PaintAll_OT_Operator(bpy.types.Operator):
         # active object
         obj = context.object
         return (obj is not None) and (obj.mode == "WEIGHT_PAINT")
+    
+class FaceOrientation_OT_Operator(bpy.types.Operator):
+    bl_idname = "addon.toggle_face_orientation"
+    bl_label = "Simple operator"
+    bl_description = "Toggles face orientation."
+
+    def execute(self, context):
+        for area in bpy.context.screen.areas:
+            if area.type == 'VIEW_3D':
+                for space in area.spaces:
+                    if space.type == 'VIEW_3D':
+                        space.overlay.show_face_orientation = not space.overlay.show_face_orientation
+                        break
+        # bpy.ops.object.vertex_groups["Bosque"]
+        return {'FINISHED'}
+
+    # static method
+    @classmethod
+    def poll(cls, context):
+        # active object
+        obj = context.object
+        return (obj is not None) and (obj.mode == "OBJECT")
+    
+class RecalcNormals_OT_Operator(bpy.types.Operator):
+    bl_idname = "addon.recalc_normals"
+    bl_label = "Simple operator"
+    bl_description = "Recalculate target normals."
+
+    def execute(self, context):
+        bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
+        
+        bpy.ops.object.select_all(action='DESELECT')
+
+        oldObject = bpy.context.view_layer.objects.active
+
+        #Change any selected object to Target object so it can be switched to weight painting. 
+        bpy.context.view_layer.objects.active = context.scene.target
+
+        bpy.ops.object.mode_set(mode='EDIT')
+        # select al faces
+        bpy.ops.mesh.select_all(action='SELECT')
+        # recalculate outside normals 
+        bpy.ops.mesh.normals_make_consistent(inside=True)
+        # go object mode again
+        bpy.ops.object.editmode_toggle()
+
+        #Come back to previous object.
+        bpy.context.view_layer.objects.active = oldObject
+
+        return {'FINISHED'}
+
+    # static method
+    @classmethod
+    def poll(cls, context):
+        # active object
+        obj = context.scene.target
+        return (obj is not None) and (obj.mode == "OBJECT")
