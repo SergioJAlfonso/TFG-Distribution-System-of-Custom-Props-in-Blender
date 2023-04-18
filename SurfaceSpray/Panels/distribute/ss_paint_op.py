@@ -122,7 +122,7 @@ class RecalcNormals_OT_Operator(bpy.types.Operator):
         # select al faces
         bpy.ops.mesh.select_all(action='SELECT')
         # recalculate outside normals 
-        bpy.ops.mesh.normals_make_consistent(inside=True)
+        bpy.ops.mesh.normals_make_consistent(inside=False)
         # go object mode again
         bpy.ops.object.editmode_toggle()
 

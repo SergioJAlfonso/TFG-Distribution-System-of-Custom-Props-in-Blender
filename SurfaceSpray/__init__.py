@@ -16,7 +16,7 @@ bl_info = {
     "author" : "Jose Daniel Rave Robayo, Daniel illanes Morillas, Sergio José Alfonso Rojas",
     "description" : " ",
     "blender" : (3, 3, 0),
-    "version" : (0, 0, 1),
+    "version" : (1, 5, 1),
     "location" : "View3D",
     "warning" : "",
     "category" : "Mesh"

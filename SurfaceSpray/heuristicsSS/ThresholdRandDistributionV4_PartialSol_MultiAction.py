@@ -166,8 +166,31 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
         """
         possibleActions = []
 
-        #In case the state has all objects placed, we return an empty list.
+        #In case the state has all objects placed, we return an empty list or a set of actions to delete applied actions.
         if(state.objectsPlaced_ >= self.goal.objectsPlaced_):
+            #Search among solutions applied
+            
+            numActionsToRemove = 1
+
+            totalActionsApplied = len(state.actionsApplied_)
+
+            numActionsToRemove = min(numActionsToRemove,totalActionsApplied)
+
+            #We choose randomly a set of applied actions to remove
+            indexex_actionToRemove = random.sample(range(totalActionsApplied), numActionsToRemove)
+
+            j = 0
+            while (j < numActionsToRemove):
+                actionApplied = state.actionsApplied_[indexex_actionToRemove[j]]
+                
+                #Save occupied vertex so it can be freed. 
+                newAction = Actions(actionApplied.indexVertex, (0,0,0), 1, 1, ActionType.DESTROY)
+                #Store action to remove
+                newAction.setActionToRemove(actionApplied)
+                possibleActions.append(newAction)
+                j += 1
+
+
             return possibleActions
 
         sizeV = len(state.vertices_)
@@ -197,8 +220,8 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
                 #Or if there are no actions, we store it.
                 if (k >= len(possibleActions) or len(possibleActions) == 0):
                     remaining -= 1
-                    action = Actions(i, self.random_step_rotation(assetIndex), scale, assetIndex)
-                    possibleActions.append(action)
+                    newAction = Actions(i, self.random_step_rotation(assetIndex), scale, assetIndex, ActionType.CREATE)
+                    possibleActions.append(newAction)
 
             j += 1
 
@@ -255,10 +278,28 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
         """
         Returns a new state in which an action has been applied.
         """
+
         newState = copy.deepcopy(state)
-        newState.vertices_[action.indexVertex][2] = True
-        newState.objectsPlaced_ += 1
-        newState.actionsApplied_.append(action)
+
+        #If create, or destroy
+        if(action.type == ActionType.CREATE):
+            newState.vertices_[action.indexVertex][2] = True
+            newState.objectsPlaced_ += 1
+            newState.actionsApplied_.append(action)
+        else:
+
+            if(action.actionToRemove in state.actionsApplied_):
+                #Get actionToRemove index
+                indexToRemove = state.actionsApplied_.index(action.actionToRemove)
+
+                #Old vertex occupied, now is free.
+                newState.vertices_[action.indexVertex][2] = False
+                newState.objectsPlaced_ -= 1
+
+                #We remove old applied action 
+                newState.actionsApplied_.pop(indexToRemove) #we could also use -> del actionsApplied_[indexToRemove]
+                
+
         return newState
 
     def goal_test(self, state):

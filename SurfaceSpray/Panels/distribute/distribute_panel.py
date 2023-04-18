@@ -62,10 +62,11 @@ class MAIN_PT_Panel(bpy.types.Panel):
 
         # Target and asset prop search
         # col.prop_search(context.scene, "asset", context.scene, "objects", text="Asset")
-        col.prop_search(context.scene, "target", context.scene, "objects", text="Target Object")
+        row.prop_search(context.scene, "target", context.scene, "objects", text="Target Object")
+        row = layout.row()
+        row.operator('addon.toggle_face_orientation', icon='NORMALS_FACE', text = "Toggle Face Orientation")
+        row.operator('addon.recalc_normals', icon='MOD_NORMALEDIT', text = "Recalc Normals")
         
-        row.operator('addon.toggle_face_orientation', icon='OUTLINER_OB_POINTCLOUD', text = "Toggle Face Orientation")
-        row.operator('addon.recalc_normals', icon='OUTLINER_OB_POINTCLOUD', text = "Recalc Normals")
 
         #Painting Mode
         box1 = layout.box()

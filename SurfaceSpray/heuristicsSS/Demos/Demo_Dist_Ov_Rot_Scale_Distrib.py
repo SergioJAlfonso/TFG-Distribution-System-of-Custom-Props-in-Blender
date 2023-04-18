@@ -170,7 +170,8 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
                 #Or if there are no actions, we store it.
                 if (k >= len(possibleActions) or len(possibleActions) == 0):
                     remaining -= 1
-                    action = Actions(i, self.random_rotation(), scale)
+                    
+                    action = Actions(i, self.random_rotation(), scale, type_ = ActionType.CREATE)
                     possibleActions.append(action)
 
             j += 1
