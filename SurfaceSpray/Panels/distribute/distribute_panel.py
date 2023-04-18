@@ -1,4 +1,5 @@
 import bpy
+import random
 
 from ...algorithmsSS.algorithmsSS import best_first_graph_multiple_search as ss_best_fms
 from ...algorithmsSS.algorithmsSS import hill_climbing as hillClimbing
@@ -103,6 +104,7 @@ class MAIN_PT_Panel(bpy.types.Panel):
         box3.column().prop(context.scene, "threshold")
 
         box3.column().prop(context.scene, "num_assets")
+        box3.column().prop(context.scene, "random_seed")
         box3.column().prop(context.scene, "collectName")
 
         box2 = layout.box()
@@ -198,6 +200,13 @@ class MAIN_PT_Panel(bpy.types.Panel):
              name="vertex_group_profile",
              update= update_vertexGroupSelection)
         
+        bpy.types.Scene.random_seed = bpy.props.IntProperty(
+            name="Random Seed",
+            default=11092022,
+            min = 0,
+            update=update_random_seed
+        )
+        
         
 
     def unregister():
@@ -210,6 +219,9 @@ class MAIN_PT_Panel(bpy.types.Panel):
 
 def update_max_searches(self, context):
     self["current_search"] = 1
+
+def update_random_seed(self, context):
+    random.seed(self["Random Seed"])
 
 def update_current_search(self, context):
     self["current_search"] = min(self["current_search"], self["num_searches"])
