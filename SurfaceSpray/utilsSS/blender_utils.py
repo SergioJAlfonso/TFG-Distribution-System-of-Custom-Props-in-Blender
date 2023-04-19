@@ -150,7 +150,11 @@ def createObjectsInPointsNSMulti(objectData, assets, boundingBoxObject, collecti
 def change_search(self, context, nodeSol, vertices, asset, asset_bounding_box_local, collection, target):
         actionsSol = None
         if nodeSol is not None:
-            actionsSol = nodeSol.solution()
+            #If we take a Node to take it actions or a list of Action. For retrocompatibility purposes
+            if(type(nodeSol).__name__ == "Node"):
+                actionsSol = nodeSol.solution()
+            else:
+                actionsSol = nodeSol
         else:
             # bpy.context.window_manager.popup("Couldn't distribute objects!", title="Error", icon='ERROR')
             self.report({'ERROR'}, "Couldn't distribute objects!")
@@ -170,7 +174,13 @@ def change_search(self, context, nodeSol, vertices, asset, asset_bounding_box_lo
         return {'FINISHED'}
 
 def change_searchN(self, context, nodeSol, vertices, assets, assets_bounding_box_local, collection, target):
-        actionsSol = nodeSol.solution()
+        
+        actionsSol = None
+        #If we take a Node to take it actions or a list of Actions. For retrocompatibility purposes
+        if(type(nodeSol).__name__ == "Node"):
+            actionsSol = nodeSol.solution()
+        else:
+            actionsSol = nodeSol
 
         #Get just one solution
         # if nodeSol is not None:

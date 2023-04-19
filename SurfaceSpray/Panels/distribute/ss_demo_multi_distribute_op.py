@@ -1,4 +1,5 @@
 import bpy
+import time
 
 from ...ItemClasses.ItemRules import *
 from ...ItemClasses.Item import *
@@ -131,23 +132,62 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
         print(f'Algorithm: {name}')
         algorithm = context.scene.algorithms_HashMap[name]
 
+        start_time = time.time()
+
         nodeSol = algorithm(distribution, context.scene.num_searches)
 
-        actionsSol = None
+        
+        #debemos tener dos listas de acciones aplicadas. Una para saber como historial para saber que ha ido ocurriendo
+        #para no repetir posiciones
+        #y otra que nos indique el estado actual del tablero, con todo aplicado, para que las comprobaciones
+        #no hagan calculos con posiciones inexistentes 
 
-        #Get just one solution
-        if nodeSol is not None:
-            actionsSol = nodeSol[0].solution()
-        else:
+        #Por cada lista de acciones de cada nodeSol, applicar las acciones para eliminar
+        #las acciones que remueven otras (que a su vez seran eliminadas)
+        #deberian tener "num_assets" numero de acciones en total en la lista.
+        
+        #Ir del final al inicio? es lo mas probable que tengan Actiones para destruir.
+        
+        #pillar el indice a eliminar, e ir almacenando en un vector para luego usar el metodo de np.del
+        
+        if(nodeSol is None):
             self.report({'ERROR'}, "Couldn't distribute objects! No solutions found.")
             return {'FINISHED'}
-        
+
+        #solution_nodes now is a list of actions, rather than a object to ask for it list of actions.
         for node in nodeSol:
-            context.scene.solution_nodes.append(node)
+            
+            actions_path = node.solution()
+
+            actions_applied = []
+
+            indexes_toRemove = []
+            #Get indexes to remove actions.
+            for action in reversed(actions_path):
+                if(action.type == ActionType.DESTROY):
+                    indexDestroyAction = actions_path.index(action)                
+                    indexActionToRmv = action.actionToRemove
+
+                    indexes_toRemove.append(indexDestroyAction)                
+                    indexes_toRemove.append(indexActionToRmv) 
+            
+            #Remove actions based on indexes_toRemove list.
+            for i in range(len(actions_path)):
+                if i not in indexes_toRemove:
+                    actions_applied.append(actions_path[i])
+
+            context.scene.solution_nodes.append(actions_applied)
+
+        actionsSol = None
+        #Get just one solution
+        actionsSol = context.scene.solution_nodes[0]
 
         objectsData = []
         #We obtain data from actions to create real objects.
         # ObjectData: [pos, normal, rotation, scale, index]
+
+        # actionsSol[-1].
+
         for i in range(len(actionsSol)):
             indexVertex = actionsSol[i].indexVertex
             objRotation = actionsSol[i].rotation
@@ -164,6 +204,17 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
 
         if (context.scene.subdivide):
             bpy.data.meshes.remove(target.data)
+
+        end_time = time.time()
+
+        elapsed_time = end_time - start_time
+        # convertir a minutos, segundos y milisegundos
+        minutes = int(elapsed_time / 60)
+        seconds = int(elapsed_time % 60)
+        milliseconds = int((elapsed_time - int(elapsed_time)) * 1000)
+
+        # mostrar en formato MM:SS.mmm
+        print("It lasted: {:02d}min:{:02d} sec.{:03d}".format(minutes, seconds, milliseconds))
 
         return {'FINISHED'}
 

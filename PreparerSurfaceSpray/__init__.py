@@ -91,8 +91,17 @@ class InstallDependecies_Preferences(bpy.types.AddonPreferences):
     def draw(self, context):
         layout = self.layout
         layout.label(text='Press to install addon dependecies:')
+
+        usersitepackagespath = site.getsitepackages()[-1]
+        usersitepackagespath += "\\aima3"
+
+        dependenciesInstalled = ""
+        if os.path.exists(usersitepackagespath):
+            dependenciesInstalled = "(Already Installed)"
+
+
         row = layout.row()
-        row.operator("p_ss.install_dependencies", icon='PREFERENCES', text="Install Dependencies")
+        row.operator("p_ss.install_dependencies", icon='PREFERENCES', text=f"Install Dependencies {dependenciesInstalled}")
  
  
 def register():

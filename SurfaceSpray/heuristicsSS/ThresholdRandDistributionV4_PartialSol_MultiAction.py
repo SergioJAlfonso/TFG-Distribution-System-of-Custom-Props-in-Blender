@@ -80,7 +80,7 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
         i = 0
         satisfiesRestrictions = True
 
-        #While all restrictions are acomplished and we are checking all actions applied.
+        #While all restrictions are acomplished and we are checking all actions applied. 
         while (i < len(state.actionsApplied_) and satisfiesRestrictions):
             # Access vertices that has an object on it.
             applied_indexVertex = state.actionsApplied_[i].indexVertex
@@ -184,7 +184,7 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
                 actionApplied = state.actionsApplied_[indexex_actionToRemove[j]]
                 
                 #Save occupied vertex so it can be freed. 
-                newAction = Actions(actionApplied.indexVertex, (0,0,0), 1, 1, ActionType.DESTROY)
+                newAction = Actions(0, (0,0,0), 1, 1, ActionType.DESTROY)
                 #Store action to remove
                 newAction.setActionToRemove(actionApplied)
                 possibleActions.append(newAction)
@@ -292,13 +292,21 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
                 #Get actionToRemove index
                 indexToRemove = state.actionsApplied_.index(action.actionToRemove)
 
-                #Old vertex occupied, now is free.
-                newState.vertices_[action.indexVertex][2] = False
+                #Old vertex occupied, now is free. But can not be occupied again. (?)
+                # newState.vertices_[action.indexVertex][2] = False
+
                 newState.objectsPlaced_ -= 1
 
                 #We remove old applied action 
                 newState.actionsApplied_.pop(indexToRemove) #we could also use -> del actionsApplied_[indexToRemove]
-                
+
+                #Update actionToRemove (?)
+                if(action.actionToRemove in state.actionsHistory):
+                    indexHistoryToRemove = state.actionsHistory.index(action.actionToRemove)
+                    action.actionToRemove = indexHistoryToRemove 
+                    # print(indexHistoryToRemove)
+
+        newState.actionsHistory.append(action)
 
         return newState
 

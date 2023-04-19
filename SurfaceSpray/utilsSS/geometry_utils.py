@@ -185,8 +185,10 @@ def scaleObject(self, obj):
 
 def adjustPosition(object, boundingBoxObject, normal):
     # object.location[2] += abs(boundingBoxObject[0][2])
-    for i in range(3):
-        object.location[i] += abs(boundingBoxObject[0][i])* normal[i]
+    #In range(2) since we dont want to move the object in Z.
+    # for i in range(2):
+    #     object.location[i] += abs(boundingBoxObject[0][i])* normal[i]
+    pass
 
 def adjustRotation(obj, normal, rotation, normal_factor = 1):
     # Vertex Normal 
