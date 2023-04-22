@@ -18,7 +18,24 @@ The purpose of the project is to explore the procedural generation of meshes, an
 
 Trabajo de fin de grado por José Daniel Rave Robayo, Daniel Illanes Morillas y Sergio José Alfonso Rojas
 
-## Notas Instalación
+***
+<details open>
+<summary><h2><u>1. Instalación Pseudo-automática</u></h2></summary>
+
+Es necesario tener instalado [Python](https://www.python.org/downloads/) y añadido al environment path (opción a la hora de instalar python).
+
+Descargar el add-on, descargar el auxiliar **PreparerSurfaceSpray.zip**, y abrir Blender en modo Administrador.
+Para instalar el add-on ir a _Edit_ -> _Preferencies_ -> Tab _Add-ons_. 
+Presionar el botón superior derecho ```Install``` y buscar el .zip del add-on y clickar ```Install Add-on```.
+Se deben esperar unos segundos a que se registre y aparezca en el buscador. En caso de que no aparezca, buscar "PreparerSurfaceSpray" y activarlo. Posteriormente desplegar la pestaña del add-on y aparecerá un botón de  ```Install Dependencies```. Se debe presionar y esperar a que salga el mensaje _(Already Installed)_.
+
+Una vez hecho esto, realizar la misma instalación con el add-on  **SurfaceSpray.zip**.
+</details>
+
+***
+<details>
+<summary><h2><u>1. Instalación Manual</u></h2></summary>
+
 Es necesario instalar aima (y tener instalado Python). Para ello ejecutar el siguiente comando desde cualquier ```cmd```.
 ~~~ 
 pip install aima3
@@ -59,3 +76,4 @@ print("Path: ", usersitepackagespath)
 ~~~
 
 Abrir Toggle System Console desde arriba a la izquierda _Window -> Toggle System Console_,  para así poder ver el texto impreso por el código anterior. El texto debería mostrar la carpeta de python que ésta versión de Blender usa.
+</details>

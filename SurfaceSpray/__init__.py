@@ -53,7 +53,6 @@ from .Panels.distribute.distribute_panel import *
 
 from .Panels.rules_panel  import RULES_PT_Panel
 
-from .Panels.rules_panel  import (PRUEBA_PT_tools_object_options_transform)
 
 from .Panels.distribute.ss_asset_select_op import *
 
@@ -91,9 +90,7 @@ classes = (ASSET_SELECT_OT_actions, ASSET_SELECT_OT_addViewportSelection, ASSET_
            SurfaceSpray_OT_Operator_DEMO_MULTI, 
            Redistribute_OT_Operator, Clear_OT_Operator, Rotate_Operator,
            VertexProfile_ADD_OT_Operator, VertexProfile_REMOVE_OT_Operator,
-           Reset_Rules_OT_Operator,
-           PRUEBA_PT_tools_object_options_transform)
-
+           Reset_Rules_OT_Operator)
 def verify_user_sitepackages():
     usersitepackagespath = site.getsitepackages()
 

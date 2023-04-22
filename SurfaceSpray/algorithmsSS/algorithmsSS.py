@@ -59,6 +59,9 @@ def best_first_graph_multiple_search(problem, limit=5, f = lambda node: node.pat
     frontier.append(node)
     explored = set()
     sols = []
+    
+    if(hasattr(problem, "registerSolutionList")):
+        problem.registerSolutionList(sols, limit)
 
     found = 0
     while frontier and found < limit:
@@ -68,6 +71,7 @@ def best_first_graph_multiple_search(problem, limit=5, f = lambda node: node.pat
                 print(len(explored), "paths have been expanded and", len(frontier), "paths remain in the frontier")
             #We save solution
             sols.append(node)
+            print("Solutions found:",len(sols))
             found += 1
             
         explored.add(node.state)
@@ -125,6 +129,10 @@ def simulated_annealing_multiples(problem, limit = 5, schedule=exp_schedule()):
     sols = []
 
     current = Node(problem.initial)
+
+    if(hasattr(problem, "registerSolutionList")):
+        problem.registerSolutionList(sols, limit)
+
     for t in range(sys.maxsize):
         T = schedule(t)
         if T == 0:

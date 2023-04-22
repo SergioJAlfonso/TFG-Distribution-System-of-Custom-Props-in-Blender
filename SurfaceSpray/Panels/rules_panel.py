@@ -2,26 +2,6 @@ import bpy
 from mathutils import Color
 from bpy.types import Menu, Panel, UIList
 
-class PRUEBA_PT_tools_object_options_transform(Panel):
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = "SurfaceSpray"
-    bl_label = "Transform"
-    bl_parent_id = "RULES_PT_Panel"
-
-    def draw(self, context):
-        layout = self.layout
-
-        layout.use_property_split = True
-        layout.use_property_decorate = False
-
-        tool_settings = context.tool_settings
-
-        col = layout.column(heading="Affect Only", align=True)
-        col.prop(tool_settings, "use_transform_data_origin", text="Origins")
-        col.prop(tool_settings, "use_transform_pivot_point_align", text="Locations")
-        col.prop(tool_settings, "use_transform_skip_children", text="Parents")
-
 
 class RULES_PT_Panel(bpy.types.Panel):
     bl_idname = "RULES_PT_Panel"
@@ -57,12 +37,13 @@ class RULES_PT_Panel(bpy.types.Panel):
                 rotation_row.alignment = "CENTER"
 
                 # Rotation
-                rotation_row.label(text="Allow Rotation:")
-                rotation_row.prop(scn, "rotate_x")
-                rotation_row.prop(scn, "rotate_y")
-                rotation_row.prop(scn, "rotate_z")
+                if(scn.bbox_bool == False):
+                    rotation_row.label(text="Allow Rotation:")
+                    rotation_row.prop(scn, "rotate_x")
+                    rotation_row.prop(scn, "rotate_y")
+                    rotation_row.prop(scn, "rotate_z")
 
-                if(scn.rotate_x or scn.rotate_y or scn.rotate_z):
+                if(not scn.bbox_bool and (scn.rotate_x or scn.rotate_y or scn.rotate_z)):
                     #Range and steps
                     
                     rotation_range_row = rotationBox.row()

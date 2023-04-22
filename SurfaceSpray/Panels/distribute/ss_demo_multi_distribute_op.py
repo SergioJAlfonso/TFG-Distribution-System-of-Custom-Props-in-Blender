@@ -154,6 +154,8 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
             self.report({'ERROR'}, "Couldn't distribute objects! No solutions found.")
             return {'FINISHED'}
 
+        context.scene.num_searches = len(nodeSol)
+
         #solution_nodes now is a list of actions, rather than a object to ask for it list of actions.
         for node in nodeSol:
             
@@ -213,8 +215,9 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
         seconds = int(elapsed_time % 60)
         milliseconds = int((elapsed_time - int(elapsed_time)) * 1000)
 
-        # mostrar en formato MM:SS.mmm
-        print("It lasted: {:02d}min:{:02d} sec.{:03d}".format(minutes, seconds, milliseconds))
+        timeLasted = "It lasted: {:02d}min: {:02d}sec.{:03d}".format(minutes, seconds, milliseconds)
+        print(timeLasted)
+        self.report({'INFO'}, timeLasted)
 
         return {'FINISHED'}
 

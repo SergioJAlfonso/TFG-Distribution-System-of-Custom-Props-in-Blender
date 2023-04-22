@@ -266,9 +266,14 @@ def clearCollection(collection, checkPartialSol = False):
 def setPanelItemRules(context, item_index = 0):
     
     # get item rules from panel
-    rotation_x = context.scene.itemRules_HashMap["rotate_x"][item_index]
-    rotation_y = context.scene.itemRules_HashMap["rotate_y"][item_index]
-    rotation_z = context.scene.itemRules_HashMap["rotate_z"][item_index]
+    use_box = context.scene.itemRules_HashMap["bbox_bool"][item_index]
+    
+    if(use_box):
+        rotation_x = rotation_y = rotation_z = False
+    else:
+        rotation_x = context.scene.itemRules_HashMap["rotate_x"][item_index]
+        rotation_y = context.scene.itemRules_HashMap["rotate_y"][item_index]
+        rotation_z = context.scene.itemRules_HashMap["rotate_z"][item_index]
 
     rotation_range_x = context.scene.itemRules_HashMap["rot_range_x"][item_index]
     rotation_range_y = context.scene.itemRules_HashMap["rot_range_y"][item_index]
@@ -280,7 +285,6 @@ def setPanelItemRules(context, item_index = 0):
 
     can_overlap = context.scene.itemRules_HashMap["overlap_bool"][item_index]
 
-    use_box = context.scene.itemRules_HashMap["bbox_bool"][item_index]
 
     item_distance = context.scene.itemRules_HashMap["item_distance"][item_index]
 

@@ -166,39 +166,72 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
         """
         possibleActions = []
 
-        #In case the state has all objects placed, we return an empty list or a set of actions to delete applied actions.
-        if(state.objectsPlaced_ >= self.goal.objectsPlaced_):
-            #Search among solutions applied
-            
-            numActionsToRemove = 1
 
-            totalActionsApplied = len(state.actionsApplied_)
+        #A set of actions that removes objects placed can be triggered in the following cases if and only if:
+        #the progress of solution list determines a probability to remove actions. The lower the progress, bigger the chances. 
+        
+        #If the solution list is empty, the probability is close to 0.5%
+        #If is mostly filled is close to 0.1%
+        probRemoval = self.m * len(self.solutionList) +  self.b
+        random_num = random.random()
+        removeChance = random_num <= probRemoval
 
-            numActionsToRemove = min(numActionsToRemove,totalActionsApplied)
+        #Then, the following cases have to happen:
+        #1. In case the state has all objects placed.
+        reachedGoal = state.objectsPlaced_ >= self.goal.objectsPlaced_
+        #2. In case the state has reached a acceptable Progress so we can remove actions. 
+        progressState = state.objectsPlaced_/self.goal.objectsPlaced_
+        reachedAcceptedProgressBegin = 0.45 <= progressState <= 0.55
+        reachedAcceptedProgressEnd = 0.85 <= progressState <= 0.95
+        
+        canRemove = ( removeChance and (reachedGoal or reachedAcceptedProgressBegin or reachedAcceptedProgressEnd))
+        
+        #Particular case, if the state has reached goal but the chances does not allowed removal
+        #we return a empty list, losing the state.
+        if(reachedGoal):
+            return possibleActions 
+        
+        # if(reachedGoal and not removeChance):
+        #     return possibleActions    
 
-            #We choose randomly a set of applied actions to remove
-            indexex_actionToRemove = random.sample(range(totalActionsApplied), numActionsToRemove)
 
-            j = 0
-            while (j < numActionsToRemove):
-                actionApplied = state.actionsApplied_[indexex_actionToRemove[j]]
+        # if(canRemove):
+        #     numActionsToRemove = 1 + 4.0*probRemoval
+
+        #     totalActionsApplied = len(state.actionsApplied_)
+
+        #     numActionsToRemove = min(round(numActionsToRemove),totalActionsApplied)
+
+        #     #Search among solutions applied
+        #     #We choose randomly a set of applied actions to remove
+        #     indexex_actionToRemove = random.sample(range(totalActionsApplied), numActionsToRemove)
+
+        #     j = 0
+        #     while (j < numActionsToRemove):
+        #         actionApplied = state.actionsApplied_[indexex_actionToRemove[j]]
                 
-                #Save occupied vertex so it can be freed. 
-                newAction = Actions(0, (0,0,0), 1, 1, ActionType.DESTROY)
-                #Store action to remove
-                newAction.setActionToRemove(actionApplied)
-                possibleActions.append(newAction)
-                j += 1
+        #         #Save occupied vertex so it can be freed. 
+        #         newAction = Actions(0, (0,0,0), 1, 1, ActionType.DESTROY)
+        #         #Store action to remove
+        #         newAction.setActionToRemove(actionApplied)
+        #         possibleActions.append(newAction)
+        #         j += 1
 
 
-            return possibleActions
+        #     return possibleActions
 
         sizeV = len(state.vertices_)
 
         # Iterate over each state vertex checking if this vertex has a object on it, otherwise
         # it'll be considered as an action. (An object can be placed on it)
         # remaining = self.goal.objectsPlaced_ - state.objectsPlaced_
-        remaining = 2
+        
+        if(state == self.initial):
+            remaining = self.limitSolutionList/2 #Half width of tree node.
+        elif (state.objectsPlaced_ == 1): 
+            remaining = 2
+        else:
+            remaining = 1
 
         randomIndices = random.sample(range(sizeV), sizeV)
         j = 0
@@ -341,7 +374,7 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
         #In case range is the top, to prevent an empty range error, we just add c to the cost 
         state2.pathCost = c + random.randrange(0, topLimitRange - range) if (range != topLimitRange) else c
         
-        return state2.pathCost
+        return state2.pathCost + len(state2.actionsHistory)
 
     def h(self, node):
         """ 
@@ -357,3 +390,11 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
         and related algorithms try to maximize this value."""
         
         return state.objectsPlaced_
+    
+    def registerSolutionList(self, list, limitList):
+        self.solutionList = list
+        self.limitSolutionList = limitList
+
+        self.m = (0.1 - 0.5)/(limitList- 0)
+        self.b = 0.5
+
