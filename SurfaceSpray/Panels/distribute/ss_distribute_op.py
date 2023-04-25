@@ -160,7 +160,7 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
                               asset_bounding_box_local, collection, context.scene.adjust_normal_value)
 
         if (context.scene.subdivide):
-            bpy.data.meshes.remove(target.data)
+            removeMesh(target.data)
 
         return {'FINISHED'}
 

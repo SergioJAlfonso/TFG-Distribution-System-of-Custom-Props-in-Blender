@@ -251,6 +251,9 @@ def deleteObject(obj):
     obj.select_set(True)
     bpy.ops.object.delete() 
 
+def removeMesh(data):
+    bpy.data.meshes.remove(data)
+
 def clearCollection(collection, checkPartialSol = False):
     partialSol = bpy.context.scene.partialsol
     
