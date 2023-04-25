@@ -24,7 +24,7 @@ Trabajo de fin de grado por José Daniel Rave Robayo, Daniel Illanes Morillas y 
 
 Es necesario tener instalado [Python](https://www.python.org/downloads/) y añadido al environment path (opción a la hora de instalar python).
 
-Descargar el add-on, descargar el auxiliar **PreparerSurfaceSpray.zip**, y abrir Blender en modo Administrador (click derecho sobre el programa y ```Ejecutar como administrador```).
+Descargar el add-on del apartado **Releases** a la derecha de Github. Descargar el auxiliar **PreparerSurfaceSpray.zip**, y abrir Blender en modo Administrador (click derecho sobre el programa y ```Ejecutar como administrador```).
 
 Para instalar el add-on ir a _Edit_ -> _Preferencies_ -> Tab _Add-ons_. 
 

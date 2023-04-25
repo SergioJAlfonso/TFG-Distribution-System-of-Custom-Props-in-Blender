@@ -96,6 +96,7 @@ class MAIN_PT_Panel(bpy.types.Panel):
 
         box3.label(text="Distribution Parameters")
 
+        box3.column().prop(context.scene, "collectName")
         box3.column().prop(context.scene, "algorithm_enum")
 
         box3.column().prop(context.scene, "vertexSelection_enum")
@@ -105,7 +106,6 @@ class MAIN_PT_Panel(bpy.types.Panel):
 
         box3.column().prop(context.scene, "num_assets")
         box3.column().prop(context.scene, "random_seed")
-        box3.column().prop(context.scene, "collectName")
 
         box2 = layout.box()
 
