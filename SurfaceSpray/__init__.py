@@ -78,7 +78,7 @@ classes = (ASSET_SELECT_OT_actions, ASSET_SELECT_OT_addViewportSelection, ASSET_
            PARTIAL_SOL_PG_objectCollection,PARTIAL_SOL_OT_actions,PARTIAL_SOL_OT_addViewportSelection, MAIN_PT_Panel, 
            RULES_PT_Panel,PARTIAL_SOL_OT_clearList,PARTIAL_SOL_OT_removeDuplicates,PARTIAL_SOL_OT_selectItems,
            PARTIAL_SOL_UL_items,PARTIAL_SOL_OT_update_list,PARTIAL_SOL_PT_Panel,
-           SUBDIVIDE_PT_Panel , SurfaceSpray_OT_Operator, 
+           SUBDIVIDE_PT_Panel, PARAMS_PT_Panel, SurfaceSpray_OT_Operator, 
            PaintMode_OT_Operator,
            ExitPaintMode_OT_Operator,
            InvertPainting_OT_Operator,

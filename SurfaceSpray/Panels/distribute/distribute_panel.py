@@ -91,29 +91,6 @@ class MAIN_PT_Panel(bpy.types.Panel):
                 row.operator('addon.paint_all', icon='MATFLUID', text = "Paint All:")
                 row.column().prop(context.scene, "allWeightValue", text = "Weight Value")
 
-        # Distribution Parameters box
-        box3 = layout.box()
-
-        box3.label(text="Distribution Parameters")
-
-        box3.column().prop(context.scene, "collectName")
-        box3.column().prop(context.scene, "algorithm_enum")
-
-        box3.column().prop(context.scene, "vertexSelection_enum")
-        
-        # if (context.scene.algorithm_enum == "OP1"):
-        box3.column().prop(context.scene, "threshold")
-
-        box3.column().prop(context.scene, "num_assets")
-        box3.column().prop(context.scene, "random_seed")
-
-        box2 = layout.box()
-
-        box2.label(text="Distribution Variations")
-
-        box2.row().prop(context.scene, "num_searches")
-        box2.row().prop(context.scene, "current_search")
-
     def register():
         bpy.types.Scene.threshold = bpy.props.FloatProperty(
         name='Threshold',
@@ -216,6 +193,41 @@ class MAIN_PT_Panel(bpy.types.Panel):
              bpy.types.Scene.num_searches, bpy.types.Scene.current_search,
              bpy.types.Scene.solution_nodes, bpy.types.Scene.algorithms_HashMap,
              bpy.types.Scene.vgr_profile)
+
+class PARAMS_PT_Panel(bpy.types.Panel):
+    bl_idname = "PARAMS_PT_Panel"
+    bl_label = "Distribution Parameters"
+    bl_category = "SurfaceSpray"
+    bl_description = "Enter Distribution Parameters"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_parent_id = "MAIN_PT_Panel"
+
+    def draw(self, context):
+        layout = self.layout
+
+        # Distribution Parameters box
+        box3 = layout.box()
+
+        #box3.label(text="Distribution Parameters")
+
+        box3.column().prop(context.scene, "collectName")
+        box3.column().prop(context.scene, "algorithm_enum")
+
+        box3.column().prop(context.scene, "vertexSelection_enum")
+        
+        # if (context.scene.algorithm_enum == "OP1"):
+        box3.column().prop(context.scene, "threshold")
+
+        box3.column().prop(context.scene, "num_assets")
+        box3.column().prop(context.scene, "random_seed")
+
+        box2 = layout.box()
+
+        box2.label(text="Distribution Variations")
+
+        box2.row().prop(context.scene, "num_searches")
+        box2.row().prop(context.scene, "current_search")
 
 def update_max_searches(self, context):
     self["current_search"] = 1
