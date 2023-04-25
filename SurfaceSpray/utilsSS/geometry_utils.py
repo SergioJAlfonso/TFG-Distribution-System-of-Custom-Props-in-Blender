@@ -195,10 +195,10 @@ def adjustRotation(obj, normal, rotation, normal_factor = 1):
     normal_vec = Vector((normal[0], normal[1], normal[2]))
     
     # Quat to align normals in Z
-    z_quat = Vector((0,0,1)).to_track_quat('Z', 'Y')
+    z_quat = Vector((0,0,1)).to_track_quat('Z', 'X')
 
     # Normal vector to Euler
-    normal_quat = normal_vec.to_track_quat('Z', 'Y')
+    normal_quat = normal_vec.to_track_quat('Z', 'X')
     
     # Final aligned rotation 
     aligned_euler = z_quat.slerp(normal_quat, normal_factor).to_euler('XYZ')

@@ -24,17 +24,22 @@ Trabajo de fin de grado por José Daniel Rave Robayo, Daniel Illanes Morillas y 
 
 Es necesario tener instalado [Python](https://www.python.org/downloads/) y añadido al environment path (opción a la hora de instalar python).
 
-Descargar el add-on, descargar el auxiliar **PreparerSurfaceSpray.zip**, y abrir Blender en modo Administrador.
+Descargar el add-on, descargar el auxiliar **PreparerSurfaceSpray.zip**, y abrir Blender en modo Administrador (click derecho sobre el programa y ```Ejecutar como administrador```).
+
 Para instalar el add-on ir a _Edit_ -> _Preferencies_ -> Tab _Add-ons_. 
+
 Presionar el botón superior derecho ```Install``` y buscar el .zip del add-on y clickar ```Install Add-on```.
-Se deben esperar unos segundos a que se registre y aparezca en el buscador. En caso de que no aparezca, buscar "PreparerSurfaceSpray" y activarlo. Posteriormente desplegar la pestaña del add-on y aparecerá un botón de  ```Install Dependencies```. Se debe presionar y esperar a que salga el mensaje _(Already Installed)_.
+
+Se deben esperar unos segundos a que se registre y aparezca en el buscador. En caso de que no aparezca, buscar "PreparerSurfaceSpray" y activarlo. 
+
+Posteriormente desplegar la pestaña del add-on y aparecerá un botón de  ```Install Dependencies```. Se debe presionar y esperar a que salga el mensaje _(Already Installed)_.
 
 Una vez hecho esto, realizar la misma instalación con el add-on  **SurfaceSpray.zip**.
 </details>
 
 ***
 <details>
-<summary><h2><u>1. Instalación Manual</u></h2></summary>
+<summary><h2><u>2. Instalación Manual</u></h2></summary>
 
 Es necesario instalar aima (y tener instalado Python). Para ello ejecutar el siguiente comando desde cualquier ```cmd```.
 ~~~ 
