@@ -27,11 +27,17 @@ The purpose of the project is to explore the distribution of meshes to facilitat
 <details open>
 <summary><h2><u>1. Instalación Pseudo-automática</u></h2></summary>
 
-1. Es necesario tener instalado [Python](https://www.python.org/downloads/) y añadido al environment path (opción a la hora de instalar python).
+1. Es necesario tener instalado Python ( en caso de que no lo tengas, pincha [aquí](https://www.python.org/downloads/)) y añadido al PATH (opción en el instalador de Python).
 
-El add-on se encuentra en el apartado **Releases** a la derecha de Github.
+![Descripción de la imagen](/imagesREADME/path.png)
+
+El add-on se encuentra en el apartado [**Releases**](https://github.com/SergioJAlfonso/TFG-Distribution-and-Generation-System-of-Custom-Props-in-Blender/releases) a la derecha de Github.
 
 2. Descargar el auxiliar **PreparerSurfaceSpray.zip**, y abrir Blender en modo Administrador (click derecho sobre el programa y ```Ejecutar como administrador```).
+asdasda
+dasd
+
+>(En caso de tener Blender desde **Steam**, ir a _C:\Program Files (x86)\Steam\steamapps\common\Blender_, y abrir el ejecutable .exe) 
 
 Para instalar el add-on ir a _Edit_ -> _Preferencies_ -> pestaña _Add-ons_. 
 
@@ -39,10 +45,12 @@ Para instalar el add-on ir a _Edit_ -> _Preferencies_ -> pestaña _Add-ons_.
 
 Se deben esperar unos segundos a que se registre y aparezca en el buscador. En caso de que no aparezca, buscar "PreparerSurfaceSpray" y activarlo. 
 
-4. Posteriormente desplegar la pestaña del add-on y aparecerá un botón de  ```Install Dependencies```. Se debe presionar y esperar a que salga el mensaje _(Already Installed)_.
+4. Posteriormente desplegar la pestaña del add-on y aparecerá un botón de  ```Install Dependencies```. Se debe presionar y esperar a que salga el mensaje **_(Already Installed)_**. Es normal si el programa _No Responde_ debido a la instalación.
 
 5. Una vez hecho esto, realizar la misma instalación con el add-on  **SurfaceSpray.zip**, obviando la parte de instalación de dependencias.
-Una vez activado, salir de dicho **menú** y presionar la tecla ```N``` sobre el 3D Viewport para mostrar el panel derecho de opciones. Se econtrará la pestaña ```SurfaceSpray```. 
+Una vez activado, salir del **menú de add-ons**. 
+
+Presionar la tecla ```N``` sobre el 3D Viewport para mostrar el panel derecho de opciones. Se econtrará la pestaña ```SurfaceSpray```. 
 
 **¡¡A disfrutar!!**
 </details>
