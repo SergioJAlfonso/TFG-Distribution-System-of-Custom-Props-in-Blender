@@ -145,7 +145,6 @@ class MAIN_PT_Panel(bpy.types.Panel):
                 name = "Vertex Selection by Weight",
                 description = "Select an option",
                 items = [('OP1', "Random", "Random", 1),
-                        ('OP2', "Probability", "Its weight assign its probability", 2),
                 ]
             )
 
