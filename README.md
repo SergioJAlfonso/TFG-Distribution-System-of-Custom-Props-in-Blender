@@ -34,10 +34,8 @@ The purpose of the project is to explore the distribution of meshes to facilitat
 El add-on se encuentra en el apartado [**Releases**](https://github.com/SergioJAlfonso/TFG-Distribution-and-Generation-System-of-Custom-Props-in-Blender/releases) a la derecha de Github.
 
 2. Descargar el auxiliar **PreparerSurfaceSpray.zip**, y abrir Blender en modo Administrador (click derecho sobre el programa y ```Ejecutar como administrador```).
-asdasda
-dasd
 
->(En caso de tener Blender desde **Steam**, ir a _C:\Program Files (x86)\Steam\steamapps\common\Blender_, y abrir el ejecutable .exe) 
+>**IMPORTANTE:** En caso de tener Blender desde **Steam**, ir a _C:\Program Files (x86)\Steam\steamapps\common\Blender_, y abrir el ejecutable .exe) 
 
 Para instalar el add-on ir a _Edit_ -> _Preferencies_ -> pestaña _Add-ons_. 
 
