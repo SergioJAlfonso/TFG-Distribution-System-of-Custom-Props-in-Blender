@@ -86,10 +86,10 @@ class RULES_PT_Panel(bpy.types.Panel):
                 scalerow.column().prop(scn, "scale_factor_min")
                 scalerow.column().prop(scn, "scale_factor_max")
 
-                #Percentage of appeareance
+                #Appeareance weight
                 appeareancerow = box.row()
-                appeareancerow.column().label(text="Percentage Of Appeareance")
-                appeareancerow.column().prop(scn, "item_percentage")
+                appeareancerow.column().label(text="Appeareance Weight")
+                appeareancerow.column().prop(scn, "item_weight")
             
 
 
@@ -131,7 +131,7 @@ class RULES_PT_Panel(bpy.types.Panel):
         bpy.types.Scene.itemRules_HashMap["scale_factor_min"] = [1.0 for _ in range(10)]
         bpy.types.Scene.itemRules_HashMap["scale_factor_max"] = [1.0 for _ in range(10)]
 
-        bpy.types.Scene.itemRules_HashMap["item_percentage"] = [1.0 for _ in range(10)]
+        bpy.types.Scene.itemRules_HashMap["item_weight"] = [1.0 for _ in range(10)]
 
         # Item rotation constraints
         bpy.types.Scene.rotate_x = bpy.props.BoolProperty(
@@ -261,9 +261,9 @@ class RULES_PT_Panel(bpy.types.Panel):
             update=update_scale_factor_max
         )
 
-        bpy.types.Scene.item_percentage = bpy.props.FloatProperty(
+        bpy.types.Scene.item_weight = bpy.props.FloatProperty(
             name="",
-            description="Percentage of appearance of each item from 0 o 1",
+            description="Appearance weight of each item from 0 o 1",
             default=1,
             min=0,
             max=1,
@@ -312,7 +312,7 @@ class RULES_PT_Panel(bpy.types.Panel):
              bpy.types.Scene.rot_range_x, bpy.types.Scene.rot_range_y, bpy.types.Scene.rot_range_z, 
              bpy.types.Scene.item_distance, bpy.types.Scene.overlap_bool,bpy.types.Scene.bbox_bool,
              bpy.types.Scene.scale_factor_min, bpy.types.Scene.scale_factor_max, 
-             bpy.types.Scene.adjust_normal_value, bpy.types.Scene.item_percentage)
+             bpy.types.Scene.adjust_normal_value, bpy.types.Scene.item_weight)
         
 def update_normal_rotations(self, context):
     bpy.ops.addon.rotate_normal()
@@ -350,4 +350,4 @@ def update_scale_factor_min(self, context):
 def update_scale_factor_max(self, context):
     bpy.types.Scene.itemRules_HashMap["scale_factor_max"][context.scene.asset_index] = self["scale_factor_max"]
 def update_item_percentage(self, context):
-    bpy.types.Scene.itemRules_HashMap["item_percentage"][context.scene.asset_index] = self["item_percentage"]
+    bpy.types.Scene.itemRules_HashMap["item_weight"][context.scene.asset_index] = self["item_weight"]

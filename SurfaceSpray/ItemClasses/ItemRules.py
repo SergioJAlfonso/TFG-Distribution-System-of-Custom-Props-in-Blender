@@ -26,4 +26,4 @@ class ItemRules:
         self.min_scale_factor = 1
         self.max_scale_factor = 1
         
-        self.appear_percentage = 1
+        self.appear_weight = 1

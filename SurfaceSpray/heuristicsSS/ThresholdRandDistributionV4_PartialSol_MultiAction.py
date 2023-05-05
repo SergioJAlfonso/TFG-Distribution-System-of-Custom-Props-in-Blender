@@ -29,13 +29,13 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
             self.half_bounding_size_y.append((box[2][1] - box[0][1])/2.0)
             self.half_bounding_size_z.append((box[1][2] - box[0][2])/2.0)
 
-        # Establish percentage of appearance of each item
-        self.total_item_percentage = 0
-        self.item_percentages = []
+        # Establish probability of appearance of each item
+        self.total_item_probability = 0
+        self.item_weights = []
         cont = 0
         for rule in rules_:
-            self.total_item_percentage += rule.appear_percentage
-            self.item_percentages.append((self.total_item_percentage, cont))
+            self.total_item_probability += rule.appear_weight
+            self.item_weights.append((self.total_item_probability, cont))
             cont += 1
 
         #Partial Sol Objects
@@ -278,8 +278,8 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
     
     def random_asset(self):     
         # Selects a random asset taking percentage of appearance in account  
-        random_percent = self.total_item_percentage * random.random()
-        for asset_weight, asset_index in self.item_percentages:
+        random_percent = self.total_item_probability * random.random()
+        for asset_weight, asset_index in self.item_weights:
             if asset_weight >= random_percent:
                 return asset_index
 

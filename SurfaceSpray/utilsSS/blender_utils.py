@@ -291,7 +291,7 @@ def setPanelItemRules(context, item_index = 0):
     scale_min = context.scene.itemRules_HashMap["scale_factor_min"][item_index]
     scale_max = context.scene.itemRules_HashMap["scale_factor_max"][item_index]
 
-    appearance_percentage = context.scene.itemRules_HashMap["item_percentage"][item_index]
+    appearance_prob = context.scene.itemRules_HashMap["item_weight"][item_index]
 
     #Set Item rules
     rules = ItemRules()
@@ -304,6 +304,6 @@ def setPanelItemRules(context, item_index = 0):
     rules.distance_between_items = item_distance
     rules.min_scale_factor = scale_min
     rules.max_scale_factor = scale_max
-    rules.appear_percentage = appearance_percentage
+    rules.appear_weight = appearance_prob
 
     return rules
