@@ -1,5 +1,6 @@
 import bpy
 import time
+import re
 
 from ...ItemClasses.ItemRules import *
 from ...ItemClasses.Item import *
@@ -68,21 +69,23 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
 
         #Check if previous distribution is different to this.
         if(len(context.scene.previous_distributionObjs) > 0 ):
-            areDifferent = set(context.scene.previous_distributionObjs) - set(assetsNames)
-            if areDifferent:
+            firstSetDifferent = set(context.scene.previous_distributionObjs) - set(assetsNames)
+            secondSetDifferent = set(assetsNames) - set(context.scene.previous_distributionObjs)
+            if (firstSetDifferent or secondSetDifferent):
                 #Lanzar operador de verificar si hay una coleccion igual.
 
                 if existsCollectionName(nameCollection):
+                    base_nombre = re.sub(r'(_\d+)?$', '', nameCollection)
                     counterOcurr = 1
-                    newName = nameCollection + "_" + str(counterOcurr)
+                    newName = base_nombre + "_" + str(counterOcurr)
                     #While keeps existing ocurrencies, increase counter
                     while existsCollectionName(newName):
                         counterOcurr += 1
-                        newName = nameCollection + "_" + str(counterOcurr)
+                        newName = base_nombre + "_" + str(counterOcurr)
 
                     #update name Collection
                     nameCollection = newName
-                    # context.scene.collectName = newName
+                    context.scene.collectName = newName
 
                 print("Las listas son diferentes")
                 context.scene.previous_distributionObjs.clear() 
@@ -145,7 +148,7 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
         # Initial state as all possible vertices to place an asset
 
         if(len(vertices)  == 0):
-            self.report({'WARNING'}, 'No vertex to place objects! Have you paint weight?')
+            self.report({'WARNING'}, 'No vertex to place objects! Have you Painted Weight?')
             return {'FINISHED'}
 
         initialState = StateDistribution(vertices, len(context.scene.partialsol))

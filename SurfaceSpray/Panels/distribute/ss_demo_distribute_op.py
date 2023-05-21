@@ -100,7 +100,7 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
             data_tridimensional, threshold_weight)
         
         if(len(vertices)  == 0):
-            self.report({'WARNING'}, 'No vertex to place objects! Have you paint weight?')
+            self.report({'WARNING'}, 'No vertex to place objects! Have you Painted Weight?')
             return {'FINISHED'}
         
         #Initial state as all possible vertices to place an asset

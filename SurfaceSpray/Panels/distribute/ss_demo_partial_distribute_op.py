@@ -100,7 +100,7 @@ class SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION(bpy.types.Operator):
         vertices = filterVerticesByWeightThreshold(data_tridimensional, threshold_weight)
 
         if(len(vertices)  == 0):
-            self.report({'WARNING'}, 'No vertex to place objects! Have you paint weight?')
+            self.report({'WARNING'}, 'No vertex to place objects! Have you Painted Weight?')
             return {'FINISHED'}
         
         if context.scene.solution_nodes == []:
