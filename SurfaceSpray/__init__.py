@@ -56,6 +56,8 @@ from .Panels.rules_panel  import RULES_PT_Panel
 
 from .Panels.distribute.ss_asset_select_op import *
 
+from .Panels.distribute.ss_replace_op import *
+
 
 from .Panels.partialSol.partialSol_ops import (PARTIAL_SOL_OT_actions,
                                                PARTIAL_SOL_OT_addViewportSelection,
@@ -90,7 +92,7 @@ classes = (ASSET_SELECT_OT_actions, ASSET_SELECT_OT_addViewportSelection, ASSET_
            SurfaceSpray_OT_Operator_DEMO_MULTI, 
            Redistribute_OT_Operator, Clear_OT_Operator, Rotate_Operator,
            VertexProfile_ADD_OT_Operator, VertexProfile_REMOVE_OT_Operator,
-           Reset_Rules_OT_Operator)
+           Reset_Rules_OT_Operator, ReplaceExistingCollectionName_ADD_OT_Operator)
 def verify_user_sitepackages():
     usersitepackagespath = site.getsitepackages()
 

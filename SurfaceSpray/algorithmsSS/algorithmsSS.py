@@ -60,6 +60,8 @@ def best_first_graph_multiple_search(problem, limit=5, f = lambda node: node.pat
     explored = set()
     sols = []
     
+    #If the problem Class has registerSolutionList method, it will execute it.
+    #This methods is for setting limit parameter to distrution purposes
     if(hasattr(problem, "registerSolutionList")):
         problem.registerSolutionList(sols, limit)
 
@@ -102,6 +104,11 @@ def hill_climbing(problem, limit=5):
     found = 0
     current = Node(problem.initial)
 
+    #If the problem Class has registerSolutionList method, it will execute it.
+    #This methods is for setting limit parameter to distrution purposes
+    if(hasattr(problem, "registerSolutionList")):
+        problem.registerSolutionList(sols, limit)
+
     # found < limit
     while True:
         neighbors = current.expand(problem)
@@ -130,6 +137,8 @@ def simulated_annealing_multiples(problem, limit = 5, schedule=exp_schedule()):
 
     current = Node(problem.initial)
 
+    #If the problem Class has registerSolutionList method, it will execute it.
+    #This methods is for setting limit parameter to distrution purposes
     if(hasattr(problem, "registerSolutionList")):
         problem.registerSolutionList(sols, limit)
 

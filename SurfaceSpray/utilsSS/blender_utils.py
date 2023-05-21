@@ -157,7 +157,8 @@ def change_search(self, context, nodeSol, vertices, asset, asset_bounding_box_lo
                 actionsSol = nodeSol
         else:
             # bpy.context.window_manager.popup("Couldn't distribute objects!", title="Error", icon='ERROR')
-            self.report({'ERROR'}, "Couldn't distribute objects!")
+            self.report({'ERROR'}, "Couldn't distribute objects!\n" + 
+                        "Try to paint more, lower density or disable overlap")
             return {'FINISHED'}
 
         objectsData = []
@@ -310,4 +311,34 @@ def existsCollectionName(nameCollection):
     for collection in bpy.data.collections:
         if collection.name == nameCollection:
              return True
+        
+def ShowMessageBox(title = "Message Box", message = "", icon = 'INFO'):
+
+    def draw(self, context):
+        self.layout.label(text=message)
+
+    bpy.context.window_manager.popup_menu(draw, title = title, icon = icon)
+
+def checkAndReplaceCollectioName(context, nameCollection, assetsNames_):
+    #Check if previous distribution is different to this.
+    newCollectionName = None
+
+    if(len(context.scene.previous_distributionObjs) > 0 ):
+        firstSetDifferent = set(context.scene.previous_distributionObjs) - set(assetsNames_)
+        secondSetDifferent = set(assetsNames_) - set(context.scene.previous_distributionObjs)
+        if (firstSetDifferent or secondSetDifferent):
+            if existsCollectionName(nameCollection):
+                #Replace collection name operator.
+                bpy.ops.addon.replace_collec_name()
+                #update name Collection
+                newCollectionName = context.scene.collectName
+
+            print("Las listas son diferentes")
+            context.scene.previous_distributionObjs.clear() 
+            context.scene.previous_distributionObjs.extend(assetsNames_)
+
+    else:
+        context.scene.previous_distributionObjs.extend(assetsNames_)
+
+    return newCollectionName
             

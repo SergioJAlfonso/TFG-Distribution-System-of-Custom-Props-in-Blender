@@ -72,9 +72,19 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         #Make sure there are no duplicates
         bpy.ops.partialsol.remove_duplicates()
 
+        #Get Asset name in list
+        assetsNames_ = []
+        assetsNames_.append(context.scene.asset.name)
+
+        #Check if collection name already exists and replace it
+        newCollectionName = checkAndReplaceCollectioName(context, nameCollection, assetsNames_)
+        if(newCollectionName is not None):
+            nameCollection = newCollectionName
+
         collection = bpy.data.collections.get(nameCollection)
         collection = initCollection(collection, nameCollection, True)
 
+        bpy.context.view_layer.objects.active = context.scene.target
         oldMode = context.object.mode
         bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
 
@@ -144,7 +154,8 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         if nodeSol is not None:
             actionsSol = nodeSol[0].solution()
         else:
-            self.report({'ERROR'}, "Couldn't distribute objects!")
+            self.report({'ERROR'}, "Couldn't distribute objects!\n" + 
+                        "Try to paint more, lower density or disable overlap")
             return {'FINISHED'}
 
         for node in nodeSol:

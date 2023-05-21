@@ -27,6 +27,7 @@ from ...algorithmsSS.algorithmsSS import best_first_graph_multiple_search as ss_
 
 from aima3.search import depth_first_tree_search as aimaDFTS
 
+
 class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
     bl_idname = "addon.multidistribute"
     bl_label = "Distribute Operator"
@@ -62,38 +63,15 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
 
         # We get all assets in list.
         assets = []
-        assetsNames = []
+        assetsNames_ = []
         for i in range(len(context.scene.assets)):
             assets.append(context.scene.assets[i].obj)
-            assetsNames.append(context.scene.assets[i].obj.name)
+            assetsNames_.append(context.scene.assets[i].obj.name)
 
-        #Check if previous distribution is different to this.
-        if(len(context.scene.previous_distributionObjs) > 0 ):
-            firstSetDifferent = set(context.scene.previous_distributionObjs) - set(assetsNames)
-            secondSetDifferent = set(assetsNames) - set(context.scene.previous_distributionObjs)
-            if (firstSetDifferent or secondSetDifferent):
-                #Lanzar operador de verificar si hay una coleccion igual.
-
-                if existsCollectionName(nameCollection):
-                    base_nombre = re.sub(r'(_\d+)?$', '', nameCollection)
-                    counterOcurr = 1
-                    newName = base_nombre + "_" + str(counterOcurr)
-                    #While keeps existing ocurrencies, increase counter
-                    while existsCollectionName(newName):
-                        counterOcurr += 1
-                        newName = base_nombre + "_" + str(counterOcurr)
-
-                    #update name Collection
-                    nameCollection = newName
-                    context.scene.collectName = newName
-
-                print("Las listas son diferentes")
-                context.scene.previous_distributionObjs.clear() 
-                context.scene.previous_distributionObjs.extend(assetsNames)
-
-        else:
-            context.scene.previous_distributionObjs.extend(assetsNames)
-
+        #Check if collection name already exists and replace it
+        newCollectionName = checkAndReplaceCollectioName(context, nameCollection, assetsNames_)
+        if(newCollectionName is not None):
+            nameCollection = newCollectionName
             
         # Remove previous solutions AND set current search to 1
         context.scene.solution_nodes.clear()
@@ -106,6 +84,8 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
 
         collection = bpy.data.collections.get(nameCollection)
         collection = initCollection(collection, nameCollection, True)
+
+        bpy.context.view_layer.objects.active = context.scene.target
 
         oldMode = context.object.mode
         bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
@@ -190,7 +170,8 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
         #pillar el indice a eliminar, e ir almacenando en un vector para luego usar el metodo de np.del
         
         if(nodeSol is None):
-            self.report({'ERROR'}, "Couldn't distribute objects! No solutions found.")
+            self.report({'ERROR'}, "Couldn't distribute objects! No solutions found.\n" + 
+                        "Try to paint more, lower density or disable overlap")
             return {'FINISHED'}
 
         context.scene.num_searches = len(nodeSol)

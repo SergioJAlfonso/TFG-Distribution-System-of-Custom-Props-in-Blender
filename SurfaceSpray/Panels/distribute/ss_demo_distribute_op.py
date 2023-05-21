@@ -63,9 +63,20 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
         #Make sure there are no duplicates
         bpy.ops.partialsol.remove_duplicates()
 
+
+        assetsNames_ = []
+        assetsNames_.append(context.scene.asset.obj.name)
+
+        #Check if collection name already exists and replace it
+        newCollectionName = checkAndReplaceCollectioName(context, nameCollection, assetsNames_)
+        if(newCollectionName is not None):
+            nameCollection = newCollectionName
+
         collection = bpy.data.collections.get(nameCollection)
         collection = initCollection(collection, nameCollection)
 
+
+        bpy.context.view_layer.objects.active = context.scene.target
         oldMode = context.object.mode
         bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
 
