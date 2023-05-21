@@ -171,8 +171,6 @@ def change_search(self, context, nodeSol, vertices, asset, asset_bounding_box_lo
         if (context.scene.subdivide):
             bpy.data.meshes.remove(target.data)
 
-        return {'FINISHED'}
-
 def change_searchN(self, context, nodeSol, vertices, assets, assets_bounding_box_local, collection, target):
         
         actionsSol = None
@@ -307,3 +305,9 @@ def setPanelItemRules(context, item_index = 0):
     rules.appear_weight = appearance_prob
 
     return rules
+
+def existsCollectionName(nameCollection):
+    for collection in bpy.data.collections:
+        if collection.name == nameCollection:
+             return True
+            

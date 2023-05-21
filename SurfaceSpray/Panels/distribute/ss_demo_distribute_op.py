@@ -66,6 +66,9 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
         collection = bpy.data.collections.get(nameCollection)
         collection = initCollection(collection, nameCollection)
 
+        oldMode = context.object.mode
+        bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
+
         bpy.ops.object.select_all(action='DESELECT')
         # #Scale asset if necessary
         scaleObject(self, asset)
@@ -101,8 +104,6 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
             return {'FINISHED'}
         
         #Initial state as all possible vertices to place an asset
-        
-
 
         if context.scene.solution_nodes == []:
             self.report({'INFO'}, "Solution nodes empty, rellenating")
@@ -125,7 +126,11 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
                 print("Solution: ", i)
                 context.scene.solution_nodes.append(aimaBFTS(distribution))
 
-        return change_search(self, context, context.scene.solution_nodes[context.scene.current_search-1], vertices, asset, asset_bounding_box_local, collection, target)
+            change_search(self, context, context.scene.solution_nodes[context.scene.current_search-1], vertices, asset, asset_bounding_box_local, collection, target)
+
+        bpy.ops.object.mode_set(mode=oldMode, toggle=False)
+
+        return {'FINISHED'}
             
     # static method
     @classmethod

@@ -75,6 +75,9 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
         collection = bpy.data.collections.get(nameCollection)
         collection = initCollection(collection, nameCollection, True)
 
+        oldMode = context.object.mode
+        bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
+
         bpy.ops.object.select_all(action='DESELECT')
         # #Scale asset if necessary
         scaleObject(self, asset)
@@ -166,6 +169,8 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
 
         if (context.scene.subdivide):
             bpy.data.meshes.remove(target.data)
+
+        bpy.ops.object.mode_set(mode=oldMode, toggle=False)
 
         return {'FINISHED'}
 

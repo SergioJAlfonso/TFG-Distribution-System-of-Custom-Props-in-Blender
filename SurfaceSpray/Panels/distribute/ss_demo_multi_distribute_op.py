@@ -47,34 +47,65 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
             self.report({'WARNING'}, 'You must select an vertex group profile!')
             return {'FINISHED'}
         
-        # Obtenemos todos los datos necesarios
+        # We get all necessary data
         if (context.scene.subdivide):
             target = duplicateObject(context.scene.target)
         else:
             target = context.scene.target
 
-        assets = []
-        for i in range(len(context.scene.assets)):
-            assets.append(context.scene.assets[i].obj)
-            
-        # Remove previous solutions AND set current search to 1
-        context.scene.solution_nodes.clear()
-        context.scene.current_search = 1
-        # Remove previous assets data
-        context.scene.objects_data.clear()
-        
-        # Note : bpy.types.Scene.num_assets != context.scene.num_assets
         # Get user property data
         numCutsSubdivision = context.scene.num_cuts
         nameCollection = context.scene.collectName
         threshold_weight = context.scene.threshold  # valor de 0, 1
         num_instances = context.scene.num_assets
 
+        # We get all assets in list.
+        assets = []
+        assetsNames = []
+        for i in range(len(context.scene.assets)):
+            assets.append(context.scene.assets[i].obj)
+            assetsNames.append(context.scene.assets[i].obj.name)
+
+        #Check if previous distribution is different to this.
+        if(len(context.scene.previous_distributionObjs) > 0 ):
+            areDifferent = set(context.scene.previous_distributionObjs) - set(assetsNames)
+            if areDifferent:
+                #Lanzar operador de verificar si hay una coleccion igual.
+
+                if existsCollectionName(nameCollection):
+                    counterOcurr = 1
+                    newName = nameCollection + "_" + str(counterOcurr)
+                    #While keeps existing ocurrencies, increase counter
+                    while existsCollectionName(newName):
+                        counterOcurr += 1
+                        newName = nameCollection + "_" + str(counterOcurr)
+
+                    #update name Collection
+                    nameCollection = newName
+                    # context.scene.collectName = newName
+
+                print("Las listas son diferentes")
+                context.scene.previous_distributionObjs.clear() 
+                context.scene.previous_distributionObjs.extend(assetsNames)
+
+        else:
+            context.scene.previous_distributionObjs.extend(assetsNames)
+
+            
+        # Remove previous solutions AND set current search to 1
+        context.scene.solution_nodes.clear()
+        context.scene.current_search = 1
+        # Remove previous assets data
+        context.scene.objects_data.clear()
+
         #Make sure there are no duplicates
         bpy.ops.partialsol.remove_duplicates()
 
         collection = bpy.data.collections.get(nameCollection)
         collection = initCollection(collection, nameCollection, True)
+
+        oldMode = context.object.mode
+        bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
 
         bpy.ops.object.select_all(action='DESELECT')
         # #Scale asset if necessary
@@ -223,6 +254,8 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
         timeLasted = "It lasted: {:02d}min: {:02d}sec.{:03d}".format(minutes, seconds, milliseconds)
         print(timeLasted)
         self.report({'INFO'}, timeLasted)
+
+        bpy.ops.object.mode_set(mode=oldMode, toggle=False)
 
         return {'FINISHED'}
 

@@ -29,7 +29,7 @@ class PaintMode_OT_Operator(bpy.types.Operator):
     
 class ExitPaintMode_OT_Operator(bpy.types.Operator):
     bl_idname = "addon.exit_paint_mode"
-    bl_label = "Simple operator"
+    bl_label = "Exit Paint Mode"
     bl_description = "Switch to object mode."
 
     def execute(self, context):
@@ -46,7 +46,7 @@ class ExitPaintMode_OT_Operator(bpy.types.Operator):
     
 class InvertPainting_OT_Operator(bpy.types.Operator):
     bl_idname = "addon.invert_painting"
-    bl_label = "Simple operator"
+    bl_label = "Inverting Weight values"
     bl_description = "Invert current painting weight."
 
     def execute(self, context):
@@ -62,7 +62,7 @@ class InvertPainting_OT_Operator(bpy.types.Operator):
     
 class PaintAll_OT_Operator(bpy.types.Operator):
     bl_idname = "addon.paint_all"
-    bl_label = "Simple operator"
+    bl_label = "All Weight Equals"
     bl_description = "Assign same weight value to all vertices."
 
     def execute(self, context):
@@ -83,7 +83,7 @@ class PaintAll_OT_Operator(bpy.types.Operator):
     
 class FaceOrientation_OT_Operator(bpy.types.Operator):
     bl_idname = "addon.toggle_face_orientation"
-    bl_label = "Simple operator"
+    bl_label = "Enable graphic face orientation"
     bl_description = "Toggles face orientation."
 
     def execute(self, context):
@@ -105,7 +105,7 @@ class FaceOrientation_OT_Operator(bpy.types.Operator):
     
 class RecalcNormals_OT_Operator(bpy.types.Operator):
     bl_idname = "addon.recalc_normals"
-    bl_label = "Simple operator"
+    bl_label = "Recalculate target normals"
     bl_description = "Recalculate target normals."
 
     def execute(self, context):

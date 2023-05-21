@@ -171,6 +171,9 @@ class MAIN_PT_Panel(bpy.types.Panel):
         )
 
         bpy.types.Scene.solution_nodes = []
+
+        bpy.types.Scene.previous_distributionObjs = []
+
         bpy.types.Scene.objects_data = []
 
         bpy.types.Scene.vgr_profile = bpy.props.StringProperty(
@@ -192,7 +195,7 @@ class MAIN_PT_Panel(bpy.types.Panel):
              bpy.types.Scene.algorithm_enum, bpy.types.Scene.collectName,
              bpy.types.Scene.num_searches, bpy.types.Scene.current_search,
              bpy.types.Scene.solution_nodes, bpy.types.Scene.algorithms_HashMap,
-             bpy.types.Scene.vgr_profile)
+             bpy.types.Scene.vgr_profile, bpy.types.Scene.previous_distributionObjs)
 
 class PARAMS_PT_Panel(bpy.types.Panel):
     bl_idname = "PARAMS_PT_Panel"
