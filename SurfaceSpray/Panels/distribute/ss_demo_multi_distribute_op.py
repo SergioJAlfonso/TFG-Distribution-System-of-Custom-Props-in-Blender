@@ -56,6 +56,7 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
         assets = []
         for i in range(len(context.scene.assets)):
             assets.append(context.scene.assets[i].obj)
+            
         # Remove previous solutions AND set current search to 1
         context.scene.solution_nodes.clear()
         context.scene.current_search = 1
@@ -111,6 +112,10 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
         vertices = filterVerticesByWeightThreshold(
             data_tridimensional, threshold_weight)
         # Initial state as all possible vertices to place an asset
+
+        if(len(vertices)  == 0):
+            self.report({'WARNING'}, 'No vertex to place objects! Have you paint weight?')
+            return {'FINISHED'}
 
         initialState = StateDistribution(vertices, len(context.scene.partialsol))
         # Potential final state
@@ -226,4 +231,4 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
     def poll(cls, context):
         # active object
         obj = context.object
-        return (obj is not None) and (obj.mode == "OBJECT")
+        return (obj is not None) and ((obj.mode == "OBJECT") or (obj.mode == "WEIGHT_PAINT"))

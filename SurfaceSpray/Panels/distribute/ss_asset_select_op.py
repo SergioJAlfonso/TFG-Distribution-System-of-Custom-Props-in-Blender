@@ -47,7 +47,15 @@ class ASSET_SELECT_OT_actions(Operator):
             elif self.action == 'REMOVE':
                 info = 'Item "%s" removed from list' % (scn.assets[idx].name)
                 scn.asset_index -= 1
+
                 scn.assets.remove(idx)
+                
+                if scn.asset_index < 0:
+                    if(len(scn.assets) > 0):
+                        scn.asset_index = 0
+                    else:
+                        scn.asset_index = -1
+
                 self.report({'INFO'}, info)
             
             if(len(context.scene.assets) > 0):

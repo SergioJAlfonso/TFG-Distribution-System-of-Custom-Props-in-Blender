@@ -29,6 +29,8 @@ The purpose of the project is to explore the distribution of meshes to facilitat
 
 1. Es necesario tener instalado Python ( en caso de que no lo tengas, pincha [aquí](https://www.python.org/downloads/)) y añadido al PATH (opción en el instalador de Python).
 
+**NOTA**: En caso de instalarlo, esperar a que se instale completamente antes de proseguir.
+
 ![Descripción de la imagen](/imagesREADME/path.png)
 
 El add-on se encuentra en el apartado [**Releases**](https://github.com/SergioJAlfonso/TFG-Distribution-and-Generation-System-of-Custom-Props-in-Blender/releases) a la derecha de Github.

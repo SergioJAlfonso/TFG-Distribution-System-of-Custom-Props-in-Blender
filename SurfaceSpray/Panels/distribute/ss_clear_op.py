@@ -25,4 +25,4 @@ class Clear_OT_Operator(bpy.types.Operator):
     def poll(cls, context):
         # active object
         obj = context.object
-        return (obj is not None) and (obj.mode == "OBJECT")
+        return (obj is not None) and ((obj.mode == "OBJECT") or (obj.mode == "WEIGHT_PAINT"))

@@ -3,7 +3,7 @@ from ...utilsSS.blender_utils import *
 
 class PaintMode_OT_Operator(bpy.types.Operator):
     bl_idname = "addon.enter_paint_mode"
-    bl_label = "Simple operator"
+    bl_label = "Set name to vertex profile!"
     bl_description = "Switch to weight vertex painting mode."
 
     def execute(self, context):

@@ -18,7 +18,7 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
     def __init__(self, rules_, bbox, initial, partialSol_, goal=None):
         super().__init__(initial, goal)
         self.rules = rules_
-        self.bounding_box = bbox
+        self.bounding_box = bbox #Not used, to remove
         # Bounding box magnitudes
         self.half_bounding_size_x = []
         self.half_bounding_size_y = []

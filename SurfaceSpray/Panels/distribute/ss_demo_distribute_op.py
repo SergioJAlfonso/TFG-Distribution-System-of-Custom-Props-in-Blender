@@ -95,6 +95,11 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
 
         vertices = filterVerticesByWeightThreshold(
             data_tridimensional, threshold_weight)
+        
+        if(len(vertices)  == 0):
+            self.report({'WARNING'}, 'No vertex to place objects! Have you paint weight?')
+            return {'FINISHED'}
+        
         #Initial state as all possible vertices to place an asset
         
 
@@ -127,5 +132,5 @@ class SurfaceSpray_OT_Operator_DEMO_SELECTION(bpy.types.Operator):
     def poll(cls, context):
         # active object
         obj = context.object
-        return (obj is not None) and (obj.mode == "OBJECT")
+        return (obj is not None) and ((obj.mode == "OBJECT") or (obj.mode == "WEIGHT_PAINT"))
 

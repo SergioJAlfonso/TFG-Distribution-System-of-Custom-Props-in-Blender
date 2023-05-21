@@ -24,6 +24,7 @@ class RULES_PT_Panel(bpy.types.Panel):
         if scn.asset_index < 0 or scn.asset_index > len(scn.assets):
             box.label(text= "Currently Selected Asset:   None")
         else:
+
             box.label(text= "Currently Selected Asset:   " + scn.assets[scn.asset_index].name) 
 
             if scn.rules_panel_asset_index != scn.asset_index:
@@ -120,9 +121,9 @@ class RULES_PT_Panel(bpy.types.Panel):
         bpy.types.Scene.itemRules_HashMap["rot_range_y"] = [180.0 for _ in range(10)]
         bpy.types.Scene.itemRules_HashMap["rot_range_z"] = [180.0 for _ in range(10)]
 
-        bpy.types.Scene.itemRules_HashMap["rot_steps_x"] = [180.0 for _ in range(10)]
-        bpy.types.Scene.itemRules_HashMap["rot_steps_y"] = [180.0 for _ in range(10)]
-        bpy.types.Scene.itemRules_HashMap["rot_steps_z"] = [180.0 for _ in range(10)]
+        bpy.types.Scene.itemRules_HashMap["rot_steps_x"] = [90.0 for _ in range(10)]
+        bpy.types.Scene.itemRules_HashMap["rot_steps_y"] = [90.0 for _ in range(10)]
+        bpy.types.Scene.itemRules_HashMap["rot_steps_z"] = [90.0 for _ in range(10)]
 
         bpy.types.Scene.itemRules_HashMap["item_distance"] = [0.0 for _ in range(10)]
         bpy.types.Scene.itemRules_HashMap["overlap_bool"] = [True for _ in range(10)]
@@ -187,7 +188,7 @@ class RULES_PT_Panel(bpy.types.Panel):
         bpy.types.Scene.rot_steps_x = bpy.props.FloatProperty(
             name='X',
             description = "Sets rotation steps in the X axis",
-            default=1.0,
+            default=90.0,
             min = 0.02,
             max = 360.0,
             update=update_rot_steps_x
@@ -196,7 +197,7 @@ class RULES_PT_Panel(bpy.types.Panel):
         bpy.types.Scene.rot_steps_y = bpy.props.FloatProperty(
             name='Y',
             description = "Sets rotation steps in the Y axis",
-            default=1.0,
+            default=90.0,
             min = 0.02,
             max = 360.0,
             update=update_rot_steps_y
@@ -205,7 +206,7 @@ class RULES_PT_Panel(bpy.types.Panel):
         bpy.types.Scene.rot_steps_z = bpy.props.FloatProperty(
             name='Z',
             description = "Sets rotation steps in the Z axis",
-            default=1.0,
+            default=90.0,
             min = 0.02,
             max = 360.0,
             update=update_rot_steps_z
@@ -225,7 +226,7 @@ class RULES_PT_Panel(bpy.types.Panel):
         bpy.types.Scene.overlap_bool = bpy.props.BoolProperty(
             name='Don\'t Allow Overlap',
             description = "This checkbox allows the assets to overlap with each other",
-            default=True,
+            default=False,
             update=update_overlap_bool
         )
 

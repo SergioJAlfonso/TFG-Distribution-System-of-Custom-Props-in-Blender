@@ -25,8 +25,17 @@ def getVerticesData(object, vertexGroupName):
 
 
             # print("Vertex group:" + target.vertex_groups[g.group].name)
-            pos = object.matrix_world @ v.co
+            print(object.matrix_world)
+            print(v.co)
+            
 
+            print("T", object.matrix_world.to_translation())
+            print("R", object.matrix_world.to_3x3().normalized())
+            print("S", object.matrix_world.to_scale())
+            pos = object.matrix_world @ v.co
+            # pos = v.co
+
+            print(pos)
             # print("Vertex position:" + str(pos))
             weight = g.weight
             #g = datos del vertice en ese grupo

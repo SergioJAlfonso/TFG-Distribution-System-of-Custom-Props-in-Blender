@@ -56,6 +56,7 @@ class MAIN_PT_Panel(bpy.types.Panel):
         row = col.row(align=True)
 
         col.separator()
+        col.column().prop(context.scene, "num_assets", text="Density")
         col.separator()
         row = layout.row()
         col = layout.column()
@@ -82,13 +83,13 @@ class MAIN_PT_Panel(bpy.types.Panel):
 
         #In case we are in Weight Painting with Target Object, we show all options
         if ((context.active_object == context.scene.target) and   context.active_object.mode == "WEIGHT_PAINT"):
-                row.operator('addon.exit_paint_mode', icon='LOOP_BACK', text = "Exit")
+                row.operator('addon.exit_paint_mode', icon='LOOP_BACK', text = "Done")
                 
                 row = box1.row()
                 row.operator('addon.invert_painting', icon='UV_SYNC_SELECT', text = "Invert")
 
                 row = box1.row()
-                row.operator('addon.paint_all', icon='MATFLUID', text = "Paint All:")
+                row.operator('addon.paint_all', icon='MATFLUID', text = "Paint All With:")
                 row.column().prop(context.scene, "allWeightValue", text = "Weight Value")
 
     def register():
@@ -217,8 +218,6 @@ class PARAMS_PT_Panel(bpy.types.Panel):
         
         # if (context.scene.algorithm_enum == "OP1"):
         box3.column().prop(context.scene, "threshold")
-
-        box3.column().prop(context.scene, "num_assets")
         box3.column().prop(context.scene, "random_seed")
 
         box2 = layout.box()
