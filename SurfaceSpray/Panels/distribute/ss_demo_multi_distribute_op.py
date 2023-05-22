@@ -171,7 +171,7 @@ class SurfaceSpray_OT_Operator_DEMO_MULTI(bpy.types.Operator):
         
         if(nodeSol is None):
             self.report({'ERROR'}, "Couldn't distribute objects! No solutions found.\n" + 
-                        "Try to paint more, lower density or enable overlappig")
+                        "Try to paint more, lower density or allow overlappig.")
             return {'FINISHED'}
 
         context.scene.num_searches = len(nodeSol)
