@@ -155,7 +155,7 @@ class SurfaceSpray_OT_Operator(bpy.types.Operator):
             actionsSol = nodeSol[0].solution()
         else:
             self.report({'ERROR'}, "Couldn't distribute objects!\n" + 
-                        "Try to paint more, lower density or disable overlap")
+                        "Try to paint more, lower density or enable overlapping.")
             return {'FINISHED'}
 
         for node in nodeSol:
