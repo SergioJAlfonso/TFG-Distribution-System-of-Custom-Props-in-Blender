@@ -35,7 +35,7 @@ The purpose of the project is to explore the distribution of meshes to facilitat
 
 El add-on se encuentra en el apartado [**Releases**](https://github.com/SergioJAlfonso/TFG-Distribution-and-Generation-System-of-Custom-Props-in-Blender/releases) a la derecha de Github.
 
-2. Descargar el auxiliar **PreparerSurfaceSpray.zip**, y abrir Blender en modo Administrador (click derecho sobre el programa y ```Ejecutar como administrador```).
+2. Descargar de la **ÚLTIMA Release** el auxiliar **PreparerSurfaceSpray.zip**, y abrir Blender en modo Administrador (click derecho sobre el programa y ```Ejecutar como administrador```).
 
 >**IMPORTANTE:** En caso de tener Blender desde **Steam**, ir a _C:\Program Files (x86)\Steam\steamapps\common\Blender_, y abrir el ejecutable .exe) 
 
@@ -47,7 +47,7 @@ Se deben esperar unos segundos a que se registre y aparezca en el buscador. En c
 
 4. Posteriormente desplegar la pestaña del add-on y aparecerá un botón de  ```Install Dependencies```. Se debe presionar y esperar a que salga el mensaje **_(Already Installed)_**. Es normal si el programa _No Responde_ debido a la instalación.
 
-5. Una vez hecho esto, realizar la misma instalación con el add-on  **SurfaceSpray.zip**, obviando la parte de instalación de dependencias.
+5. Una vez hecho esto, realizar la misma instalación con el add-on  **SurfaceSpray.zip** de la **ÚLTIMA Release**, obviando la parte de instalación de dependencias.
 Una vez activado, salir del **menú de add-ons**. 
 
 Presionar la tecla ```N``` sobre el 3D Viewport para mostrar el panel derecho de opciones. Se econtrará la pestaña ```SurfaceSpray```. 

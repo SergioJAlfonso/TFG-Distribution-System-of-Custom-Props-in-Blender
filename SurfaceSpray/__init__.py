@@ -14,11 +14,11 @@
 bl_info = {
     "name" : "SurfaceSpray",
     "author" : "Jose Daniel Rave Robayo, Daniel illanes Morillas, Sergio José Alfonso Rojas",
-    "description" : " ",
+    "description" : "Addon to distribute custom objects over a surface.",
     "blender" : (3, 3, 0),
-    "version" : (1, 5, 1),
+    "version" : (0, 1, 0),
     "location" : "View3D",
-    "warning" : "",
+    "warning" : "Uses AIMA. Need to have installed the add-on SurfacePreparer, and install its dependencies.",
     "category" : "Mesh"
 }
 
