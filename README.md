@@ -1,4 +1,4 @@
-# TFG - Distribution of Custom Props in Blender
+# TFG - Distribution of Custom Props in Blender | SurfaceSpray
 
 Trabajo de Fin de Grado por: 
 * José Daniel Rave Robayo
@@ -21,9 +21,12 @@ Blender extension to distribute specific objects on meshes provided by the user,
 
 The purpose of the project is to explore the distribution of meshes to facilitate work in Game Jams and to speed up the process of obtaining simple resources for a game.
 </details>
-
-
 ***
+
+## Escena  construida con la herramienta SurfaceSpray.
+
+<img src="/imagesREADME/MonchiTFG-ADDON.png" alt="Python Installation Image" width="540" height="540"/>
+
 <details open>
 <summary><h2><u>1. Instalación Pseudo-automática</u></h2></summary>
 
@@ -49,7 +52,7 @@ Se deben esperar unos segundos a que se registre y aparezca en el buscador. En c
 
 4. Posteriormente desplegar la pestaña del add-on y aparecerá un botón de  ```Install Dependencies```. Se debe presionar y esperar a que salga el mensaje **_(Already Installed)_**. Es normal si el programa _No Responde_ debido a la instalación.
 
-<img src="/imagesREADME/addon_installed.png" alt="Python Installation Image    " width="536" height="274"/>
+<img src="/imagesREADME/addon_installed.png" alt="Python Installation Image" width="536" height="274"/>
 <!-- ![Descripción de la imagen](/imagesREADME/addon_installed.png =912x466) -->
 
 >**IMPORTANTE:** En caso que salte un error al presinar el botón, probar a volver a abrir Blender en **Modo Administrador**, o verificar que python está añadido al **PATH** (Environment Variable).
