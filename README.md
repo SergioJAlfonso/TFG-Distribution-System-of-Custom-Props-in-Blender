@@ -30,13 +30,13 @@ The purpose of the project is to explore the distribution of meshes to facilitat
 <details open>
 <summary><h2><u>1. Instalación Pseudo-automática</u></h2></summary>
 
-1. Es necesario tener instalado Python (para asegurar, instalarlo de todas formas, pinchando [aquí](https://www.python.org/downloads/)) y añadido al PATH (opción en el instalador de Python) ↓↓↓.
+1. Es necesario tener instalado Python (si ya se tiene instalado, se recomienda instalarlo de todas formas, pinchando [aquí](https://www.python.org/downloads/)) y añadido al PATH (opción en el instalador de Python) ↓↓↓.
 
-<!-- <img src="/imagesREADME/path.png" alt="Python Installation Image" width="1033" height="642"/> -->
+<img src="/imagesREADME/path.png" alt="Python Installation Image" width="607" height="377"/> 
 
-![Descripción de la imagen](/imagesREADME/path.png)
+<!-- ![Descripción de la imagen](/imagesREADME/path.png) -->
 
-## NOTA: En caso de instalarlo, esperar a que se instale completamente antes de proseguir.
+## NOTA: ¡¡No proseguir hasta que haya finalizado la instalación!!
 
 El add-on se encuentra en el apartado [**Releases**](https://github.com/SergioJAlfonso/TFG-Distribution-and-Generation-System-of-Custom-Props-in-Blender/releases) a la derecha de Github.
 
@@ -52,8 +52,10 @@ Se deben esperar unos segundos a que se registre y aparezca en el buscador. En c
 
 4. Posteriormente desplegar la pestaña del add-on y aparecerá un botón de  ```Install Dependencies```. Se debe presionar y esperar a que salga el mensaje **_(Already Installed)_**. Es normal si el programa _No Responde_ debido a la instalación.
 
+<p align="center">
 <img src="/imagesREADME/addon_installed.png" alt="Python Installation Image" width="536" height="274"/>
-<!-- ![Descripción de la imagen](/imagesREADME/addon_installed.png =912x466) -->
+</p>
+ <!-- ![Descripción de la imagen](/imagesREADME/addon_installed.png =912x466) -->
 
 >**IMPORTANTE:** En caso que salte un error al presinar el botón, probar a volver a abrir Blender en **Modo Administrador**, o verificar que python está añadido al **PATH** (Environment Variable).
 
