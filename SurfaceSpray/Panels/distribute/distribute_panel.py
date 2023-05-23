@@ -240,6 +240,7 @@ def update_current_search(self, context):
     self["current_search"] = min(self["current_search"], self["num_searches"])
     bpy.ops.addon.redistribute()
 
+# Updates asset rules when changing asset index
 def update_asset_rules(self, context):
     scn = context.scene
 
@@ -267,7 +268,7 @@ def update_asset_rules(self, context):
     scn.scale_factor_min = scn.itemRules_HashMap["scale_factor_min"][scn.asset_index]
     scn.scale_factor_max = scn.itemRules_HashMap["scale_factor_max"][scn.asset_index]
 
-    scn.item_percentage = scn.itemRules_HashMap["item_percentage"][scn.asset_index]
+    scn.item_weight = scn.itemRules_HashMap["item_weight"][scn.asset_index]
 
 def update_vertexGroupSelection(self, context):
     # context.scene.target.vertex_groups[context.scene.vgr_profile].select = True

@@ -32,6 +32,6 @@ class Reset_Rules_OT_Operator(Operator):
         scn.scale_factor_min = scn.itemRules_HashMap["scale_factor_min"][scn.asset_index]
         scn.scale_factor_max = scn.itemRules_HashMap["scale_factor_max"][scn.asset_index]
 
-        scn.item_percentage = scn.itemRules_HashMap["item_weight"][scn.asset_index]
+        scn.item_weight = scn.itemRules_HashMap["item_weight"][scn.asset_index]
 
         return {'FINISHED'}
