@@ -49,7 +49,7 @@ Se deben esperar unos segundos a que se registre y aparezca en el buscador. En c
 
 4. Posteriormente desplegar la pestaña del add-on y aparecerá un botón de  ```Install Dependencies```. Se debe presionar y esperar a que salga el mensaje **_(Already Installed)_**. Es normal si el programa _No Responde_ debido a la instalación.
 
-<img src="/imagesREADME/addon_installed.png" alt="Python Installation Image    " width="912" height="466"/>
+<img src="/imagesREADME/addon_installed.png" alt="Python Installation Image    " width="536" height="274"/>
 <!-- ![Descripción de la imagen](/imagesREADME/addon_installed.png =912x466) -->
 
 >**IMPORTANTE:** En caso que salte un error al presinar el botón, probar a volver a abrir Blender en **Modo Administrador**, o verificar que python está añadido al **PATH** (Environment Variable).
