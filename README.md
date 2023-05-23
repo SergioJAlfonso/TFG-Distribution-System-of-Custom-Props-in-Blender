@@ -29,6 +29,7 @@ The purpose of the project is to explore the distribution of meshes to facilitat
 
 1. Es necesario tener instalado Python (para asegurar, instalarlo de todas formas, pinchando [aquí](https://www.python.org/downloads/)) y añadido al PATH (opción en el instalador de Python) ↓↓↓.
 
+<!-- <img src="/imagesREADME/path.png" alt="Python Installation Image" width="1033" height="642"/> -->
 
 ![Descripción de la imagen](/imagesREADME/path.png)
 
@@ -47,6 +48,9 @@ Para instalar el add-on ir a _Edit_ -> _Preferencies_ -> pestaña _Add-ons_.
 Se deben esperar unos segundos a que se registre y aparezca en el buscador. En caso de que no aparezca, buscar "PreparerSurfaceSpray" y activarlo. 
 
 4. Posteriormente desplegar la pestaña del add-on y aparecerá un botón de  ```Install Dependencies```. Se debe presionar y esperar a que salga el mensaje **_(Already Installed)_**. Es normal si el programa _No Responde_ debido a la instalación.
+
+<img src="/imagesREADME/addon_installed.png" alt="Python Installation Image    " width="912" height="466"/>
+<!-- ![Descripción de la imagen](/imagesREADME/addon_installed.png =912x466) -->
 
 5. Una vez hecho esto, realizar la misma instalación con el add-on  **SurfaceSpray.zip** de la **ÚLTIMA Release**, obviando la parte de instalación de dependencias.
 Una vez activado, salir del **menú de add-ons**. 
