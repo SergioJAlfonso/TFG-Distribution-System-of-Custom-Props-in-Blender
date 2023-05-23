@@ -39,7 +39,7 @@ El add-on se encuentra en el apartado [**Releases**](https://github.com/SergioJA
 
 2. Descargar de la **ÚLTIMA Release** el auxiliar **PreparerSurfaceSpray.zip**, y abrir Blender en modo Administrador (click derecho sobre el programa y ```Ejecutar como administrador```).
 
->**IMPORTANTE:** En caso de tener Blender desde **Steam**, ir a _C:\Program Files (x86)\Steam\steamapps\common\Blender_, y abrir el ejecutable .exe) 
+>**IMPORTANTE:** En caso de tener Blender desde **Steam**, ir a _C:\Program Files (x86)\Steam\steamapps\common\Blender_, y abrir el ejecutable .exe
 
 Para instalar el add-on ir a _Edit_ -> _Preferencies_ -> pestaña _Add-ons_. 
 
@@ -51,6 +51,8 @@ Se deben esperar unos segundos a que se registre y aparezca en el buscador. En c
 
 <img src="/imagesREADME/addon_installed.png" alt="Python Installation Image    " width="912" height="466"/>
 <!-- ![Descripción de la imagen](/imagesREADME/addon_installed.png =912x466) -->
+
+>**IMPORTANTE:** En caso que salte un error al presinar el botón, probar a volver a abrir Blender en **Modo Administrador**, o verificar que python está añadido al **PATH** (Environment Variable).
 
 5. Una vez hecho esto, realizar la misma instalación con el add-on  **SurfaceSpray.zip** de la **ÚLTIMA Release**, obviando la parte de instalación de dependencias.
 Una vez activado, salir del **menú de add-ons**. 
