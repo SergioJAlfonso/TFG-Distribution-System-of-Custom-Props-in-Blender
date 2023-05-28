@@ -1,7 +1,7 @@
 import bpy 
 from mathutils import Euler
-from ...utilsSS.blender_utils import *
-from ...utilsSS.geometry_utils import *
+from ...utilsSS.Blender_utils import *
+from ...utilsSS.Geometry_utils import *
 
 class Redistribute_OT_Operator(bpy.types.Operator):
     bl_idname = "addon.redistribute"

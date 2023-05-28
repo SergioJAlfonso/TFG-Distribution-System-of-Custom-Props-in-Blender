@@ -24,7 +24,6 @@ class RULES_PT_Panel(bpy.types.Panel):
         if scn.asset_index < 0 or scn.asset_index > len(scn.assets):
             box.label(text= "Currently Selected Asset:   None")
         else:
-
             box.label(text= "Currently Selected Asset:   " + scn.assets[scn.asset_index].name) 
 
             if scn.rules_panel_asset_index != scn.asset_index:

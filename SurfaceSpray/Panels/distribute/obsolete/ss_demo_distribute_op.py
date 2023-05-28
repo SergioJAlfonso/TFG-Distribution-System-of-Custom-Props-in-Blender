@@ -2,17 +2,16 @@ import bpy
 
 from mathutils import Euler
 
-from ....ItemClasses.ItemRules import *
-from ....ItemClasses.Item import *
-from ....ItemClasses.DefaultAttributes.FurnitureAttribs import *
+from ....utilsSS.ItemRules import *
+from ....utilsSS.Item import *
 
-from ....utilsSS.draw_utils import *
-from ....utilsSS.blender_utils import *
+from ....utilsSS.Draw_utils import *
+from ....utilsSS.Blender_utils import *
 from ....heuristicsSS.obsolete.ThresholdRandDistribution import *
 from ....heuristicsSS.Demos.Demo_Dist_RotRang_Distribution import *
 from ....heuristicsSS.Demos.Demo_Dist_Overlap_Distribution import *
-from ....utilsSS.blender_utils import *
-from ....utilsSS.geometry_utils import *
+from ....utilsSS.Blender_utils import *
+from ....utilsSS.Geometry_utils import *
 from ....utilsSS.StateDistribution import *
 
 from aima3.search import astar_search as aimaAStar

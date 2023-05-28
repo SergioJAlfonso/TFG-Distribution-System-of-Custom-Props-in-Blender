@@ -29,17 +29,17 @@ import sys, os, site
 
 from bpy.props import (PointerProperty,IntProperty, CollectionProperty)
 
-from .Panels.distribute.ss_rotate_op import Rotate_Operator
+from .Panels.rules.ss_rotate_op import Rotate_Operator
 
-from .Panels.distribute.ss_clear_op import Clear_OT_Operator
-from .Panels.distribute.ss_paint_op import (PaintMode_OT_Operator, 
+from .Panels.distribute.ss_clear_distribution_op import Clear_OT_Operator
+from .Panels.ui_utilities.ss_paint_op import (PaintMode_OT_Operator, 
                                             ExitPaintMode_OT_Operator,
                                             InvertPainting_OT_Operator,
                                             PaintAll_OT_Operator,
                                             FaceOrientation_OT_Operator,
                                             RecalcNormals_OT_Operator)
 
-from .Panels.distribute.ss_vertexProfile_op import (VertexProfile_ADD_OT_Operator, VertexProfile_REMOVE_OT_Operator)
+from .Panels.ui_utilities.ss_vertexProfile_op import (VertexProfile_ADD_OT_Operator, VertexProfile_REMOVE_OT_Operator)
 
 from .Panels.distribute.ss_single_distribute_op import SurfaceSpray_OT_Operator
 from .Panels.distribute.ss_multi_distribute_op import SurfaceSpray_OT_Operator_DEMO_MULTI
@@ -52,7 +52,7 @@ from .Panels.distribute.distribute_panel import *
 from .Panels.rules.rules_panel  import RULES_PT_Panel
 
 
-from .Panels.distribute.ss_asset_select_op import *
+from .Panels.ui_utilities.ss_asset_select_op import *
 
 from .Panels.distribute.ss_replace_op import *
 

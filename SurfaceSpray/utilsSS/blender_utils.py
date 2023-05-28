@@ -1,8 +1,8 @@
 import bpy 
 from mathutils import Euler
-from ..ItemClasses.ItemRules import *
+from .ItemRules import *
 
-from .geometry_utils import (adjustPosition, adjustRotation, adjustScale)
+from .Geometry_utils import (adjustPosition, adjustRotation, adjustScale)
 
 def createObjectsInPoints(points, object, boundingBoxObject, collection):
     inCollection = False 

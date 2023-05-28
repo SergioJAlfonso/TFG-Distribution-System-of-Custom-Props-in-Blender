@@ -6,7 +6,7 @@ import numpy as np
 from enum import Enum
 
 from ..utilsSS.Actions import *
-from ..utilsSS.geometry_utils import *
+from ..utilsSS.Geometry_utils import *
 from aima3.search import Problem as aimaProblem
 
 """
@@ -191,35 +191,6 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
         if(reachedGoal):
             return possibleActions 
         
-        # if(reachedGoal and not removeChance):
-        #     return possibleActions    
-
-
-        # if(canRemove):
-        #     numActionsToRemove = 1 + 4.0*probRemoval
-
-        #     totalActionsApplied = len(state.actionsApplied_)
-
-        #     numActionsToRemove = min(round(numActionsToRemove),totalActionsApplied)
-
-        #     #Search among solutions applied
-        #     #We choose randomly a set of applied actions to remove
-        #     indexex_actionToRemove = random.sample(range(totalActionsApplied), numActionsToRemove)
-
-        #     j = 0
-        #     while (j < numActionsToRemove):
-        #         actionApplied = state.actionsApplied_[indexex_actionToRemove[j]]
-                
-        #         #Save occupied vertex so it can be freed. 
-        #         newAction = Actions(0, (0,0,0), 1, 1, ActionType.DESTROY)
-        #         #Store action to remove
-        #         newAction.setActionToRemove(actionApplied)
-        #         possibleActions.append(newAction)
-        #         j += 1
-
-
-        #     return possibleActions
-
         sizeV = len(state.vertices_)
 
         # Iterate over each state vertex checking if this vertex has a object on it, otherwise
@@ -325,9 +296,6 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
                 #Get actionToRemove index
                 indexToRemove = state.actionsApplied_.index(action.actionToRemove)
 
-                #Old vertex occupied, now is free. But can not be occupied again. (?)
-                # newState.vertices_[action.indexVertex][2] = False
-
                 newState.objectsPlaced_ -= 1
 
                 #We remove old applied action 
@@ -348,8 +316,6 @@ class ThresholdRandDistributionPartialSol_MultiAction_MultiDistribution(aimaProb
         Returns if the number of placed objects so far is equal to number of objects defined as goal.
         """
         # numero de objetos pedidos, separacion de objetos, tal.
-
-        # Chill down
         return state.objectsPlaced_ == self.goal.objectsPlaced_
         # return True
 

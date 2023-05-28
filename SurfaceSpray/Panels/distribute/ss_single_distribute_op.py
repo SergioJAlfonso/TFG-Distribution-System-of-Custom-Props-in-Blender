@@ -1,11 +1,10 @@
 import bpy
 
-from ...ItemClasses.ItemRules import *
-from ...ItemClasses.Item import *
-from ...ItemClasses.DefaultAttributes.FurnitureAttribs import *
+from ...utilsSS.ItemRules import *
+from ...utilsSS.Item import *
 
-from ...utilsSS.draw_utils import *
-from ...utilsSS.blender_utils import *
+from ...utilsSS.Draw_utils import *
+from ...utilsSS.Blender_utils import *
 from ...heuristicsSS.SingleObjectDistribution import *
 from ...utilsSS.StateDistribution import *
 

@@ -131,6 +131,8 @@ class ASSET_SELECT_OT_clearList(Operator):
         
     def execute(self, context):
         if bool(context.scene.assets):
+            scn = context.scene
+            scn.asset_index = -1
             context.scene.assets.clear()
             self.report({'INFO'}, "All items removed")
         else:
