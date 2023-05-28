@@ -38,18 +38,18 @@ class Redistribute_OT_Operator(bpy.types.Operator):
 
         bpy.ops.object.select_all(action='DESELECT')
 
-        # #Scale asset if necessary
+        #Scale asset if necessary
         for asset in assets:
             scaleObject(self, asset)
 
-        # #Get bounding box
+        #Get bounding box
         assets_bounding_box_local = []
         for asset in assets:
             assets_bounding_box_local.append(getBoundingBox(context, asset))
 
         target_bounding_box_local = getBoundingBox(context, target)
 
-        # #Subdivide target to fit assets in every vertex
+        #Subdivide target to fit assets in every vertex
         if (context.scene.subdivide):
              # Get bounding box with more cuts needed
             asset_bounding_box_local = getMinBoundingBox(assets_bounding_box_local, target_bounding_box_local)

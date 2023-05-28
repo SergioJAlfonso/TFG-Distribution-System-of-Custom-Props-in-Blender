@@ -6,8 +6,8 @@ import numpy as np
 
 from enum import Enum
 
-from ..utilsSS.Actions import *
-from ..utilsSS.geometry_utils import *
+from ...utilsSS.Actions import *
+from ...utilsSS.geometry_utils import *
 from aima3.search import Problem as aimaProblem
 
 """

@@ -194,7 +194,6 @@ class Demo_Dist_Ov_Rot_Scale_Multi_Distrib(aimaProblem):
         return ((rot_x/precision) * (math.pi/180.0), rot_y/precision * (math.pi/180.0), rot_z/precision * (math.pi/180.0))
 
     def random_asset(self):
-        # TODO: random por porcentajes de rules para cada asset
         return random.randint(0, len(self.bounding_box)-1)
     
     def result(self, state, action):

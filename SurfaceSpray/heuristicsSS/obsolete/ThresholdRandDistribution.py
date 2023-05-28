@@ -6,14 +6,14 @@ import numpy as np
 
 from enum import Enum
 
-from ..utilsSS.Actions import *
-from ..utilsSS.geometry_utils import *
+from ...utilsSS.Actions import *
+from ...utilsSS.geometry_utils import *
 from aima3.search import Problem as aimaProblem
 
 
-class ThresholdRandDistributionPartialSol(aimaProblem):
+class ThresholdRandDistribution(aimaProblem):
 
-    def __init__(self, rules_, bbox, initial, partialSol_, goal=None):
+    def __init__(self, rules_, bbox, initial, goal=None, ):
         super().__init__(initial, goal)
         self.rules = rules_
         self.bounding_box = bbox
@@ -21,8 +21,6 @@ class ThresholdRandDistributionPartialSol(aimaProblem):
         self.half_bounding_size_x = (bbox[4][0] - bbox[0][0])/2.0
         self.half_bounding_size_y = (bbox[2][1] - bbox[0][1])/2.0
         self.half_bounding_size_z = (bbox[1][2] - bbox[0][2])/2.0
-        #Partial Sol Objects
-        self.partialSol = partialSol_
 
     def checkRestrictions(self, state, indexVertex):
         """
@@ -39,15 +37,22 @@ class ThresholdRandDistributionPartialSol(aimaProblem):
         # Vertex we potentially want to place an object on it.
         pCandidate = state.vertices_[indexVertex][0]
 
+                # Get BBox/BShpere parameters
         if (self.rules.overlap):
-            # Vertex A limits
-            bbox_limits_Candidate = getVertexBBoxLimits(
-                pCandidate, self.half_bounding_size_x,self.half_bounding_size_y, self.half_bounding_size_z)
+
+            if (self.rules.use_bounding_box):
+                # Vertex A limits
+                vertex_A_bbox_limits = getVertexBBoxLimits(
+                    pCandidate,self.half_bounding_size_x, self.half_bounding_size_y, self.half_bounding_size_z)
+
+            else:
+                # Vertex A radius
+                vertex_bsphere_radius = max(
+                    self.half_bounding_size_x, self.half_bounding_size_y, self.half_bounding_size_z)
 
         i = 0
         satisfiesRestrictions = True
 
-        #While all restrictions are acomplished and we are checking all actions applied.
         while (i < len(state.actionsApplied_) and satisfiesRestrictions == True):
             # Access vertices that has an object on it.
             indexVertex = state.actionsApplied_[i].indexVertex
@@ -55,45 +60,26 @@ class ThresholdRandDistributionPartialSol(aimaProblem):
 
             # Check bounding box overlap if needed
             if (self.rules.overlap):
-                # Vertex B limits
-                bbox_limits_ActionObject = getVertexBBoxLimits(
-                    vertexInUse, self.half_bounding_size_x,self.half_bounding_size_y, self.half_bounding_size_z)
 
-                satisfiesRestrictions = not boundingBoxOverlapping(
-                    bbox_limits_Candidate, bbox_limits_ActionObject)
+                # Using box
+                if (self.rules.use_bounding_box):
+                    # Vertex B limits
+                    vertex_B_bbox_limits = getVertexBBoxLimits(
+                        vertexInUse, self.half_bounding_size_x, self.half_bounding_size_y, self.half_bounding_size_z)
+                    
+                    # Check overlap
+                    satisfiesRestrictions = not boundingBoxOverlapping(
+                        vertex_A_bbox_limits, vertex_B_bbox_limits)
+
+                # Using sphere
+                else:
+                    # Check overlap
+                    satisfiesRestrictions = not boundingSphereOverlapping(
+                        pCandidate, vertexInUse, vertex_bsphere_radius)
 
             # Calculates distance between 2 tridimensional points.
             distance = math.sqrt((vertexInUse[0]-pCandidate[0])**2 + (
                 vertexInUse[1]-pCandidate[1])**2 + (vertexInUse[2]-pCandidate[2])**2)
-            # Compares if distance is lesser or equals to minimum distance.
-            satisfiesRestrictions = satisfiesRestrictions and distance >= self.rules.distance_between_items
-
-            i += 1
-
-        #We need to also check if this object satisfies all restrictions with partial solution objects 
-        i = 0
-        satisfiesRestrictions = True
-        while(i < len(self.partialSol) and satisfiesRestrictions == True):
-            # Check bounding box overlap if needed
-            
-            partialObjectLocation = self.partialSol[i].position
-
-
-
-            if (self.rules.overlap):
-                bbox = self.partialSol[i].bounding_box
-                half_bounding_size_x = (bbox[4][0] - bbox[0][0])/2.0
-                half_bounding_size_y = (bbox[2][1] - bbox[0][1])/2.0
-                half_bounding_size_z = (bbox[1][2] - bbox[0][2])/2.0
-
-                bbox_limits_PartialObject = getVertexBBoxLimits(
-                    partialObjectLocation, half_bounding_size_x, half_bounding_size_y, half_bounding_size_z)
-
-                satisfiesRestrictions = not boundingBoxOverlapping(
-                    bbox_limits_Candidate, bbox_limits_PartialObject)
-
-            distance = math.sqrt((partialObjectLocation[0]-pCandidate[0])**2 + (
-                partialObjectLocation[1]-pCandidate[1])**2 + (partialObjectLocation[2]-pCandidate[2])**2)
             # Compares if distance is lesser or equals to minimum distance.
             satisfiesRestrictions = satisfiesRestrictions and distance >= self.rules.distance_between_items
 

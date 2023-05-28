@@ -41,17 +41,15 @@ from .Panels.distribute.ss_paint_op import (PaintMode_OT_Operator,
 
 from .Panels.distribute.ss_vertexProfile_op import (VertexProfile_ADD_OT_Operator, VertexProfile_REMOVE_OT_Operator)
 
-from .Panels.distribute.ss_distribute_op import SurfaceSpray_OT_Operator
-from .Panels.distribute.ss_demo_distribute_op import SurfaceSpray_OT_Operator_DEMO_SELECTION
-from .Panels.distribute.ss_demo_partial_distribute_op import SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION
-from .Panels.distribute.ss_demo_multi_distribute_op import SurfaceSpray_OT_Operator_DEMO_MULTI
+from .Panels.distribute.ss_single_distribute_op import SurfaceSpray_OT_Operator
+from .Panels.distribute.ss_multi_distribute_op import SurfaceSpray_OT_Operator_DEMO_MULTI
 
 from .Panels.distribute.ss_redistribute_op import Redistribute_OT_Operator
 
 
 from .Panels.distribute.distribute_panel import *
 
-from .Panels.rules_panel  import RULES_PT_Panel
+from .Panels.rules.rules_panel  import RULES_PT_Panel
 
 
 from .Panels.distribute.ss_asset_select_op import *
@@ -71,8 +69,8 @@ from .Panels.partialSol.partialSol_panel import (PARTIAL_SOL_PG_objectCollection
                                                  PARTIAL_SOL_PT_Panel,
                                                  ASSETS_UL_items)
 
-from .Panels.subdivide_panel import SUBDIVIDE_PT_Panel
-from .Panels.ss_reset_rules_op import Reset_Rules_OT_Operator
+from .Panels.rules.subdivide_panel import SUBDIVIDE_PT_Panel
+from .Panels.rules.ss_reset_rules_op import Reset_Rules_OT_Operator
 
 
 classes = (ASSET_SELECT_OT_actions, ASSET_SELECT_OT_addViewportSelection, ASSET_SELECT_OT_clearList,
@@ -87,8 +85,6 @@ classes = (ASSET_SELECT_OT_actions, ASSET_SELECT_OT_addViewportSelection, ASSET_
            PaintAll_OT_Operator,
            FaceOrientation_OT_Operator,
            RecalcNormals_OT_Operator,
-           SurfaceSpray_OT_Operator_DEMO_SELECTION,
-           SurfaceSpray_OT_Operator_DEMO_PARTIAL_SELECTION,
            SurfaceSpray_OT_Operator_DEMO_MULTI, 
            Redistribute_OT_Operator, Clear_OT_Operator, Rotate_Operator,
            VertexProfile_ADD_OT_Operator, VertexProfile_REMOVE_OT_Operator,

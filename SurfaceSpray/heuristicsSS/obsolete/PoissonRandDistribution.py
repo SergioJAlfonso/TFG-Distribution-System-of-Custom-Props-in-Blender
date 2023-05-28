@@ -41,9 +41,8 @@ class PoissonRandDistribution(Problem):
         n_instances = 0
 
         #iterar por cada vertice -> if (ver peso > threshold && n_instances < num)
-            # mayor -> metemos pos en elegibles
+        # mayor -> metemos pos en elegibles
         for i in range(tam_vData):
-            #TODO: funcion estocastica, probabilidad > threshold 
             if(v_data[i][1] >= threshold):
                 elegibles.append([v_data[i][0], False])
                 n_instances += 1
@@ -147,11 +146,6 @@ class PoissonRandDistribution(Problem):
 
     def squareAroundPoint(gridPoint, radius):
         cellsAroundPoint = []
-
-        # for i in range(radius/2):
-        #     for e in range(radius/2):
-        #         if 
-
         return cellsAroundPoint
         
 

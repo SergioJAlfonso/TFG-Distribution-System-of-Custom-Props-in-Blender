@@ -130,10 +130,9 @@ class Demo_Dist_Ov_Rot_Distrib_V3(aimaProblem):
             if (satisfiesRestrictions):
                 j = 0
                 
-                #TODO: delete if not needed
                 # Check that is not a vertex that is already used 
-                # while (j < len(possibleActions) and (possibleActions[j].indexVertex != i)):
-                #     j += 1
+                while (j < len(possibleActions) and (possibleActions[j].indexVertex != i)):
+                    j += 1
 
                 if (j < len(possibleActions) or len(possibleActions) == 0):
                     remaining -= 1

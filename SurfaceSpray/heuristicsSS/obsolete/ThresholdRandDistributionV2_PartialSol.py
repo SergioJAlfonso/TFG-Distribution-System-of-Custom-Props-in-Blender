@@ -1,4 +1,3 @@
-# Scale restriction
 import random
 import copy
 import math
@@ -12,9 +11,9 @@ from ...utilsSS.geometry_utils import *
 from aima3.search import Problem as aimaProblem
 
 
-class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
+class ThresholdRandDistributionPartialSol(aimaProblem):
 
-    def __init__(self, rules_, bbox, initial, partialSol_, goal=None, ):
+    def __init__(self, rules_, bbox, initial, partialSol_, goal=None):
         super().__init__(initial, goal)
         self.rules = rules_
         self.bounding_box = bbox
@@ -22,7 +21,7 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
         self.half_bounding_size_x = (bbox[4][0] - bbox[0][0])/2.0
         self.half_bounding_size_y = (bbox[2][1] - bbox[0][1])/2.0
         self.half_bounding_size_z = (bbox[1][2] - bbox[0][2])/2.0
-
+        #Partial Sol Objects
         self.partialSol = partialSol_
 
     def checkRestrictions(self, state, indexVertex):
@@ -35,57 +34,33 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
         """
         # If vertex already in use
         if (state.vertices_[indexVertex][2]):
-            return False, 1
+            return False
 
         # Vertex we potentially want to place an object on it.
         pCandidate = state.vertices_[indexVertex][0]
 
-        # We generate the new scale so it can be used to calculate the overlap
-        scale = self.random_scale()
-
-        # Get BBox/BShpere parameters
         if (self.rules.overlap):
-
-            if (self.rules.use_bounding_box):
-                # Vertex A limits
-                bbox_limits_Candidate = getVertexBBoxLimits(
-                    pCandidate, self.half_bounding_size_x * scale, self.half_bounding_size_y * scale, self.half_bounding_size_z * scale)
-
-            else:
-                # Vertex A radius
-                bbox_limits_Candidate = max(
-                    self.half_bounding_size_x * scale, self.half_bounding_size_y * scale, self.half_bounding_size_z * scale)
+            # Vertex A limits
+            bbox_limits_Candidate = getVertexBBoxLimits(
+                pCandidate, self.half_bounding_size_x,self.half_bounding_size_y, self.half_bounding_size_z)
 
         i = 0
         satisfiesRestrictions = True
 
+        #While all restrictions are acomplished and we are checking all actions applied.
         while (i < len(state.actionsApplied_) and satisfiesRestrictions == True):
             # Access vertices that has an object on it.
             indexVertex = state.actionsApplied_[i].indexVertex
             vertexInUse = state.vertices_[indexVertex][0]
-            vertexInUseScale = state.actionsApplied_[i].scale
 
             # Check bounding box overlap if needed
             if (self.rules.overlap):
+                # Vertex B limits
+                bbox_limits_ActionObject = getVertexBBoxLimits(
+                    vertexInUse, self.half_bounding_size_x,self.half_bounding_size_y, self.half_bounding_size_z)
 
-                # Using box
-                if (self.rules.use_bounding_box):
-                    # Vertex B limits
-                    vertex_B_bbox_limits = getVertexBBoxLimits(
-                        vertexInUse, self.half_bounding_size_x * vertexInUseScale, self.half_bounding_size_y * vertexInUseScale, self.half_bounding_size_z * vertexInUseScale)
-                    
-                    # Check overlap
-                    satisfiesRestrictions = not boundingBoxOverlapping(
-                        bbox_limits_Candidate, vertex_B_bbox_limits)
-
-                # Using sphere
-                else:
-                    # Check overlap
-                    vertex_B_sphere_radius = max(
-                        self.half_bounding_size_x * vertexInUseScale, self.half_bounding_size_y * vertexInUseScale, self.half_bounding_size_z * vertexInUseScale)
-
-                    satisfiesRestrictions = not boundingSphereOverlapping(
-                        pCandidate, vertexInUse, bbox_limits_Candidate, vertex_B_sphere_radius)
+                satisfiesRestrictions = not boundingBoxOverlapping(
+                    bbox_limits_Candidate, bbox_limits_ActionObject)
 
             # Calculates distance between 2 tridimensional points.
             distance = math.sqrt((vertexInUse[0]-pCandidate[0])**2 + (
@@ -95,34 +70,27 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
 
             i += 1
 
-            #We need to also check if this object satisfies all restrictions with partial solution objects 
+        #We need to also check if this object satisfies all restrictions with partial solution objects 
         i = 0
-        while(i < len(self.partialSol) and satisfiesRestrictions):
+        satisfiesRestrictions = True
+        while(i < len(self.partialSol) and satisfiesRestrictions == True):
             # Check bounding box overlap if needed
+            
             partialObjectLocation = self.partialSol[i].position
 
+
+
             if (self.rules.overlap):
-                partial_bbox = self.partialSol[i].bounding_box
-                partial_half_bounding_size_x = (partial_bbox[4][0] - partial_bbox[0][0])/2.0
-                partial_half_bounding_size_y = (partial_bbox[2][1] - partial_bbox[0][1])/2.0
-                partial_half_bounding_size_z = (partial_bbox[1][2] - partial_bbox[0][2])/2.0
+                bbox = self.partialSol[i].bounding_box
+                half_bounding_size_x = (bbox[4][0] - bbox[0][0])/2.0
+                half_bounding_size_y = (bbox[2][1] - bbox[0][1])/2.0
+                half_bounding_size_z = (bbox[1][2] - bbox[0][2])/2.0
 
-                # Using box
-                if (self.rules.use_bounding_box):               
-                    bbox_limits_PartialObject = getVertexBBoxLimits(
-                        partialObjectLocation, partial_half_bounding_size_x, partial_half_bounding_size_y, partial_half_bounding_size_z)
+                bbox_limits_PartialObject = getVertexBBoxLimits(
+                    partialObjectLocation, half_bounding_size_x, half_bounding_size_y, half_bounding_size_z)
 
-                    satisfiesRestrictions = not boundingBoxOverlapping(
-                        bbox_limits_Candidate, bbox_limits_PartialObject)
-                    
-                # Using sphere
-                else:
-                    # Check overlap
-                    vertex_B_sphere_radius = max(
-                        partial_half_bounding_size_x, partial_half_bounding_size_y, partial_half_bounding_size_z)
-
-                    satisfiesRestrictions = not boundingSphereOverlapping(
-                        pCandidate, partialObjectLocation, bbox_limits_Candidate, vertex_B_sphere_radius)
+                satisfiesRestrictions = not boundingBoxOverlapping(
+                    bbox_limits_Candidate, bbox_limits_PartialObject)
 
             distance = math.sqrt((partialObjectLocation[0]-pCandidate[0])**2 + (
                 partialObjectLocation[1]-pCandidate[1])**2 + (partialObjectLocation[2]-pCandidate[2])**2)
@@ -131,7 +99,7 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
 
             i += 1
 
-        return satisfiesRestrictions, scale
+        return satisfiesRestrictions
 
     def actions(self, state):
         """
@@ -158,8 +126,7 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
         j = 0
         while (remaining > 0 and j < sizeV):
             i = randomIndices[j]
-            satisfiesRestrictions, scale = self.checkRestrictions(state, i)
-            if (satisfiesRestrictions == True):
+            if (self.checkRestrictions(state, i) == True):
                 k = 0
                 
                 # Check that this selected vertex is not already used as an action in this loop
@@ -170,8 +137,7 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
                 #Or if there are no actions, we store it.
                 if (k >= len(possibleActions) or len(possibleActions) == 0):
                     remaining -= 1
-                    
-                    action = Actions(i, self.random_rotation(), scale, type_ = ActionType.CREATE)
+                    action = Actions(i, self.random_step_rotation())
                     possibleActions.append(action)
 
             j += 1
@@ -181,20 +147,7 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
 
         return possibleActions
 
-    def random_scale(self):
-        minfact = self.rules.min_scale_factor
-        maxfact = self.rules.max_scale_factor
-
-        # If min and max factors are equal (or min is higher)
-        if(minfact == maxfact or minfact > maxfact):
-            return minfact
-        
-        precision = 100.0
-
-        newScalefactor = random.randrange((int)(minfact*precision), (int)(maxfact*precision), (int)(0.01*precision))/precision
-        return newScalefactor
-
-    def random_rotation(self):
+    def random_step_rotation(self):
         precision = 100.0
 
         rang_x = (int)(self.rules.rotation_range[0] * precision)
@@ -237,29 +190,6 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
         # Chill down
         return state.objectsPlaced_ == self.goal.objectsPlaced_
         # return True
- 
-    def path_cost(self, c, state1, action, state2):
-        """Return the cost of a solution path that arrives at state2 from
-        state1 via action, assuming cost c to get up to state1. If the problem
-        is such that the path doesn't matter, this function will only look at
-        state2. If the path does matter, it will consider c and maybe state1
-        and action. The default method costs 1 for every step in the path."""
-
-        """
-        Assings a higher cost value to those states whose number of objects placed is far from the goal.
-           As it approaches to the goal, the cost is smaller
-        """
-
-        topLimitRange = 100 
-
-        #Simple rule of three. More objects placed, lower the cost.
-        range = int((state2.objectsPlaced_/self.goal.objectsPlaced_) * topLimitRange)
-
-
-        #In case range is the top, to prevent an empty range error, we just add c to the cost 
-        state2.pathCost = c + random.randrange(0, topLimitRange - range) if (range != topLimitRange) else c
-        
-        return state2.pathCost
 
     def h(self, node):
         """ 
@@ -269,9 +199,3 @@ class Demo_Dist_Ov_Rot_Scale_Distrib(aimaProblem):
         diff = self.goal.objectsPlaced_ - node.state.objectsPlaced_
         print(diff)
         return diff
-    
-    def value(self, state):
-        """For optimization problems, each state has a value. Hill Climbing
-        and related algorithms try to maximize this value."""
-        
-        return state.objectsPlaced_

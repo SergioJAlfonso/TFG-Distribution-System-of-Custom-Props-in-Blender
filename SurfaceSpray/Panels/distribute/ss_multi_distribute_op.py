@@ -1,6 +1,5 @@
 import bpy
 import time
-import re
 
 from ...ItemClasses.ItemRules import *
 from ...ItemClasses.Item import *
@@ -8,20 +7,12 @@ from ...ItemClasses.DefaultAttributes.FurnitureAttribs import *
 
 from ...utilsSS.draw_utils import *
 from ...utilsSS.blender_utils import *
-from ...heuristicsSS.ThresholdRandDistribution import *
-from ...heuristicsSS.ThresholdRandDistributionV4_PartialSol_MultiAction import *
-# from ...heuristicsSS.Demos.Demo_Dist_Ov_Rot_Scale_Distrib_Multi import *
+from ...heuristicsSS.MultipleObjectDistribution import *
 
-#TODO: eventually remove deprecated distributions
-# from ...heuristicsSS.Demos.Demo_Dist_Ov_Rot_Distrib_V3 import *
-# from ...heuristicsSS.Demos.Demo_Dist_Overlap_Distribution_V2 import *
-# from ...heuristicsSS.Demos.Demo_Dist_RotRang_Distribution import *
-# from ...heuristicsSS.Demos.Demo_Dist_Overlap_Distribution import *
 from ...utilsSS.StateDistribution import *
 
 from aima3.search import astar_search as aimaAStar
 
-# from aima3.search import breadth_first_tree_search as aimaBFTS
 from ...algorithmsSS.algorithmsSS import breadth_first_tree_multiple_search as ss_breadth_fms
 from ...algorithmsSS.algorithmsSS import best_first_graph_multiple_search as ss_best_fms
 

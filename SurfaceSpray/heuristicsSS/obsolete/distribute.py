@@ -1,9 +1,5 @@
 import random
 
-#CLase con un metodo generate sobreescribible
-
-#Base Line = primera version basura
-
 def distributeAsset(v_data, asset_bound, num_assets, threshold):
     """
     Select (num_assets) random vertices from data as longs as 
@@ -30,9 +26,8 @@ def distributeAsset(v_data, asset_bound, num_assets, threshold):
     n_instances = 0
 
     #iterar por cada vertice -> if (ver peso > threshold && n_instances < num)
-        # mayor -> metemos pos en elegibles
+    # mayor -> metemos pos en elegibles
     for i in range(tam_vData):
-        #TODO: funcion estocastica, probabilidad > threshold 
         if(v_data[i][1] >= threshold):
             elegibles.append([v_data[i][0], False])
             n_instances += 1

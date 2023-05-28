@@ -128,7 +128,6 @@ def filterVerticesByWeightThreshold(vertices, weightThreshold):
     #iterar por cada vertice -> if (ver peso > threshold && n_instances < num)
         # mayor -> metemos pos en elegibles
     for i in range(tam_vData):
-        #TODO: funcion estocastica, probabilidad > threshold 
         if(vertices[i][1] >= weightThreshold):
             elegibles.append([vertices[i][0],vertices[i][2], False])
             n_instances += 1
@@ -149,7 +148,6 @@ def makeSubdivision(target, assetBoundingBox, targetBoundingBox, num_cuts):
      
     bmesh.ops.subdivide_edges(subdividedMesh, edges=subdividedMesh.edges, cuts=numCuts, use_grid_fill=True)
 
-    #TODO: hacerlo en mesh nueva para no modificar mesh del usuario 
     # Write back to the mesh
     subdividedMesh.to_mesh(tData)
     tData.update()
