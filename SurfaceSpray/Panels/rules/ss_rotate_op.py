@@ -1,7 +1,7 @@
 import bpy
 
-from ...utilsSS.Geometry_utils import readjustRotation
-from ...utilsSS.Geometry_utils import adjustRotation
+from ...utilsSS.geometry_utils import readjustRotation
+from ...utilsSS.geometry_utils import adjustRotation
 
 class Rotate_Operator(bpy.types.Operator):
     bl_idname = "addon.rotate_normal"

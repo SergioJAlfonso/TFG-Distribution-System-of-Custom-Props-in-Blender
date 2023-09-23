@@ -1,5 +1,5 @@
 import bpy 
-from ...utilsSS.Blender_utils import *
+from ...utilsSS.blender_utils import *
 
 class PaintMode_OT_Operator(bpy.types.Operator):
     bl_idname = "addon.enter_paint_mode"

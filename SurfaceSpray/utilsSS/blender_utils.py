@@ -2,7 +2,7 @@ import bpy
 from mathutils import Euler
 from .ItemRules import *
 
-from .Geometry_utils import (adjustPosition, adjustRotation, adjustScale)
+from .geometry_utils import (adjustPosition, adjustRotation, adjustScale)
 
 def createObjectsInPoints(points, object, boundingBoxObject, collection):
     inCollection = False 

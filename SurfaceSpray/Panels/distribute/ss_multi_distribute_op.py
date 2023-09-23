@@ -4,8 +4,8 @@ import time
 from ...utilsSS.ItemRules import *
 from ...utilsSS.Item import *
 
-from ...utilsSS.Draw_utils import *
-from ...utilsSS.Blender_utils import *
+from ...utilsSS.draw_utils import *
+from ...utilsSS.blender_utils import *
 from ...heuristicsSS.MultipleObjectDistribution import *
 
 from ...utilsSS.StateDistribution import *

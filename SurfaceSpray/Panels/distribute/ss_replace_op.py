@@ -1,6 +1,6 @@
 import bpy
 import re
-from ...utilsSS.Blender_utils import *
+from ...utilsSS.blender_utils import *
 
 class ReplaceExistingCollectionName_ADD_OT_Operator(bpy.types.Operator):
     bl_idname = "addon.replace_collec_name"
